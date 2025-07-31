@@ -127,50 +127,22 @@
           </div>
         </div>
         
-        <form id="contact-form" class="contact-form" action="https://formsubmit.co/aiinsidersnetwork@gmail.com" method="POST">
+        <form id="contact-form" class="contact-form" target="_blank" action="https://formsubmit.co/aiinsidersnetwork@gmail.com" method="POST">
           <h3>Let's create something together</h3>
           
           <div class="form-group">
-            <label for="name">Full Name *</label>
-            <input type="text" id="name" name="name" placeholder="Your Name* eg: John Smith" required>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+              </div>
+              <div class="col">
+                <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+              </div>
+            </div>
           </div>
           
           <div class="form-group">
-            <label for="email">Email Address *</label>
-            <input type="email" id="email" name="email" placeholder="Email* eg: john@company.com" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="company">Company/Organization</label>
-            <input type="text" id="company" name="company" placeholder="Your Company (optional)">
-          </div>
-          
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Phone Number (optional)">
-          </div>
-          
-          <div class="form-group">
-            <label for="subject">Subject *</label>
-            <input type="text" id="subject" name="subject" placeholder="Subject* eg: AI Consulting Inquiry" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="service">Service Interest</label>
-            <select id="service" name="service">
-              <option value="">Select a service (optional)</option>
-              <option value="AI Consulting">AI Consulting</option>
-              <option value="Android App Development">Android App Development</option>
-              <option value="News Platform">News Platform</option>
-              <option value="Security Solutions">Security Solutions</option>
-              <option value="Custom Development">Custom Development</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="message">Message *</label>
-            <textarea id="message" name="message" placeholder="What's on your mind?* eg: I want to implement AI in my business but don't know where to start. Please include details about your project, budget, and timeline." rows="5" required></textarea>
+            <textarea placeholder="Your Message" class="form-control" name="message" rows="10" required></textarea>
           </div>
           
           <!-- FormSubmit configuration -->
@@ -180,18 +152,7 @@
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_autoresponse" value="Thank you for contacting A.Insiders! We've received your message and will get back to you within 24-48 hours. If you need immediate assistance, please email us directly at aiinsidersnetwork@gmail.com">
           
-          <button type="submit" class="submit-btn">
-            <span class="btn-text">Send Message</span>
-            <span class="btn-loading" style="display: none;">
-              <svg class="spinner" width="20" height="20" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416">
-                  <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
-                  <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
-                </circle>
-              </svg>
-              Sending...
-            </span>
-          </button>
+          <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
         </form>
       </div>
     </div>
@@ -312,19 +273,25 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const contactForm = document.getElementById('contact-form');
-      const submitBtn = contactForm.querySelector('.submit-btn');
-      const btnText = submitBtn.querySelector('.btn-text');
-      const btnLoading = submitBtn.querySelector('.btn-loading');
+      const submitBtn = contactForm.querySelector('.btn');
       
       // Form submission handling
       contactForm.addEventListener('submit', function(e) {
         // Show loading state
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'flex';
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
         
         // Form will submit to FormSubmit and redirect to thank-you.html
         // No need to prevent default - let it submit naturally
+        
+        // Reset button after a delay (in case form doesn't redirect)
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+        }, 5000);
       });
       
       // Auto-resize textarea
@@ -332,7 +299,7 @@
       if (textarea) {
         textarea.addEventListener('input', function() {
           this.style.height = 'auto';
-          this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+          this.style.height = Math.min(this.scrollHeight, 300) + 'px';
         });
       }
       

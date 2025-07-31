@@ -1748,6 +1748,22 @@ body.home-page .loader {
   color: var(--text-muted);
 }
 
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.form-group select option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+
 .checkbox-group {
   display: flex;
   align-items: center;
@@ -1768,22 +1784,46 @@ body.home-page .loader {
 }
 
 .submit-btn {
+  position: relative;
   width: 100%;
-  padding: 1rem;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+  color: white;
   border: none;
   border-radius: 0.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  font-size: 1rem;
   cursor: pointer;
   transition: var(--transition-smooth);
+  overflow: hidden;
 }
 
 .submit-btn:hover {
-  background: var(--accent-secondary);
-  box-shadow: var(--shadow-glow);
   transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn .btn-text,
+.submit-btn .btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submit-btn .spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Footer */

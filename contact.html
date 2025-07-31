@@ -127,8 +127,16 @@
           </div>
         </div>
         
-        <form id="contact-form" class="contact-form" target="_blank" action="https://formsubmit.co/aiinsidersnetwork@gmail.com" method="POST">
+        <form id="contact-form" class="contact-form" action="https://formsubmit.co/aiinsidersnetwork@gmail.com" method="POST">
           <h3>Let's create something together</h3>
+          
+          <!-- FormSubmit Setup Note -->
+          <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
+            <p style="margin: 0; color: #3b82f6; font-size: 0.9rem;">
+              <strong>Note:</strong> If this is your first time using this form, you'll need to confirm your email address. 
+              After submitting, check your email (aiinsidersnetwork@gmail.com) for a confirmation link from FormSubmit.
+            </p>
+          </div>
           
           <div class="form-group">
             <div class="form-row">
@@ -142,18 +150,34 @@
           </div>
           
           <div class="form-group">
+            <input type="text" name="subject" class="form-control" placeholder="Subject (Optional)" value="New Contact Form Submission">
+          </div>
+          
+          <div class="form-group">
             <textarea placeholder="Your Message" class="form-control" name="message" rows="10" required></textarea>
           </div>
           
           <!-- FormSubmit configuration -->
           <input type="hidden" name="_subject" value="New Contact Form Submission - A.Insiders">
-          <input type="hidden" name="_next" value="https://ainsiders.github.io/A.InsidersNetwork/thank-you.html">
+          <input type="hidden" name="_next" value="thank-you.html">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_autoresponse" value="Thank you for contacting A.Insiders! We've received your message and will get back to you within 24-48 hours. If you need immediate assistance, please email us directly at aiinsidersnetwork@gmail.com">
           
           <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
         </form>
+        
+        <!-- Alternative simple form for testing -->
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem;">
+          <h4 style="margin-bottom: 1rem; color: #ff6b6b;">Test Form (Alternative)</h4>
+          <form action="https://formsubmit.co/aiinsidersnetwork@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem; border: 1px solid #ccc;">
+            <input type="email" name="email" placeholder="Your Email" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem; border: 1px solid #ccc;">
+            <textarea name="message" placeholder="Your Message" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem; border: 1px solid #ccc; height: 100px;"></textarea>
+            <input type="hidden" name="_next" value="thank-you.html">
+            <button type="submit" style="background: #007bff; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;">Send Test Message</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -275,13 +299,23 @@
       const contactForm = document.getElementById('contact-form');
       const submitBtn = contactForm.querySelector('.btn');
       
-      // Form submission handling
+      // Debug form submission
       contactForm.addEventListener('submit', function(e) {
+        console.log('Form submitted!');
+        console.log('Form action:', this.action);
+        console.log('Form method:', this.method);
+        
         // Show loading state
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.7';
+        
+        // Log form data
+        const formData = new FormData(this);
+        for (let [key, value] of formData.entries()) {
+          console.log(key + ': ' + value);
+        }
         
         // Form will submit to FormSubmit and redirect to thank-you.html
         // No need to prevent default - let it submit naturally

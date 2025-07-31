@@ -1,0 +1,31 @@
+{
+  "name": "ainsiders-news-cache-server",
+  "version": "1.0.0",
+  "description": "Server-side cache system for A.Insiders news feeds",
+  "main": "server-cache.js",
+  "scripts": {
+    "start": "node server-cache.js",
+    "dev": "nodemon server-cache.js",
+    "cache-status": "node cache-manager.js status",
+    "cache-clear": "node cache-manager.js clear",
+    "cache-refresh": "node cache-manager.js refresh"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "news",
+    "cache",
+    "rss",
+    "feeds",
+    "api"
+  ],
+  "author": "A.Insiders",
+  "license": "MIT"
+} 

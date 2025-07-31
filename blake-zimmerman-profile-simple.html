@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blake Zimmerman - Profile Picture</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-picture:hover {
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+            font-weight: 300;
+        }
+        
+        p {
+            color: #666;
+            margin: 0 0 20px 0;
+        }
+        
+        .size-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .size-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        
+        .size-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .size-btn.active {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .profile-variations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .variation {
+            text-align: center;
+        }
+        
+        .variation img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .variation span {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="profile-picture" id="mainProfile">
+        <h1>Blake Zimmerman</h1>
+        <p>Professional Profile Picture</p>
+        
+        <div class="size-options">
+            <button class="size-btn" onclick="changeSize('small')">Small</button>
+            <button class="size-btn active" onclick="changeSize('medium')">Medium</button>
+            <button class="size-btn" onclick="changeSize('large')">Large</button>
+        </div>
+        
+        <div class="profile-variations">
+            <div class="variation">
+                <img src="blake-zimmerman.jpg" alt="Small">
+                <span>100px</span>
+            </div>
+            <div class="variation">
+                <img src="blake-zimmerman.jpg" alt="Medium">
+                <span>200px</span>
+            </div>
+            <div class="variation">
+                <img src="blake-zimmerman.jpg" alt="Large">
+                <span>300px</span>
+            </div>
+        </div>
+        
+        <button class="download-btn" onclick="downloadProfilePicture()">Download Profile Picture</button>
+        
+        <div class="instructions">
+            <h3>How to use this profile picture:</h3>
+            <ul>
+                <li>Right-click on the image and select "Save image as..." to download</li>
+                <li>Use the size buttons above to preview different sizes</li>
+                <li>Perfect for social media, LinkedIn, email signatures, and business cards</li>
+                <li>All images are automatically cropped to a perfect circle</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function changeSize(size) {
+            const profile = document.getElementById('mainProfile');
+            const buttons = document.querySelectorAll('.size-btn');
+            
+            // Remove active class from all buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Change size
+            switch(size) {
+                case 'small':
+                    profile.style.width = '100px';
+                    profile.style.height = '100px';
+                    profile.style.borderWidth = '3px';
+                    break;
+                case 'large':
+                    profile.style.width = '300px';
+                    profile.style.height = '300px';
+                    profile.style.borderWidth = '8px';
+                    break;
+                default:
+                    profile.style.width = '200px';
+                    profile.style.height = '200px';
+                    profile.style.borderWidth = '5px';
+            }
+        }
+        
+        function downloadProfilePicture() {
+            const profile = document.getElementById('mainProfile');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match profile picture
+            const size = parseInt(profile.style.width) || 200;
+            canvas.width = size;
+            canvas.height = size;
+            
+            // Create circular clipping path
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+            ctx.clip();
+            
+            // Load and draw image
+            const img = new Image();
+            img.onload = function() {
+                // Calculate aspect ratio to maintain proportions
+                const imgAspect = img.width / img.height;
+                const canvasAspect = size / size;
+                
+                let drawWidth, drawHeight, offsetX, offsetY;
+                
+                if (imgAspect > canvasAspect) {
+                    drawHeight = size;
+                    drawWidth = size * imgAspect;
+                    offsetX = (size - drawWidth) / 2;
+                    offsetY = 0;
+                } else {
+                    drawWidth = size;
+                    drawHeight = size / imgAspect;
+                    offsetX = 0;
+                    offsetY = (size - drawHeight) / 2;
+                }
+                
+                ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+                ctx.restore();
+                
+                // Download the image
+                const link = document.createElement('a');
+                link.download = 'blake-zimmerman-profile-picture.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+            img.src = 'blake-zimmerman.jpg';
+        }
+    </script>
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html> 

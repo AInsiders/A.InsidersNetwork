@@ -1,0 +1,17 @@
+{
+  "category": "Transportation",
+  "description": "Transportation and automotive technology news",
+  "feeds": [
+    { "name": "Automotive IQ News", "url": "https://www.automotive-iq.com/rss/news", "type": "rss" },
+    { "name": "Automotive IQ Reports", "url": "https://www.automotive-iq.com/rss/reports", "type": "rss" },
+    { "name": "Vehicle Electrification", "url": "https://www.automotive-iq.com/rss/categories/electrics-electronics", "type": "rss" },
+    { "name": "A Boring Revolution", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCxaChRLSN-k6QkUqF17sGjg", "type": "youtube" },
+    { "name": "AI & CAR", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4AExSxU3TT8GxAYUeEZXVg", "type": "youtube" },
+    { "name": "AmpedAuto", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCCF6WAhvjydnXUHl85cDXpA", "type": "youtube" },
+    { "name": "Boat & Sail Magazine", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgCMYcDTo077fYXhDB27C_Q", "type": "youtube" },
+    { "name": "Form Trends", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCpifTlKKeTyZllzUBrWFtjA", "type": "youtube" },
+    { "name": "Global Railway Review", "url": "https://feeds.feedburner.com/GlobalRailwayReview", "type": "rss" },
+    { "name": "LatestCarsPro", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgVYEv7-4Cug-1Gd4DjULfg", "type": "youtube" },
+    { "name": "The Tesla Space", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCJjAIBWeY022ZNj_Cp_6wAw", "type": "youtube" }
+  ]
+} 

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blake Zimmerman - Owner & Founder | A.Insiders</title>
+  <link rel="stylesheet" href="brain-styles.css">
+  <link rel="stylesheet" href="sidebar-menu.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="shared-loader.js"></script>
+  <style>
+    .hero-profile-picture {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #667eea;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hero-profile-picture:hover {
+      transform: scale(1.05);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+    }
+    
+    .profile-avatar {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .contact-avatar {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .contact-profile-picture {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #667eea;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+    
+    .contact-profile-picture:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body class="portfolio-page">
+  <!-- Loader -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div class="ai-loader">
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+      </div>
+      <div class="loader-text">Initializing Blake's Profile</div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-dropdown">
+          <a href="news-enhanced.html" class="nav-link">News</a>
+          <ul class="dropdown-menu">
+            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
+            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
+            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
+            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
+            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
+            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
+            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
+            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
+            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
+            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
+            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
+            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
+            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
+            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
+            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
+            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
+            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
+            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
+            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
+          </ul>
+        </li>
+        <li><a href="apps.html" class="nav-link">Apps</a></li>
+        <li class="nav-dropdown">
+          <a href="about.html" class="nav-link active">About</a>
+          <ul class="dropdown-menu">
+            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+            <li><a href="blake-zimmerman.html" class="dropdown-link active">Blake Zimmerman</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Portfolio Hero Section -->
+  <header class="portfolio-hero">
+    <canvas id="aiCanvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-profile">
+        <div class="profile-avatar">
+          <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="hero-profile-picture">
+          <div class="avatar-glow"></div>
+        </div>
+        <div class="profile-info">
+          <span class="profile-badge">Owner & Founder</span>
+          <h1 class="profile-name">Blake Zimmerman</h1>
+          <p class="profile-title">Website Design Specialist & Technology Professional</p>
+          <div class="profile-status">
+            <span class="status-indicator"></span>
+            <span class="status-text">Available for Projects</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Websites Designed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">99%</div>
+          <div class="stat-label">Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section class="portfolio-about fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">About Blake</h2>
+        <p class="section-subtitle">Innovative technology professional leading A.Insiders to new heights</p>
+      </div>
+      
+      <div class="about-grid">
+        <div class="about-content">
+          <div class="about-text">
+            <p class="intro-text">I am Blake Zimmerman, Owner and Founder of A.Insiders, a dedicated professional specializing in website design with a solid background in artificial intelligence (AI), cybersecurity, and cell phone technologies. I strive to create innovative, user-focused websites and applications that use the latest technologies to achieve business goals and improve user experiences.</p>
+            
+            <p>My approach combines technical expertise with creative problem-solving to deliver solutions that not only meet but exceed client expectations. I believe in creating digital experiences that are both visually appealing and functionally robust.</p>
+            
+            <div class="core-values">
+              <h3>Core Values & Philosophy</h3>
+              <div class="values-grid">
+                <div class="value-item">
+                  <div class="value-icon">🚀</div>
+                  <h4>Innovation</h4>
+                  <p>Leveraging cutting-edge technologies to create forward-thinking solutions</p>
+                </div>
+                <div class="value-item">
+                  <div class="value-icon">⭐</div>
+                  <h4>Quality</h4>
+                  <p>Maintaining the highest standards in design, functionality, and user experience</p>
+                </div>
+                <div class="value-item">
+                  <div class="value-icon">🎯</div>
+                  <h4>Client Focus</h4>
+                  <p>Understanding and exceeding client needs through collaborative development</p>
+                </div>
+                <div class="value-item">
+                  <div class="value-icon">🔒</div>
+                  <h4>Security</h4>
+                  <p>Implementing robust cybersecurity measures to protect digital assets</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-sidebar">
+          <div class="contact-card">
+            <div class="contact-avatar">
+              <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="contact-profile-picture">
+            </div>
+            <h3>Get In Touch</h3>
+            <div class="contact-info">
+              <div class="contact-item">
+                <span class="contact-label">Role</span>
+                <span class="contact-value">Owner & Founder</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">Company</span>
+                <span class="contact-value">A.Insiders</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">Location</span>
+                <span class="contact-value">Global - Remote First</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">Status</span>
+                <span class="contact-value status-available">Available</span>
+              </div>
+            </div>
+            <a href="contact.html" class="contact-btn">Contact Blake</a>
+          </div>
+          
+          <div class="expertise-card">
+            <h3>Expertise Areas</h3>
+            <div class="expertise-tags">
+              <span class="expertise-tag">Website Design</span>
+              <span class="expertise-tag">AI Integration</span>
+              <span class="expertise-tag">Cybersecurity</span>
+              <span class="expertise-tag">Mobile Tech</span>
+              <span class="expertise-tag">E-commerce</span>
+              <span class="expertise-tag">UX/UI Design</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Matrix -->
+  <section class="skills-matrix fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Technical Expertise</h2>
+        <p class="section-subtitle">Comprehensive skills across multiple technology domains</p>
+      </div>
+      
+      <div class="skills-grid">
+        <div class="skill-category">
+          <div class="category-header">
+            <div class="category-icon">🎨</div>
+            <h3>Website Design</h3>
+          </div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <span class="skill-name">HTML, CSS, JavaScript</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">WordPress, Wix, Shopify</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Responsive Design</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">UX/UI Principles</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">SEO Best Practices</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <div class="category-header">
+            <div class="category-icon">🤖</div>
+            <h3>Artificial Intelligence</h3>
+          </div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <span class="skill-name">Custom AI Model Creation</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Business Process Automation</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Machine Learning Implementation</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Prompt Engineering</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Deep Learning Applications</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 70%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <div class="category-header">
+            <div class="category-icon">🔐</div>
+            <h3>Cybersecurity</h3>
+          </div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <span class="skill-name">Digital Asset Protection</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Security Implementation</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Ethical Hacking</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Network Security</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Vulnerability Assessment</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <div class="category-header">
+            <div class="category-icon">📱</div>
+            <h3>Mobile Technology</h3>
+          </div>
+          <div class="skill-items">
+            <div class="skill-item">
+              <span class="skill-name">Cell Phone Technology</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Device Repair & Troubleshooting</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Mobile App Integration</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Cross-platform Compatibility</span>
+              <div class="skill-level">
+                <div class="skill-bar" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Professional Highlights -->
+  <section class="highlights-showcase fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Professional Highlights</h2>
+        <p class="section-subtitle">Key achievements and project successes</p>
+      </div>
+      
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-icon">🎨</div>
+          <h3>Website Design Projects</h3>
+          <p>Developed a variety of websites with a focus on both functionality and aesthetic appeal. Projects include implementing responsive designs to ensure optimal performance across devices and integrating tools and features tailored to specific business needs and user experiences.</p>
+          <div class="highlight-metrics">
+            <span class="metric">50+ Websites</span>
+            <span class="metric">100% Responsive</span>
+          </div>
+        </div>
+        
+        <div class="highlight-card">
+          <div class="highlight-icon">🛒</div>
+          <h3>E-commerce Solutions</h3>
+          <p>Designed and launched online stores using Shopify, optimizing them for performance and SEO. Customized themes and payment options to suit client requirements, resulting in improved conversion rates and user satisfaction.</p>
+          <div class="highlight-metrics">
+            <span class="metric">1000+ Clients</span>
+            <span class="metric">SEO Optimized</span>
+          </div>
+        </div>
+        
+        <div class="highlight-card">
+          <div class="highlight-icon">🤖</div>
+          <h3>AI & Technology Integration</h3>
+          <p>Applied AI technologies to enhance business processes and automate tasks. Used cybersecurity principles to safeguard digital environments, ensuring both innovation and security in all implementations.</p>
+          <div class="highlight-metrics">
+            <span class="metric">AI-Powered</span>
+            <span class="metric">Secure by Design</span>
+          </div>
+        </div>
+        
+        <div class="highlight-card">
+          <div class="highlight-icon">✨</div>
+          <h3>Custom Design Work</h3>
+          <p>Created custom design work that enhances brand identity and user engagement. Focused on creating unique visual experiences that align with client brand values and business objectives.</p>
+          <div class="highlight-metrics">
+            <span class="metric">Unique Designs</span>
+            <span class="metric">Brand Aligned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications & Credentials -->
+  <section class="certifications-grid fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Professional Certifications</h2>
+        <p class="section-subtitle">Continuous learning and professional development</p>
+      </div>
+      
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-badge">
+            <div class="cert-icon">🤖</div>
+          </div>
+          <h4>AI & Machine Learning</h4>
+          <p>Certified in artificial intelligence and machine learning technologies</p>
+          <div class="cert-year">2023</div>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-badge">
+            <div class="cert-icon">💬</div>
+          </div>
+          <h4>Prompt Engineering</h4>
+          <p>Expert-level certification in AI prompt engineering and optimization</p>
+          <div class="cert-year">2024</div>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-badge">
+            <div class="cert-icon">🔒</div>
+          </div>
+          <h4>Ethical Hacking</h4>
+          <p>Certified ethical hacker with expertise in cybersecurity assessment</p>
+          <div class="cert-year">2022</div>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-badge">
+            <div class="cert-icon">🌐</div>
+          </div>
+          <h4>Networking</h4>
+          <p>Professional networking certification for infrastructure management</p>
+          <div class="cert-year">2023</div>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-badge">
+            <div class="cert-icon">🧠</div>
+          </div>
+          <h4>Deep Learning</h4>
+          <p>Advanced certification in deep learning and neural network applications</p>
+          <div class="cert-year">2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials -->
+  <section class="testimonials-showcase fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Client Testimonials</h2>
+        <p class="section-subtitle">What clients say about working with Blake</p>
+      </div>
+      
+      <div class="testimonials-carousel">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">"</div>
+            <blockquote>
+              Blake's approach to website design and technology consistently produces impressive results. His attention to detail and innovative solutions are highly valued.
+            </blockquote>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">NS</div>
+            <div class="author-info">
+              <h4>Natalie Schmidt</h4>
+              <p>NHS Law Firm</p>
+              <div class="testimonial-tags">
+                <span class="tag">Website Design</span>
+                <span class="tag">Innovation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">"</div>
+            <blockquote>
+              Blake's work on our website was exceptional. He delivered a product that is both visually appealing and functionally robust, showcasing his technical expertise and commitment to quality.
+            </blockquote>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">LC</div>
+            <div class="author-info">
+              <h4>Lauren Cansler</h4>
+              <p>Affiliate Broker at Crye Leike Realty</p>
+              <div class="testimonial-tags">
+                <span class="tag">Quality</span>
+                <span class="tag">Expertise</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">"</div>
+            <blockquote>
+              Working with Blake transformed our online presence. His expertise in AI integration and cybersecurity gave us confidence in our digital infrastructure.
+            </blockquote>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar">TC</div>
+            <div class="author-info">
+              <h4>Tech Client</h4>
+              <p>Technology Company</p>
+              <div class="testimonial-tags">
+                <span class="tag">AI Integration</span>
+                <span class="tag">Cybersecurity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <span class="logo-text">A.I</span>
+            <span class="logo-accent">NSIDERS</span>
+          </div>
+          <p>Professional website design and technology solutions by Blake Zimmerman</p>
+        </div>
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="consulting.html">Website Design</a></li>
+            <li><a href="consulting.html">AI Integration</a></li>
+            <li><a href="consulting.html">E-commerce Solutions</a></li>
+            <li><a href="consulting.html">Cybersecurity</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="apps.html">Apps</a></li>
+            <li><a href="news-enhanced.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <div class="social-links">
+            <a href="#" class="social-link">LinkedIn</a>
+
+            <a href="#" class="social-link">GitHub</a>
+            <a href="contact.html" class="social-link">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Blake Zimmerman - A.Insiders Network. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="brain-script.js"></script>
+  
+      <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>

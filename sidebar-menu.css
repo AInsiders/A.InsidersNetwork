@@ -1,0 +1,227 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+/* Sidebar Menu Styles */
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.sidebar-container .btn_one {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  pointer-events: auto;
+  display: none; /* Hide by default on desktop */
+}
+
+.sidebar-container .btn_one i {
+  color: #00ccff;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.3s linear;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+}
+
+.btn_one i:hover {
+  font-size: 29px;
+  text-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+}
+
+.sidebar-container .sidebar_menu {
+  position: fixed;
+  height: 100vh;
+  width: 280px;
+  left: -280px;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0px 0px 20px rgba(0, 204, 255, 0.3);
+  overflow: hidden;
+  transition: all 0.3s linear;
+  pointer-events: auto;
+  border-right: 1px solid rgba(0, 204, 255, 0.3);
+}
+
+.sidebar_menu .logo {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+  box-shadow: 0px 2px 4px rgba(0, 204, 255, 0.3);
+  background: rgba(0, 204, 255, 0.1);
+}
+
+.sidebar_menu .logo a {
+  color: #00ccff;
+  font-size: 25px;
+  font-weight: 600;
+  position: absolute;
+  left: 50px;
+  line-height: 60px;
+  text-decoration: none;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar_menu .btn_two i {
+  font-size: 25px;
+  line-height: 60px;
+  position: absolute;
+  left: 240px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s linear;
+  color: #00ccff;
+}
+
+.btn_two i:hover {
+  font-size: 24px;
+  color: #fff;
+}
+
+.sidebar_menu .menu {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+}
+
+.sidebar_menu .menu li {
+  margin-top: 6px;
+  padding: 14px 20px;
+  transition: all 0.3s ease;
+}
+
+.sidebar_menu .menu i {
+  color: #00ccff;
+  font-size: 20px;
+  padding-right: 8px;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+}
+
+.sidebar_menu .menu a {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.sidebar_menu .menu li:hover {
+  border-left: 3px solid #00ccff;
+  box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+  background: rgba(0, 204, 255, 0.1);
+}
+
+.sidebar_menu .menu li:hover i {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.sidebar_menu .menu li:hover a {
+  color: #00ccff;
+  text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+}
+
+.sidebar_menu .social_media {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.sidebar_menu .social_media i {
+  text-decoration: none;
+  padding: 0 5px;
+  color: #00ccff;
+  opacity: 0.6;
+  font-size: 20px;
+  transition: all 0.2s linear;
+}
+
+.sidebar_menu .social_media i:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+#sidebar-check {
+  display: none;
+}
+
+#sidebar-check:checked ~ .sidebar_menu {
+  left: 0;
+}
+
+#sidebar-check:checked ~ .btn_one i {
+  opacity: 0;
+}
+
+#sidebar-check:checked ~ .sidebar_menu .btn_two i {
+  opacity: 1;
+}
+
+/* Desktop styles - hide sidebar on large screens */
+@media (min-width: 769px) {
+  .sidebar-container {
+    display: none; /* Hide entire sidebar container on desktop */
+  }
+}
+
+/* Mobile styles - show sidebar on small screens */
+@media (max-width: 768px) {
+  .sidebar-container {
+    display: block; /* Show sidebar container on mobile */
+  }
+  
+  .sidebar-container .btn_one {
+    display: block; /* Show hamburger button on mobile */
+    top: 15px;
+    right: 15px;
+  }
+  
+  .sidebar-container .btn_one i {
+    font-size: 28px;
+  }
+  
+  .sidebar-container .sidebar_menu {
+    width: 260px;
+    left: -260px;
+  }
+  
+  .sidebar_menu .logo a {
+    font-size: 22px;
+    left: 45px;
+  }
+  
+  .sidebar_menu .btn_two i {
+    left: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-container .sidebar_menu {
+    width: 240px;
+    left: -240px;
+  }
+  
+  .sidebar_menu .logo a {
+    font-size: 20px;
+    left: 40px;
+  }
+  
+  .sidebar_menu .btn_two i {
+    left: 200px;
+  }
+  
+  .sidebar_menu .menu a {
+    font-size: 16px;
+  }
+} 

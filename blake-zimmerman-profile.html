@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blake Zimmerman - Profile</title>
+    <link rel="stylesheet" href="profile-picture.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .size-label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .download-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+        }
+
+        .instructions ul {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>Blake Zimmerman</h1>
+            <p>Professional Profile Pictures</p>
+        </div>
+
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="size-label">Small (100px)</div>
+                <div class="profile-with-name">
+                    <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="profile-picture small">
+                    <h3>Blake Zimmerman</h3>
+                    <p>Small Profile Picture</p>
+                </div>
+            </div>
+
+            <div class="profile-card">
+                <div class="size-label">Medium (200px)</div>
+                <div class="profile-with-name">
+                    <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="profile-picture medium">
+                    <h3>Blake Zimmerman</h3>
+                    <p>Medium Profile Picture</p>
+                </div>
+            </div>
+
+            <div class="profile-card">
+                <div class="size-label">Large (300px)</div>
+                <div class="profile-with-name">
+                    <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="profile-picture large">
+                    <h3>Blake Zimmerman</h3>
+                    <p>Large Profile Picture</p>
+                </div>
+            </div>
+
+            <div class="profile-card">
+                <div class="size-label">Extra Large (400px)</div>
+                <div class="profile-with-name">
+                    <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="profile-picture xlarge">
+                    <h3>Blake Zimmerman</h3>
+                    <p>Extra Large Profile Picture</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>Download Profile Pictures</h2>
+            <p>Use the profile picture generator above to create and download custom-sized profile pictures.</p>
+            <button class="download-btn" onclick="window.open('profile-picture-generator.html', '_blank')">
+                Open Profile Picture Generator
+            </button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Use These Profile Pictures</h3>
+            <ul>
+                <li><strong>Small (100px):</strong> Perfect for social media avatars, email signatures, and small displays</li>
+                <li><strong>Medium (200px):</strong> Ideal for LinkedIn profiles, business cards, and standard web displays</li>
+                <li><strong>Large (300px):</strong> Great for portfolio websites, presentations, and high-resolution displays</li>
+                <li><strong>Extra Large (400px):</strong> Best for print materials, large displays, and professional portfolios</li>
+            </ul>
+            <p><strong>Note:</strong> All profile pictures are automatically cropped to a perfect circle and optimized for web use.</p>
+        </div>
+    </div>
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html> 

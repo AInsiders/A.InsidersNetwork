@@ -1,0 +1,95 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Metallic gradient for the main A shape -->
+    <linearGradient id="metallicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8FAFC;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#CBD5E1;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#475569;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E293B;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Darker metallic gradient for inner elements -->
+    <linearGradient id="darkMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#64748B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Cyan glow effect -->
+    <filter id="cyanGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Stronger glow for main elements -->
+    <filter id="strongGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Subtle glow for small elements -->
+    <filter id="subtleGlow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer circular frame - thick metallic ring -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#1E293B" stroke-width="8"/>
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#475569" stroke-width="6"/>
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#64748B" stroke-width="4"/>
+  
+  <!-- Cyan glow on outer frame -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#06B6D4" stroke-width="2" opacity="0.8" filter="url(#cyanGlow)"/>
+  
+  <!-- Cardinal point markers (top, bottom, left, right) -->
+  <circle cx="100" cy="5" r="4" fill="#06B6D4" filter="url(#strongGlow)"/>
+  <circle cx="100" cy="195" r="4" fill="#06B6D4" filter="url(#strongGlow)"/>
+  <circle cx="5" cy="100" r="4" fill="#06B6D4" filter="url(#strongGlow)"/>
+  <circle cx="195" cy="100" r="4" fill="#06B6D4" filter="url(#strongGlow)"/>
+  
+  <!-- Small dots along the top arc -->
+  <circle cx="120" cy="15" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="140" cy="25" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="160" cy="35" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="175" cy="50" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="185" cy="70" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="80" cy="15" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="60" cy="25" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="40" cy="35" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="25" cy="50" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  <circle cx="15" cy="70" r="1.5" fill="#06B6D4" filter="url(#subtleGlow)"/>
+  
+  <!-- Main stylized "A" shape - large angular segments -->
+  <path d="M 50 160 L 100 40 L 150 160 L 130 160 L 125 140 L 75 140 L 70 160 Z" 
+        fill="url(#metallicGradient)" stroke="#06B6D4" stroke-width="3" filter="url(#strongGlow)"/>
+  
+  <!-- Central glowing circle with dark inner ring -->
+  <circle cx="100" cy="80" r="12" fill="#06B6D4" filter="url(#strongGlow)"/>
+  <circle cx="100" cy="80" r="6" fill="#1E293B"/>
+  
+  <!-- Lower diamond/arrow shapes within the A -->
+  <path d="M 80 120 L 100 100 L 120 120 L 110 120 L 100 110 L 90 120 Z" 
+        fill="url(#darkMetallic)" stroke="#06B6D4" stroke-width="2" filter="url(#cyanGlow)"/>
+  
+  <!-- Additional angular element -->
+  <path d="M 85 130 L 100 115 L 115 130 L 105 130 L 100 125 L 95 130 Z" 
+        fill="url(#darkMetallic)" stroke="#06B6D4" stroke-width="1.5" filter="url(#cyanGlow)"/>
+  
+  <!-- Glowing highlights on the A edges -->
+  <path d="M 55 155 L 100 50 L 145 155" fill="none" stroke="#06B6D4" stroke-width="1.5" opacity="0.8" filter="url(#cyanGlow)"/>
+  <path d="M 85 125 L 100 105 L 115 125" fill="none" stroke="#06B6D4" stroke-width="1" opacity="0.8" filter="url(#cyanGlow)"/>
+  
+  <!-- Additional metallic highlights -->
+  <path d="M 60 150 L 100 60 L 140 150" fill="none" stroke="#E2E8F0" stroke-width="1" opacity="0.4"/>
+  <path d="M 90 120 L 100 95 L 110 120" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.4"/>
+</svg>

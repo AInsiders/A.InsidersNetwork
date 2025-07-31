@@ -1,0 +1,8 @@
+{
+  "category": "Crypto",
+  "description": "Cryptocurrency and blockchain news",
+  "feeds": [
+    { "name": "Alex Becker", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKQvGU-qtjEthINeViNbn6A", "type": "youtube" },
+    { "name": "Lark Davis", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCl2oCaw8hdR_kbqyqd2klIA", "type": "youtube" }
+  ]
+} 

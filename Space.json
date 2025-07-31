@@ -1,0 +1,20 @@
+{
+  "category": "Space",
+  "description": "Space exploration and astronomy news",
+  "feeds": [
+    { "name": "ALPHA TECH", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCO9Vgn2ayVe67fE5tP6JQFA", "type": "youtube" },
+    { "name": "ESA Space Science", "url": "https://www.esa.int/rssfeed/science", "type": "rss" },
+    { "name": "GREAT SPACEX", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRAu2aXcH-B5h9SREfyhXuA", "type": "youtube" },
+    { "name": "NASASpaceflight", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCSUu1lih2RifWkKtDOJdsBA", "type": "youtube" },
+    { "name": "Sciencephile the AI", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7BhHN8NyMMru2RUygnDXSg", "type": "youtube" },
+    { "name": "Starlink", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCOd-T4fKh4hjWx1qQHmhiJQ", "type": "youtube" },
+    { "name": "The Aerospace Corporation", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCP1gMWD_BqVL4YXeJyhb7ng", "type": "youtube" },
+    { "name": "NASA", "url": "https://www.nasa.gov/feed/", "type": "rss" },
+    { "name": "Space.com", "url": "https://www.space.com/feeds/all", "type": "rss" },
+    { "name": "SpaceNews", "url": "https://spacenews.com/feed/", "type": "rss" },
+    { "name": "Astronomy Now", "url": "https://astronomynow.com/feed/", "type": "rss" },
+    { "name": "Universe Today", "url": "https://www.universetoday.com/feed/", "type": "rss" },
+    { "name": "Everyday Astronaut", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC6uKrU_WqJ1r2H7Y0cKTlJA", "type": "youtube" },
+    { "name": "Scott Manley", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCxzC4EngIsMrPmbm6Nxvb-A", "type": "youtube" }
+  ]
+} 

@@ -1,0 +1,7 @@
+{
+  "category": "Flipper",
+  "description": "Flipper Zero and hardware hacking news",
+  "feeds": [
+    { "name": "Talking Sasquach", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCUoJk48pujh29p8zLsnD5PQ", "type": "youtube" }
+  ]
+} 

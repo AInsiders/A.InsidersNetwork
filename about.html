@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About A.Insiders - Company Overview</title>
+  <link rel="stylesheet" href="brain-styles.css">
+  <link rel="stylesheet" href="sidebar-menu.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="shared-loader.js"></script>
+  <style>
+    .team-profile-picture {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #667eea;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .team-profile-picture:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+    }
+    
+    .team-avatar {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="about-page">
+  <!-- Loader -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div class="ai-loader">
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+        <div class="ai-node"></div>
+      </div>
+      <div class="loader-text">Initializing</div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+                      <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-link-container">
+            <a href="news-enhanced.html" class="nav-link">News</a>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
+            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
+            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
+            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
+            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
+            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
+            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
+            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
+            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
+            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
+            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
+            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
+            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
+            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
+            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
+            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
+            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
+            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
+            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
+          </ul>
+        </li>
+        <li><a href="apps.html" class="nav-link">Apps</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-link-container">
+            <a href="about.html" class="nav-link active">About</a>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="about.html" class="dropdown-link active">About Company</a></li>
+            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Company Hero Section -->
+  <header class="page-hero">
+    <canvas id="aiCanvas"></canvas>
+    <div class="hero-content">
+      <h1 class="page-title">About A.Insiders</h1>
+      <p class="page-subtitle">Pioneering the future of technology with innovative solutions and cutting-edge applications</p>
+    </div>
+  </header>
+
+  <!-- Company Overview Section -->
+  <section class="company-overview fade-section">
+    <div class="container">
+      <div class="overview-content">
+        <div class="overview-text">
+          <h2>About A.Insiders</h2>
+          <p class="intro-text">A.Insiders is a cutting-edge technology company founded on the principle that innovation should be accessible, secure, and transformative. We specialize in developing Android applications, news platforms, security solutions, and AI consulting services that push the boundaries of what's possible in the digital landscape.</p>
+          
+          <p>Our mission is to create technology solutions that not only meet today's challenges but anticipate tomorrow's opportunities. From our flagship news application to our upcoming security tools, every product we develop is designed with the user's privacy, security, and experience at the forefront.</p>
+          
+          <div class="company-highlights">
+            <div class="highlight-item">
+              <div class="highlight-icon">🚀</div>
+              <h3>Innovation First</h3>
+              <p>Pioneering next-generation applications with cutting-edge technology</p>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-icon">🔒</div>
+              <h3>Privacy & Security</h3>
+              <p>AES-256 encryption and post-quantum security measures in all our products</p>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-icon">🌐</div>
+              <h3>Global Reach</h3>
+              <p>Serving users worldwide with remote-first operations and global accessibility</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="company-stats">
+          <div class="stat-card">
+            <div class="stat-number">5+</div>
+            <div class="stat-label">Applications in Development</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Live Application</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Privacy Focused</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">2024</div>
+            <div class="stat-label">Founded</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team-section fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Team</h2>
+        <p class="section-subtitle">Meet the innovative minds behind A.Insiders</p>
+      </div>
+      
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="blake-zimmerman.jpg" alt="Blake Zimmerman" class="team-profile-picture">
+            <div class="avatar-glow"></div>
+          </div>
+          <div class="team-info">
+            <h3>Blake Zimmerman</h3>
+            <p class="team-role">Owner & Founder</p>
+            <p class="team-description">Website Design Specialist & Technology Professional with expertise in AI, cybersecurity, and mobile technologies.</p>
+            <div class="team-skills">
+              <span class="skill-tag">Leadership</span>
+              <span class="skill-tag">Web Design</span>
+              <span class="skill-tag">AI Integration</span>
+              <span class="skill-tag">Cybersecurity</span>
+            </div>
+            <a href="blake-zimmerman.html" class="team-link">View Profile</a>
+          </div>
+        </div>
+        
+        <div class="team-card coming-soon">
+          <div class="team-avatar">
+            <div class="avatar-placeholder">+</div>
+            <div class="avatar-glow"></div>
+          </div>
+          <div class="team-info">
+            <h3>New Team Member</h3>
+            <p class="team-role">Position Available</p>
+            <p class="team-description">We're growing! Join our innovative team and help shape the future of technology.</p>
+            <div class="team-skills">
+              <span class="skill-tag">Innovation</span>
+              <span class="skill-tag">Collaboration</span>
+              <span class="skill-tag">Growth</span>
+            </div>
+            <a href="contact.html" class="team-link">Join Us</a>
+          </div>
+        </div>
+        
+        <div class="team-card coming-soon">
+          <div class="team-avatar">
+            <div class="avatar-placeholder">+</div>
+            <div class="avatar-glow"></div>
+          </div>
+          <div class="team-info">
+            <h3>Future Developer</h3>
+            <p class="team-role">Development Team</p>
+            <p class="team-description">Exciting opportunities await talented developers to work on cutting-edge applications.</p>
+            <div class="team-skills">
+              <span class="skill-tag">Kotlin</span>
+              <span class="skill-tag">Android</span>
+              <span class="skill-tag">Security</span>
+            </div>
+            <a href="contact.html" class="team-link">Apply Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Products Section -->
+  <section class="products-section fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Product Portfolio</h2>
+        <p class="section-subtitle">Innovative applications and solutions</p>
+      </div>
+      
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-icon">📰</div>
+          <h3>A.Insiders News</h3>
+          <p class="product-status live">Live</p>
+          <p>Our flagship news application providing curated technology news with AI-powered content filtering and offline reading capabilities.</p>
+          <div class="product-features">
+            <span class="feature">AI Curation</span>
+            <span class="feature">Offline Reading</span>
+            <span class="feature">Privacy First</span>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-icon">🦅</div>
+          <h3>Mocking Bird</h3>
+          <p class="product-status development">In Development</p>
+          <p>Advanced GPS mocking application for Android with precise location spoofing and battery optimization features.</p>
+          <div class="product-features">
+            <span class="feature">GPS Mocking</span>
+            <span class="feature">Battery Saving</span>
+            <span class="feature">Root Optional</span>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-icon">🔒</div>
+          <h3>A.Safe</h3>
+          <p class="product-status coming-soon">Coming Soon</p>
+          <p>Offline password manager with AES-256 encryption, no internet dependencies, and quantum-resistant security measures.</p>
+          <div class="product-features">
+            <span class="feature">AES-256</span>
+            <span class="feature">Offline</span>
+            <span class="feature">Quantum Safe</span>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-icon">📱</div>
+          <h3>Auto Bluetooth Disabler</h3>
+          <p class="product-status planning">Planning</p>
+          <p>Intelligent Bluetooth management tool that automatically disables Bluetooth when not needed to save battery and enhance security.</p>
+          <div class="product-features">
+            <span class="feature">Auto Disable</span>
+            <span class="feature">Battery Save</span>
+            <span class="feature">Security</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Company Values Section -->
+  <section class="values-section fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Core Values</h2>
+        <p class="section-subtitle">The principles that guide everything we do</p>
+      </div>
+      
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🔒</div>
+          <h3>Privacy First</h3>
+          <p>Every application we develop prioritizes user privacy with end-to-end encryption and no unnecessary data collection.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🚀</div>
+          <h3>Innovation</h3>
+          <p>We constantly push the boundaries of what's possible, integrating cutting-edge technologies like AI and quantum-resistant security.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">⚡</div>
+          <h3>Performance</h3>
+          <p>Our applications are optimized for speed, efficiency, and minimal resource consumption to provide the best user experience.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🌍</div>
+          <h3>Accessibility</h3>
+          <p>Technology should be accessible to everyone. We design with inclusivity and global reach in mind.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🔧</div>
+          <h3>Quality</h3>
+          <p>We maintain the highest standards in code quality, testing, and user experience across all our products.</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Transparency</h3>
+          <p>Open communication with our users and clear documentation of our security measures and development processes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack Section -->
+  <section class="tech-stack-section fade-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Technology Stack</h2>
+        <p class="section-subtitle">Cutting-edge technologies powering our applications</p>
+      </div>
+      
+      <div class="tech-categories">
+        <div class="tech-category">
+          <h3>Mobile Development</h3>
+          <div class="tech-items">
+            <div class="tech-item">
+              <span class="tech-name">Kotlin</span>
+              <span class="tech-version">1.9.22</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Android Gradle Plugin</span>
+              <span class="tech-version">8.10.1</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Gradle</span>
+              <span class="tech-version">8.11.1</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Jetpack Compose</span>
+              <span class="tech-version">Latest</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tech-category">
+          <h3>Security</h3>
+          <div class="tech-items">
+            <div class="tech-item">
+              <span class="tech-name">AES-256 Encryption</span>
+              <span class="tech-badge">Symmetric</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Kyber</span>
+              <span class="tech-badge">Post-Quantum</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">No Google Play Services</span>
+              <span class="tech-badge">Privacy</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tech-category">
+          <h3>Development Principles</h3>
+          <div class="tech-items">
+            <div class="tech-item">
+              <span class="tech-name">Material 3 Design</span>
+              <span class="tech-badge">UI/UX</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Offline-First</span>
+              <span class="tech-badge">Architecture</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-name">Remote Development</span>
+              <span class="tech-badge">Global</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="30" height="30">
+            <span class="logo-text">A.I</span>
+            <span class="logo-accent">NSIDERS</span>
+          </div>
+          <p>Leading source for AI and cybersecurity intelligence. Empowering organizations with knowledge to secure the digital future.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="apps.html">Apps</a></li>
+            <li><a href="news-enhanced.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Research Papers</a></li>
+            <li><a href="#">White Papers</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">Tools</a></li>
+            <li><a href="#">API Documentation</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Newsletter</h4>
+          <p>Subscribe to our newsletter for the latest updates and insights.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+        <div class="footer-section">
+          <h4>Connect With Us</h4>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+              <i class="fab fa-linkedin"></i>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+              <span>GitHub</span>
+            </a>
+            <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+              <i class="fab fa-youtube"></i>
+              <span>YouTube</span>
+            </a>
+            <a href="https://discord.gg/Y4kCtaBZFM" class="social-link" title="Discord" target="_blank" rel="noopener">
+              <i class="fab fa-discord"></i>
+              <span>Discord</span>
+            </a>
+
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 A.Insiders Network. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+      <script src="brain-script.js"></script>
+    <script src="mobile-nav.js"></script>
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html> 

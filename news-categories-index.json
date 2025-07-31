@@ -1,0 +1,101 @@
+{
+  "categories": [
+    {
+      "name": "AI",
+      "file": "AI.json",
+      "description": "Artificial Intelligence news and updates"
+    },
+    {
+      "name": "Bioengineering",
+      "file": "Bioengineering.json",
+      "description": "Bioengineering and biotechnology news"
+    },
+    {
+      "name": "CRM Tools",
+      "file": "CRM-Tools.json",
+      "description": "Customer Relationship Management tools and news"
+    },
+    {
+      "name": "Crypto",
+      "file": "Crypto.json",
+      "description": "Cryptocurrency and blockchain news"
+    },
+    {
+      "name": "Cybersecurity",
+      "file": "Cybersecurity.json",
+      "description": "Cybersecurity and hacking news"
+    },
+    {
+      "name": "Flipper",
+      "file": "Flipper.json",
+      "description": "Flipper Zero and hardware hacking news"
+    },
+    {
+      "name": "Hydrogen",
+      "file": "Hydrogen.json",
+      "description": "Hydrogen fuel and clean energy news"
+    },
+    {
+      "name": "Marketing",
+      "file": "Marketing.json",
+      "description": "Marketing and AI marketing tools"
+    },
+    {
+      "name": "Matrix",
+      "file": "Matrix.json",
+      "description": "Defense and military technology news"
+    },
+    {
+      "name": "Matrix FUTURE",
+      "file": "Matrix-FUTURE.json",
+      "description": "Future technology and government innovation"
+    },
+    {
+      "name": "NEW TECH",
+      "file": "NEW-TECH.json",
+      "description": "Latest technology news and innovations"
+    },
+    {
+      "name": "Open AI",
+      "file": "Open-AI.json",
+      "description": "OpenAI and AI research news"
+    },
+    {
+      "name": "Phones",
+      "file": "Phones.json",
+      "description": "Mobile phone and smartphone news"
+    },
+    {
+      "name": "Robotics",
+      "file": "Robotics.json",
+      "description": "Robotics and automation news"
+    },
+    {
+      "name": "Space",
+      "file": "Space.json",
+      "description": "Space exploration and astronomy news"
+    },
+    {
+      "name": "Tech Reviews",
+      "file": "Tech-Reviews.json",
+      "description": "Technology reviews and product analysis"
+    },
+    {
+      "name": "Transportation",
+      "file": "Transportation.json",
+      "description": "Transportation and automotive technology news"
+    },
+    {
+      "name": "Trends",
+      "file": "Trends.json",
+      "description": "Latest trends and cool gadgets"
+    },
+    {
+      "name": "Video Games",
+      "file": "Video-Games.json",
+      "description": "Video games and gaming technology news"
+    }
+  ],
+  "version": "1.0",
+  "lastUpdated": "2024-01-01"
+} 

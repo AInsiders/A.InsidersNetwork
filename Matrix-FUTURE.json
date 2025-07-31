@@ -1,0 +1,15 @@
+{
+  "category": "Matrix FUTURE",
+  "description": "Future technology and government innovation",
+  "feeds": [
+    { "name": "Exoskeletons and Wearable Robotics", "url": "https://feeds.buzzsprout.com/2402589.rss", "type": "rss" },
+    { "name": "Freethink", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UConJDkGk921yT9hISzFqpzw", "type": "youtube" },
+    { "name": "Future of Government", "url": "https://federalnewsnetwork.com/category/federal-insights/future-of-government/feed/", "type": "rss" },
+    { "name": "IT Innovation Insider", "url": "https://federalnewsnetwork.com/category/federal-insights/it-innovation-insider/feed/", "type": "rss" },
+    { "name": "Innovation in Government", "url": "https://federalnewsnetwork.com/category/federal-insights/innovation-in-government/feed/", "type": "rss" },
+    { "name": "Innovation in Government videos", "url": "https://federalnewsnetwork.com/category/federal-insights/innovation-in-government/innovation-in-government-videos/feed/", "type": "rss" },
+    { "name": "Artificial intelligence", "url": "https://www.bioworld.com/rss/20", "type": "rss" },
+    { "name": "Quartz", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9f78Z5hgtDt0n8JWyfBk8Q", "type": "youtube" },
+    { "name": "Special Bulletin Review", "url": "https://federalnewsnetwork.com/category/federal-insights/special-bulletin-review-securing-our-citizens-while-modernizing/feed/", "type": "rss" }
+  ]
+} 

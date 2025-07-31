@@ -1,0 +1,12 @@
+{
+  "category": "Matrix",
+  "description": "Defense and military technology news",
+  "feeds": [
+    { "name": "Axon", "url": "https://youtube.com/@axonenterprise", "type": "youtube" },
+    { "name": "Bloomberg Technology", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCrM7B7SL_g1edFOnmj-SDKg", "type": "youtube" },
+    { "name": "Defense", "url": "https://federalnewsnetwork.com/category/defense-main/feed/", "type": "rss" },
+    { "name": "Defense News", "url": "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml", "type": "rss" },
+    { "name": "Technology", "url": "https://federalnewsnetwork.com/category/technology-main/feed/", "type": "rss" },
+    { "name": "The Military Show", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKfak8fBm_Lhy4eX9UKxEpA", "type": "youtube" }
+  ]
+} 

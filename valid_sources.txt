@@ -1,0 +1,161 @@
+Mr.Blue — 12:37 PM
+# AI – Valid Sources
+NVIDIA Blog – https://blogs.nvidia.com/blog/category/auto/feed/
+Wired AI – https://www.wired.com/feed/tag/ai/latest/rss
+Feeder News – https://news.nononsenseapps.com/index.atom
+AI Research – https://www.youtube.com/feeds/videos.xml?channel_id=UCkUedU1YAz3QEYycpxz5HKw
+AI Revolution – https://www.youtube.com/feeds/videos.xml?channel_id=UC5l7RouTQ60oUjLjt1Nh-UQ
+AI Samson – https://www.youtube.com/feeds/videos.xml?channel_id=UCED3hlYdD0SlCff7jJ8tF3Q
+AI Search – https://www.youtube.com/feeds/videos.xml?channel_id=UCIgnGlGkVRhd4qNFcEwLL4A
+AI Trends – https://www.aitrends.com/feed/
+AI Uncovered – https://www.youtube.com/feeds/videos.xml?channel_id=UCUTF61UNExRdjmoK5mXwWfQ
+Andy Stapleton – https://www.youtube.com/feeds/videos.xml?channel_id=UCFqXmQ56-Gp1rIKa-GoAJvQ
+DailyAI – https://dailyai.com/feed/
+DeepLearningAI – https://www.youtube.com/feeds/videos.xml?channel_id=UCcIXc5mJsHVYTZR1maL5l9w
+Dr. Know‑it‑all – https://www.youtube.com/feeds/videos.xml?channel_id=UCyqpZ8HY9FY5jH-RoVcwlnw
+Gadgets 360 – https://www.gadgets360.com/rss/ai/feeds
+Google DeepMind – https://deepmind.google/blog/rss.xml
+Julia McCoy – https://www.youtube.com/feeds/videos.xml?channel_id=UCqzK60-oUOEq36uU9B1MMUg
+Machine Learning Mastery – https://machinelearningmastery.com/blog/feed/
+Matt Szaton – https://www.youtube.com/feeds/videos.xml?channel_id=UCBvDIqM6rPVgdQ-D9JqKTGA
+Product Hunt AI – https://www.producthunt.com/feed?category=artificial-intelligence
+Skill Leap AI – https://www.youtube.com/feeds/videos.xml?channel_id=UCwSozl89jl2zUDzQ4jGJD3g
+The AI Advantage – https://www.youtube.com/feeds/videos.xml?channel_id=UCHhYXsLBEVVnbvsq57n1MTQ
+The AI Daily Brief – https://www.youtube.com/feeds/videos.xml?channel_id=UCKelCK4ZaO6HeEI1KQjqzWA
+Berkeley AI Research – https://bair.berkeley.edu/blog/feed.xml
+TheAIGRID – https://www.youtube.com/feeds/videos.xml?channel_id=UCbY9xX3_jW5c2fjlZVBI4cg
+Theoretically Media – https://www.youtube.com/feeds/videos.xml?channel_id=UC9Ryt3XOGYBoAJVsBHNGDzA
+Two Minute Papers – https://www.youtube.com/feeds/videos.xml?channel_id=UCbfYPyITQ-7l4upoX8nvctg
+MIT Technology Review AI – https://www.technologyreview.com/topic/artificial-intelligence/feed
+ArXiv AI – https://export.arxiv.org/rss/cs.AI
+VentureBeat AI – https://venturebeat.com/category/ai/feed/ 
+Mr.Blue — 12:48 PM
+# Bioengineering – Valid Sources
+BioPharma Dive – https://www.biopharmadive.com/feeds/news/
+Healthcare Data Breaches – https://federalnewsnetwork.com/category/federal-insights/combating-healthcare-data-breaches-with-intelligence/feed/
+Dangerous Things Forum – https://forum.dangerousthings.com/latest.rss
+Digital Health – https://www.bioworld.com/rss/22
+HOLOLIFE Summit – https://www.youtube.com/feeds/videos.xml?channel_id=UCpbppWVgOJcU0lf5rDYSSXw
+Labiotech.eu – https://www.labiotech.eu/feed/
+Nature Biotechnology – https://www.nature.com/nbt.rss
+Neuralink – https://www.youtube.com/feeds/videos.xml?channel_id=UCLt4d8cACHzrVvAz9gtaARA
+Science – https://newatlas.com/science/index.rss
+The Medical Futurist – https://www.youtube.com/feeds/videos.xml?channel_id=UC8vwN4Sju7ER6KZzDADBKBQ
+Biohacking – https://hackaday.com/tag/biohacking/feed/
+# CRM Tools – Valid Sources
+Agencys Ai – https://www.youtube.com/feeds/videos.xml?channel_id=UCI4yaNEFssXnlrQRmBt2FMg
+HubSpot – https://www.youtube.com/feeds/videos.xml?channel_id=UCaAx1xeTgF3rs4rBPDq6-Kw
+Zoho CRM – https://www.youtube.com/feeds/videos.xml?channel_id=UCy5GY9WtEg8SMgAZ_AiSlVw
+# Crypto – Valid Sources
+Alex Becker – https://www.youtube.com/feeds/videos.xml?channel_id=UCKQvGU-qtjEthINeViNbn6A
+Lark Davis – https://www.youtube.com/feeds/videos.xml?channel_id=UCl2oCaw8hdR_kbqyqd2klIA
+# Cybersecurity – Valid Sources
+AI Dark Files – https://www.youtube.com/feeds/videos.xml?channel_id=UCRoXUiP5sBe5CZfh9yUv1lw
+Black Hat – https://www.youtube.com/feeds/videos.xml?channel_id=UCJ6q9Ie29ajGqKApbLqfBOg
+David Bombal – https://www.youtube.com/feeds/videos.xml?channel_id=UCP7WmQ_U4GB3K51Od9QvM0w
+HackerOne – https://www.youtube.com/feeds/videos.xml?channel_id=UCsgzmECky2Q9lQMWzDwMhYw
+Hak5 – https://www.youtube.com/feeds/videos.xml?channel_id=UC3s0BtrBJpwNDaflRSoiieQ
+NetworkChuck – https://www.youtube.com/feeds/videos.xml?channel_id=UC9x0AN7BWHpCDHSm9NiJFJQ
+Spyboy Blog – https://spyboy.blog/category/networking/feed/
+The Hacker News – https://feeds.feedburner.com/TheHackersNews
+Security Week – https://www.securityweek.com/feed/
+Dark Reading – https://www.darkreading.com/rss.xml
+Threat Post – https://threatpost.com/feed/
+Bleeping Computer – https://www.bleepingcomputer.com/feed/
+Krebs on Security – https://krebsonsecurity.com/feed/
+# Flipper – Valid Source
+Talking Sasquach – https://www.youtube.com/feeds/videos.xml?channel_id=UCUoJk48pujh29p8zLsnD5PQ
+# Hydrogen – Valid Sources
+Hydrogen Cars Now – https://www.hydrogencarsnow.com/index.php/feed/
+Hydrogen Fuel News – https://www.hydrogenfuelnews.com/feed/
+# Marketing – Valid Sources
+AI Filmmaking Academy – https://www.youtube.com/feeds/videos.xml?channel_id=UCz94LN8mm0Nv_5g79qPryrg
+AI Space – https://www.youtube.com/feeds/videos.xml?channel_id=UCTq6xMw_BHR5dgKQDs4qhsg
+AIQUEST – https://www.youtube.com/feeds/videos.xml?channel_id=UCdFRvwde9cmdVm_Q-ODZTZg
+Chorus by ZoomInfo – https://www.youtube.com/feeds/videos.xml?channel_id=UCRf8sxSbq-TvtWJZq_V1q_w
+Darcy's Business – https://www.youtube.com/feeds/videos.xml?channel_id=UCNzm7D-tRMg3Dw7nNA2fQhw
+HeyGen – https://www.youtube.com/feeds/videos.xml?channel_id=UCV0FmNF3iM-022BF1KbVtxA
+Jonathan's Hub Jam – https://www.youtube.com/feeds/videos.xml?channel_id=UCeFlDDx4rcssh2cO_yB4y-w
+Jono Catliff – https://www.youtube.com/feeds/videos.xml?channel_id=UCnzxPyNnn8jk4bHFk3JUBhA
+Make – https://www.youtube.com/feeds/videos.xml?channel_id=UC8KWRrf8wqyowmWhXJ9DRjQ
+Marketing AI Institute – https://www.marketingaiinstitute.com/blog/rss.xml
+Rick Mulready – https://www.youtube.com/feeds/videos.xml?channel_id=UCmNAkARqTFvNoyxmFhKTS9Q
+Romayroh – https://www.youtube.com/feeds/videos.xml?channel_id=UCxI3-49z98MUKF3wTVJ9nkg
+Shinefy – https://www.youtube.com/feeds/videos.xml?channel_id=UC6z07Hh9Muy6urJgA0F0azg
+Spencer Benterud – https://www.youtube.com/feeds/videos.xml?channel_id=UCpOITtvjPXP53yRwDpliC2Q
+Synthesia – https://www.youtube.com/feeds/videos.xml?channel_id=UC0Rqs6pyPoGaMT5HFMFdslg
+Tao Prompts – https://www.youtube.com/feeds/videos.xml?channel_id=UCc1qMq2UBJD9cSKbeBwGoZQ
+The AI Filmmaking Advantage – https://www.youtube.com/feeds/videos.xml?channel_id=UCU6UHXn_S-FijQyy_mi8xcA
+WesGPT – https://www.youtube.com/feeds/videos.xml?channel_id=UCgzH02aZzAcX0bDvdzy928w
+Zapier – https://www.youtube.com/feeds/videos.xml?channel_id=UCEvsxF4Z12vwpwDUaU02yiA
+metricsmule – https://www.youtube.com/feeds/videos.xml?channel_id=UCSNF2YIUV3g-uZwuNSmA1Rw
+# Matrix – Valid Sources
+Bloomberg Technology – https://www.youtube.com/feeds/videos.xml?channel_id=UCrM7B7SL_g1edFOnmj-SDKg
+Defense – https://federalnewsnetwork.com/category/defense-main/feed/
+Defense News – https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml
+Technology – https://federalnewsnetwork.com/category/technology-main/feed/
+The Military Show – https://www.youtube.com/feeds/videos.xml?channel_id=UCKfak8fBm_Lhy4eX9UKxEpA
+# Matrix FUTURE – Valid Sources
+Exoskeletons and Wearable Robotics – https://feeds.buzzsprout.com/2402589.rss
+Freethink – https://www.youtube.com/feeds/videos.xml?channel_id=UConJDkGk921yT9hISzFqpzw
+Future of Government – https://federalnewsnetwork.com/category/federal-insights/future-of-government/feed/
+IT Innovation Insider – https://federalnewsnetwork.com/category/federal-insights/it-innovation-insider/feed/
+Innovation in Government – https://federalnewsnetwork.com/category/federal-insights/innovation-in-government/feed/
+Innovation in Government videos – https://federalnewsnetwork.com/category/federal-insights/innovation-in-government/innovation-in-government-videos/feed/
+Artificial intelligence (Bioworld) – https://www.bioworld.com/rss/20
+Quartz – https://www.youtube.com/feeds/videos.xml?channel_id=UC9f78Z5hgtDt0n8JWyfBk8Q
+Special Bulletin Review – https://federalnewsnetwork.com/category/federal-insights/special-bulletin-review-securing-our-citizens-while-modernizing/feed/
+# NEW TECH – Valid Sources
+Military Trends – https://www.youtube.com/feeds/videos.xml?channel_id=UCveyvadzzSXdNYjynAm_APA
+Rowan Cheung – https://www.youtube.com/feeds/videos.xml?channel_id=UC8LUzR34nNX8KH3Edd0un1g
+TechZone – https://www.youtube.com/feeds/videos.xml?channel_id=UC6H07z6zAwbHRl4Lbl0GSsw
+Technology (New Atlas) – https://newatlas.com/technology/index.rss
+# Open AI – Valid Source
+OpenAI – https://www.youtube.com/feeds/videos.xml?channel_id=UCXZCJLdBC09xxGZ6gcdrc6A
+# Phones – Valid Sources
+Android Authority – https://www.androidauthority.com/feed/
+Apple Newsroom – https://www.apple.com/newsroom/rss-feed.rss
+GSMArena – https://www.gsmarena.com/rss-news-reviews.php3
+Matt Talks Tech – https://www.youtube.com/feeds/videos.xml?channel_id=UCz6PEeVLG1TL6jMRTvSLm4g
+# Robotics – Valid Sources
+AI and Robotics – https://www.youtube.com/feeds/videos.xml?channel_id=UCVtWNlve83y5i8rm5HQw6sg
+Boston Dynamics – https://www.youtube.com/feeds/videos.xml?channel_id=UC7vVhkEfw4nOGp8TyDk7RcQ
+Figure – https://www.youtube.com/feeds/videos.xml?channel_id=UCYlq-KmwPjc1DtsGmthFqSQ
+The Robot Report – https://www.therobotreport.com/feed/
+Unitree Robotics – https://www.youtube.com/feeds/videos.xml?channel_id=UCsMbp4V8oxzHCMdOUP-3oWw
+Robohub – https://robohub.org/feed/
+Robotics Business Review (mirrors Robot Report) – https://www.therobotreport.com/feed/
+Will Robots Take My Job (TEDx Talks) – https://www.youtube.com/feeds/videos.xml?channel_id=UCsT0YIqwnpJCM-mx7-gSA4Q
+Real Engineering – https://www.youtube.com/feeds/videos.xml?channel_id=UCR1IuLEqb6UEA_zQ81kwXfg
+# Space – Valid Sources
+ALPHA TECH – https://www.youtube.com/feeds/videos.xml?channel_id=UCO9Vgn2ayVe67fE5tP6JQFA
+ESA Space Science – https://www.esa.int/rssfeed/science
+GREAT SPACEX – https://www.youtube.com/feeds/videos.xml?channel_id=UCRAu2aXcH-B5h9SREfyhXuA
+NASASpaceflight – https://www.youtube.com/feeds/videos.xml?channel_id=UCSUu1lih2RifWkKtDOJdsBA
+Sciencephile the AI – https://www.youtube.com/feeds/videos.xml?channel_id=UC7BhHN8NyMMru2RUygnDXSg
+Starlink – https://www.youtube.com/feeds/videos.xml?channel_id=UCOd-T4fKh4hjWx1qQHmhiJQ
+The Aerospace Corporation – https://www.youtube.com/feeds/videos.xml?channel_id=UCP1gMWD_BqVL4YXeJyhb7ng
+NASA – https://www.nasa.gov/feed/
+Space.com – https://www.space.com/feeds/all
+SpaceNews – https://spacenews.com/feed/
+Astronomy Now – https://astronomynow.com/feed/
+Universe Today – https://www.universetoday.com/feed/
+Everyday Astronaut – https://www.youtube.com/feeds/videos.xml?channel_id=UC6uKrU_WqJ1r2H7Y0cKTlJA
+Scott Manley – https://www.youtube.com/feeds/videos.xml?channel_id=UCxzC4EngIsMrPmbm6Nxvb-A
+# Tech Reviews – Valid Sources
+Marques Brownlee – https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ
+Mrwhosetheboss – https://www.youtube.com/feeds/videos.xml?channel_id=UCMiJRAwDNSNzuYeN2uWa0pA
+# Transportation – Valid Sources
+Automotive IQ News – https://www.automotive-iq.com/rss/news
+Automotive IQ Reports – https://www.automotive-iq.com/rss/reports
+Vehicle Electrification – https://www.automotive-iq.com/rss/categories/electrics-electronics
+A Boring Revolution – https://www.youtube.com/feeds/videos.xml?channel_id=UCxaChRLSN-k6QkUqF17sGjg
+AI & CAR – https://www.youtube.com/feeds/videos.xml?channel_id=UC4AExSxU3TT8GxAYUeEZXVg
+AmpedAuto – https://www.youtube.com/feeds/videos.xml?channel_id=UCCF6WAhvjydnXUHl85cDXpA
+Boat & Sail Magazine – https://www.youtube.com/feeds/videos.xml?channel_id=UCgCMYcDTo077fYXhDB27C_Q
+Form Trends – https://www.youtube.com/feeds/videos.xml?channel_id=UCpifTlKKeTyZllzUBrWFtjA
+Global Railway Review – https://feeds.feedburner.com/GlobalRailwayReview
+LatestCarsPro – https://www.youtube.com/feeds/videos.xml?channel_id=UCgVYEv7-4Cug-1Gd4DjULfg
+The Tesla Space – https://www.youtube.com/feeds/videos.xml?channel_id=UCJjAIBWeY022ZNj_Cp_6wAw
+# Trends – Valid Source
+TrendHunter AI – https://www.trendhunter.com/rss/category/Cool-Gadgets-and-Gifts

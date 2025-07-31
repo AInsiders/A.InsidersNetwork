@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Navigation Test</title>
+    <link rel="stylesheet" href="brain-styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .test-content {
+            padding: 100px 20px 20px;
+            text-align: center;
+        }
+        .debug-info {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .nav-toggle {
+            border: 2px solid red !important;
+        }
+        .nav-menu {
+            border: 2px solid blue !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-text">A.I</span>
+                <span class="logo-accent">NSIDERS</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link">News</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link">AI</a></li>
+                        <li><a href="#" class="dropdown-link">Cybersecurity</a></li>
+                        <li><a href="#" class="dropdown-link">Space</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link">Apps</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-content">
+        <h1>Mobile Navigation Test</h1>
+        <p>Resize your browser window to mobile size (768px or less) to test the mobile navigation.</p>
+        <p>The hamburger menu should appear and clicking it should open the mobile sidebar.</p>
+        
+        <div class="debug-info" id="debug-info">
+            <div>Window width: <span id="window-width"></span></div>
+            <div>Nav toggle visible: <span id="toggle-visible"></span></div>
+            <div>Nav menu visible: <span id="menu-visible"></span></div>
+            <div>Menu active: <span id="menu-active"></span></div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="testToggle()">Test Toggle Programmatically</button>
+            <button onclick="checkElements()">Check Elements</button>
+        </div>
+    </div>
+
+    <script src="mobile-nav.js"></script>
+    <script>
+        function updateDebugInfo() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            document.getElementById('window-width').textContent = window.innerWidth + 'px';
+            document.getElementById('toggle-visible').textContent = navToggle ? 
+                (window.getComputedStyle(navToggle).display !== 'none' ? 'Yes' : 'No') : 'Not found';
+            document.getElementById('menu-visible').textContent = navMenu ? 
+                (window.getComputedStyle(navMenu).display !== 'none' ? 'Yes' : 'No') : 'Not found';
+            document.getElementById('menu-active').textContent = navMenu ? 
+                (navMenu.classList.contains('active') ? 'Yes' : 'No') : 'Not found';
+        }
+        
+        function testToggle() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (navToggle && navMenu) {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                console.log('Programmatic toggle executed');
+                updateDebugInfo();
+            } else {
+                console.error('Elements not found for programmatic toggle');
+            }
+        }
+        
+        function checkElements() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            console.log('Nav toggle element:', navToggle);
+            console.log('Nav menu element:', navMenu);
+            console.log('Nav toggle display:', navToggle ? window.getComputedStyle(navToggle).display : 'Not found');
+            console.log('Nav menu display:', navMenu ? window.getComputedStyle(navMenu).display : 'Not found');
+            console.log('Nav menu position:', navMenu ? window.getComputedStyle(navMenu).position : 'Not found');
+            console.log('Nav menu left:', navMenu ? window.getComputedStyle(navMenu).left : 'Not found');
+            
+            updateDebugInfo();
+        }
+        
+        // Update debug info on load and resize
+        window.addEventListener('load', updateDebugInfo);
+        window.addEventListener('resize', updateDebugInfo);
+        
+        // Check elements on load
+        window.addEventListener('load', checkElements);
+    </script>
+</body>
+</html> 

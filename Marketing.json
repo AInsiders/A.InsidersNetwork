@@ -1,0 +1,26 @@
+{
+  "category": "Marketing",
+  "description": "Marketing and AI marketing tools",
+  "feeds": [
+    { "name": "AI Filmmaking Academy", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCz94LN8mm0Nv_5g79qPryrg", "type": "youtube" },
+    { "name": "AI Space", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCTq6xMw_BHR5dgKQDs4qhsg", "type": "youtube" },
+    { "name": "AIQUEST", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCdFRvwde9cmdVm_Q-ODZTZg", "type": "youtube" },
+    { "name": "Chorus by ZoomInfo", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRf8sxSbq-TvtWJZq_V1q_w", "type": "youtube" },
+    { "name": "Darcy's Business", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCNzm7D-tRMg3Dw7nNA2fQhw", "type": "youtube" },
+    { "name": "HeyGen", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCV0FmNF3iM-022BF1KbVtxA", "type": "youtube" },
+    { "name": "Jonathan's Hub Jam", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCeFlDDx4rcssh2cO_yB4y-w", "type": "youtube" },
+    { "name": "Jono Catliff", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCnzxPyNnn8jk4bHFk3JUBhA", "type": "youtube" },
+    { "name": "Make", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC8KWRrf8wqyowmWhXJ9DRjQ", "type": "youtube" },
+    { "name": "Marketing AI Institute", "url": "https://www.marketingaiinstitute.com/blog/rss.xml", "type": "rss" },
+    { "name": "Rick Mulready", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCmNAkARqTFvNoyxmFhKTS9Q", "type": "youtube" },
+    { "name": "Romayroh", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCxI3-49z98MUKF3wTVJ9nkg", "type": "youtube" },
+    { "name": "Shinefy", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC6z07Hh9Muy6urJgA0F0azg", "type": "youtube" },
+    { "name": "Spencer Benterud", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCpOITtvjPXP53yRwDpliC2Q", "type": "youtube" },
+    { "name": "Synthesia", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0Rqs6pyPoGaMT5HFMFdslg", "type": "youtube" },
+    { "name": "Tao Prompts", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCc1qMq2UBJD9cSKbeBwGoZQ", "type": "youtube" },
+    { "name": "The AI Filmmaking Advantage", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCU6UHXn_S-FijQyy_mi8xcA", "type": "youtube" },
+    { "name": "WesGPT", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCgzH02aZzAcX0bDvdzy928w", "type": "youtube" },
+    { "name": "Zapier", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCEvsxF4Z12vwpwDUaU02yiA", "type": "youtube" },
+    { "name": "metricsmule", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCSNF2YIUV3g-uZwuNSmA1Rw", "type": "youtube" }
+  ]
+} 

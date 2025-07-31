@@ -1,0 +1,10 @@
+{
+  "category": "Video Games",
+  "description": "Video games and gaming technology news",
+  "feeds": [
+    { "name": "AI Warehouse", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCMT1Aw4R4nf_sFNDeuJqc6w", "type": "youtube" },
+    { "name": "AI News Games", "url": "https://www.artificial-intelligence.blog/ai-news/category/games?format=rss", "type": "rss" },
+    { "name": "Ludo AI Game Research", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC11y-idtc7Duc1VQGRKlzqw", "type": "youtube" },
+    { "name": "b2studios", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCIcGc8tDHYZ3vY3NcS8JXaQ", "type": "youtube" }
+  ]
+} 

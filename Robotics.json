@@ -1,0 +1,18 @@
+{
+  "category": "Robotics",
+  "description": "Robotics and automation news",
+  "feeds": [
+    { "name": "AI and Robotics", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCVtWNlve83y5i8rm5HQw6sg", "type": "youtube" },
+    { "name": "Boston Dynamics", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7vVhkEfw4nOGp8TyDk7RcQ", "type": "youtube" },
+    { "name": "Figure", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCYlq-KmwPjc1DtsGmthFqSQ", "type": "youtube" },
+    { "name": "The Robot Report", "url": "https://www.therobotreport.com/feed/", "type": "rss" },
+    { "name": "Unitree Robotics", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsMbp4V8oxzHCMdOUP-3oWw", "type": "youtube" },
+    { "name": "Robohub", "url": "https://robohub.org/feed/", "type": "rss" },
+    { "name": "IEEE Robotics", "url": "https://www.ieee-ras.org/rss-feed", "type": "rss" },
+    { "name": "Robotics.org", "url": "https://www.robotics.org/feed.cfm", "type": "rss" },
+    { "name": "Automation World", "url": "https://www.automationworld.com/rss.xml", "type": "rss" },
+    { "name": "Robotics Business Review", "url": "https://www.roboticsbusinessreview.com/feed/", "type": "rss" },
+    { "name": "Will Robots Take My Job", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsT0YIqwnpJCM-mx7-gSA4Q", "type": "youtube" },
+    { "name": "Real Engineering", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCR1IuLEqb6UEA_zQ81kwXfg", "type": "youtube" }
+  ]
+} 

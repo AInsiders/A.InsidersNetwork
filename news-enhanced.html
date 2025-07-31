@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest News - A.Insiders</title>
+    <meta name="description" content="Latest news and analysis on AI and cybersecurity from A.Insiders. Stay informed about emerging threats and technological breakthroughs.">
+    <meta name="keywords" content="news, articles, AI news, cybersecurity news, threat intelligence">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="brain-styles.css">
+    <link rel="stylesheet" href="sidebar-menu.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Enhanced News Styles - Updated to match main theme */
+        .news-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .news-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .news-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .news-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .news-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .news-filters {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 0.75rem 1rem;
+            flex: 1;
+            max-width: 400px;
+            transition: var(--transition-smooth);
+        }
+        
+        .search-box:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .search-box input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            flex: 1;
+            margin-left: 0.5rem;
+            font-family: var(--font-primary);
+        }
+        
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .category-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-filter {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.875rem;
+            font-family: var(--font-primary);
+        }
+        
+        .category-filter:hover,
+        .category-filter.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .category-filter.loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .category-filter.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Color-coded category filters */
+        .category-filter[style*="background-color: #ff4444"] {
+            background-color: #ff4444 !important;
+            border-color: #ff4444 !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+            animation: pulse-red 2s infinite;
+        }
+
+        .category-filter[style*="background-color: #00aa00"] {
+            background-color: #00aa00 !important;
+            border-color: #00aa00 !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(0, 170, 0, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+
+        .category-filter.pulse-green {
+            animation: pulse-green 2s infinite;
+        }
+
+        .category-filter.pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 15px rgba(255, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 68, 68, 0.6); }
+            100% { box-shadow: 0 0 15px rgba(255, 68, 68, 0.4); }
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 15px rgba(0, 170, 0, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(0, 170, 0, 0.6); }
+            100% { box-shadow: 0 0 15px rgba(0, 170, 0, 0.4); }
+        }
+
+        /* Retry Failed Button */
+        .retry-failed-btn {
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .retry-failed-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .retry-failed-btn:hover::before {
+            left: 100%;
+        }
+
+        .retry-failed-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+        }
+
+        .retry-failed-btn.loading {
+            pointer-events: none;
+        }
+
+        .retry-failed-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Refresh New Button */
+        .refresh-new-btn {
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            background: rgba(0, 123, 255, 0.1);
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            color: #007bff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .refresh-new-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .refresh-new-btn:hover::before {
+            left: 100%;
+        }
+
+        .refresh-new-btn:hover {
+            background: rgba(0, 123, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .refresh-new-btn.loading {
+            pointer-events: none;
+        }
+
+        .refresh-new-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Date Filters */
+        .date-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .date-filter {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.875rem;
+            font-family: var(--font-primary);
+        }
+
+        .date-filter:hover,
+        .date-filter.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .date-count-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        .date-filter.active .date-count-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        /* Date Group Headers */
+        .date-group-header {
+            grid-column: 1 / -1;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .date-divider {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .date-label {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .date-count {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: rgba(0, 102, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .loading-spinner {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+        
+        .loading-spinner i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+        }
+        
+        .loading-banner {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.05), rgba(77, 148, 255, 0.05));
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .loading-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            color: var(--text-primary);
+        }
+        
+        .loading-message i {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+        
+        .loading-message p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .loading-banner.hidden {
+            display: none;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .news-card {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .news-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+        
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+        
+        .news-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .news-content.no-image {
+            padding: 2rem;
+        }
+        
+        .news-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .news-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        
+        .news-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: stretch;
+        }
+        
+        .news-actions .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .news-actions .btn-share {
+            flex: 0 0 44px;
+            width: 44px;
+            padding: 0;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .news-actions .btn-share i {
+            font-size: 1rem;
+        }
+        
+
+        
+
+        
+        /* Category Filter Loading States */
+        .category-filter.loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        .category-filter.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0.75rem;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+        
+        .load-more {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        /* Status indicator styles */
+        .status-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            color: var(--text-primary);
+            z-index: 1000;
+            max-width: 300px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .status-indicator.show {
+            transform: translateX(0);
+        }
+
+        .status-indicator.success {
+            border-color: #00aa00;
+            color: #00aa00;
+        }
+
+        .status-indicator.error {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        /* Improved loading state */
+        .news-container-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-modal-content {
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: var(--border-radius);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .video-modal-header h3 {
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+        
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .feed-info {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .feed-info h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feed-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .feed-source {
+            background: rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+        
+        .feed-source:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .feed-source h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .feed-source p {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .news-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .news-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .filter-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: none;
+            }
+            
+            .category-filters {
+                justify-content: center;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* Social Links Styles */
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid transparent;
+        }
+        
+        .social-link:hover {
+            color: var(--accent-primary);
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-primary);
+            transform: translateX(5px);
+        }
+        
+        .social-link i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-link span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Social link specific colors on hover */
+        .social-link:hover .fa-linkedin {
+            color: #0077b5;
+        }
+        
+        .social-link:hover .fa-twitter {
+            color: #1da1f2;
+        }
+        
+        .social-link:hover .fa-github {
+            color: #333;
+        }
+        
+        .social-link:hover .fa-youtube {
+            color: #ff0000;
+        }
+        
+        .social-link:hover .fa-discord {
+            color: #7289da;
+        }
+        
+        .social-link:hover .fa-user {
+            color: var(--accent-primary);
+        }
+        
+        /* Responsive social links */
+        @media (max-width: 768px) {
+            .social-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .social-link {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="news-page">
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="ai-loader">
+                <div class="ai-node"></div>
+                <div class="ai-node"></div>
+                <div class="ai-node"></div>
+                <div class="ai-node"></div>
+                <div class="ai-node"></div>
+                <div class="ai-node"></div>
+            </div>
+            <div class="loader-text">Initializing Startup</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-percentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+                              <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-link-container">
+            <a href="news-enhanced.html" class="nav-link active">News</a>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
+            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
+            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
+            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
+            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
+            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
+            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
+            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
+            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
+            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
+            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
+            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
+            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
+            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
+            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
+            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
+            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
+            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
+            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
+          </ul>
+        </li>
+        <li><a href="apps.html" class="nav-link">Apps</a></li>
+        <li class="nav-dropdown">
+          <div class="nav-link-container">
+            <a href="about.html" class="nav-link">About</a>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+    <!-- News Hero Section -->
+    <section class="news-hero">
+        <canvas id="aiCanvas"></canvas>
+        <div class="container">
+
+            
+            <h1>Latest News & Insights</h1>
+            <p>Stay informed with the latest developments in AI, cybersecurity, robotics, space, and emerging technologies from leading sources worldwide.</p>
+            
+            <div class="news-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-feeds">100+</div>
+                    <div class="stat-label">News Sources</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="article-count">0</div>
+                    <div class="stat-label">Articles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Updates</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- News Filters -->
+    <section class="news-filters">
+        <div class="container">
+            <div class="filter-header">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="news-search" placeholder="Search articles...">
+                </div>
+                <div class="category-filters">
+                    <button class="category-filter active" data-category="all">All Categories</button>
+                    <button class="category-filter" data-category="AI">AI</button>
+                    <button class="category-filter" data-category="Bioengineering">Bioengineering</button>
+                    <button class="category-filter" data-category="CRM Tools">CRM Tools</button>
+                    <button class="category-filter" data-category="Crypto">Crypto</button>
+                    <button class="category-filter" data-category="Cybersecurity">Cybersecurity</button>
+                    <button class="category-filter" data-category="Flipper">Flipper</button>
+                    <button class="category-filter" data-category="Hydrogen">Hydrogen</button>
+                    <button class="category-filter" data-category="Marketing">Marketing</button>
+                    <button class="category-filter" data-category="Matrix">Matrix</button>
+                    <button class="category-filter" data-category="Matrix FUTURE">Matrix FUTURE</button>
+                    <button class="category-filter" data-category="NEW TECH">NEW TECH</button>
+                    <button class="category-filter" data-category="Open AI">Open AI</button>
+                    <button class="category-filter" data-category="Phones">Phones</button>
+                    <button class="category-filter" data-category="Robotics">Robotics</button>
+                    <button class="category-filter" data-category="Space">Space</button>
+                    <button class="category-filter" data-category="Tech Reviews">Tech Reviews</button>
+                    <button class="category-filter" data-category="Transportation">Transportation</button>
+                    <button class="category-filter" data-category="Trends">Trends</button>
+                    <button class="category-filter" data-category="Video Games">Video Games</button>
+                    <button class="btn btn-secondary retry-failed-btn" id="retry-failed-btn" title="Retry failed feeds">
+                        <i class="fas fa-redo-alt"></i> Retry Failed
+                    </button>
+                </div>
+                <div class="date-filters">
+                    <button class="date-filter active" data-date-filter="all">All Time</button>
+                    <button class="date-filter" data-date-filter="today">Today <span class="date-count-badge" id="today-count">0</span></button>
+                    <button class="date-filter" data-date-filter="yesterday">Yesterday <span class="date-count-badge" id="yesterday-count">0</span></button>
+                    <button class="date-filter" data-date-filter="this-week">This Week <span class="date-count-badge" id="this-week-count">0</span></button>
+                    <button class="date-filter" data-date-filter="this-month">This Month <span class="date-count-badge" id="this-month-count">0</span></button>
+                    <button class="date-filter" data-date-filter="last-week">Last Week <span class="date-count-badge" id="last-week-count">0</span></button>
+                    <button class="date-filter" data-date-filter="last-month">Last Month <span class="date-count-badge" id="last-month-count">0</span></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Banner -->
+    <section class="loading-banner" id="loading-banner">
+        <div class="container">
+            <div class="loading-message">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Please allow a few seconds to load all the news feeds...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Grid -->
+    <section class="news-listing">
+        <div class="container">
+            <div class="news-grid" id="news-container">
+                <!-- News articles will be loaded here -->
+            </div>
+            
+
+            
+            <div class="load-more">
+                <button class="btn btn-primary" id="load-more-news">Load More Articles</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feed Sources Info -->
+    <section class="feed-info">
+        <div class="container">
+            <h3>Our News Sources</h3>
+            <p>We aggregate content from leading technology publications, YouTube channels, and research institutions to provide comprehensive coverage of AI and cybersecurity developments.</p>
+            
+            <div class="feed-sources">
+                <div class="feed-source">
+                    <h4>AI & Machine Learning</h4>
+                    <p>Google DeepMind, Berkeley AI Research, NVIDIA, Wired AI, OpenAI, and more</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Cybersecurity & Defense</h4>
+                    <p>Black Hat, HackerOne, NetworkChuck, KitPloit, and security experts</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Robotics & Space</h4>
+                    <p>Boston Dynamics, NASA, ESA, SpaceX, and robotics innovators</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Bioengineering & Health</h4>
+                    <p>Neuralink, Nature Biotechnology, BioPharma Dive, and medical innovations</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Transportation & Energy</h4>
+                    <p>Tesla, Automotive IQ, Hydrogen Cars, and transportation breakthroughs</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Marketing & Business</h4>
+                    <p>AI Filmmaking, Synthesia, HubSpot, and business automation</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Tech Reviews & Gaming</h4>
+                    <p>Marques Brownlee, Mrwhosetheboss, AI gaming, and tech reviews</p>
+                </div>
+                <div class="feed-source">
+                    <h4>Emerging Technologies</h4>
+                    <p>Military tech, exoskeletons, government innovation, and future tech</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                                    <div class="footer-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="30" height="30">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </div>
+                    <p>Leading source for AI and cybersecurity intelligence. Empowering organizations with knowledge to secure the digital future.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                                    <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="apps.html">Apps</a></li>
+            <li><a href="news-enhanced.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">White Papers</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Tools</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to our newsletter for the latest updates and insights.</p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+                            <i class="fab fa-youtube"></i>
+                            <span>YouTube</span>
+                        </a>
+                        <a href="https://discord.gg/Y4kCtaBZFM" class="social-link" title="Discord" target="_blank" rel="noopener">
+                            <i class="fab fa-discord"></i>
+                            <span>Discord</span>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 A.Insiders Network. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    </div> <!-- End of website-content -->
+
+    <!-- JavaScript -->
+    <script src="shared-loader.js"></script>
+    <script src="brain-script.js"></script>
+    <script src="mobile-nav.js"></script>
+            <script src="news-feeds-enhanced.js?v=2.8"></script>
+    <script src="chatbot.js"></script>
+    
+
+</body>
+</html> 

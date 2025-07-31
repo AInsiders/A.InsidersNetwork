@@ -1,0 +1,9 @@
+{
+  "category": "CRM Tools",
+  "description": "Customer Relationship Management tools and news",
+  "feeds": [
+    { "name": "Agencys Ai", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCI4yaNEFssXnlrQRmBt2FMg", "type": "youtube" },
+    { "name": "HubSpot", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaAx1xeTgF3rs4rBPDq6-Kw", "type": "youtube" },
+    { "name": "Zoho CRM", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCy5GY9WtEg8SMgAZ_AiSlVw", "type": "youtube" }
+  ]
+} 

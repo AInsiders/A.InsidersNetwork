@@ -1,0 +1,7 @@
+{
+  "category": "Open AI",
+  "description": "OpenAI and AI research news",
+  "feeds": [
+    { "name": "OpenAI", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXZCJLdBC09xxGZ6gcdrc6A", "type": "youtube" }
+  ]
+} 

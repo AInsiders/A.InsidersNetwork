@@ -1,0 +1,10 @@
+{
+  "category": "Phones",
+  "description": "Mobile phone and smartphone news",
+  "feeds": [
+    { "name": "Android Authority", "url": "https://www.androidauthority.com/feed/", "type": "rss" },
+    { "name": "Apple Newsroom", "url": "https://www.apple.com/newsroom/rss-feed.rss", "type": "rss" },
+    { "name": "GSMArena", "url": "https://www.gsmarena.com/rss-news-reviews.php3", "type": "rss" },
+    { "name": "Matt Talks Tech", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCz6PEeVLG1TL6jMRTvSLm4g", "type": "youtube" }
+  ]
+} 

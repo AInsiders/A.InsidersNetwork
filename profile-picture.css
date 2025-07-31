@@ -1,0 +1,111 @@
+/* Profile Picture Styles for Blake Zimmerman */
+
+.profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #667eea;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+/* Different sizes */
+.profile-picture.small {
+    width: 100px;
+    height: 100px;
+    border-width: 3px;
+}
+
+.profile-picture.medium {
+    width: 200px;
+    height: 200px;
+    border-width: 5px;
+}
+
+.profile-picture.large {
+    width: 300px;
+    height: 300px;
+    border-width: 8px;
+}
+
+.profile-picture.xlarge {
+    width: 400px;
+    height: 400px;
+    border-width: 10px;
+}
+
+/* Profile picture container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+/* Profile picture with name */
+.profile-with-name {
+    text-align: center;
+}
+
+.profile-with-name .profile-picture {
+    margin-bottom: 15px;
+}
+
+.profile-with-name h3 {
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    font-weight: 300;
+    margin: 0;
+}
+
+.profile-with-name p {
+    color: #666;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1em;
+    margin: 5px 0 0 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .profile-picture.large {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .profile-picture.xlarge {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profile-picture.large {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .profile-picture.xlarge {
+        width: 180px;
+        height: 180px;
+    }
+} 

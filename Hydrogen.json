@@ -1,0 +1,9 @@
+{
+  "category": "Hydrogen",
+  "description": "Hydrogen fuel and clean energy news",
+  "feeds": [
+    { "name": "Hydrogen Cars Now", "url": "https://www.hydrogencarsnow.com/index.php/feed/", "type": "rss" },
+    { "name": "Hydrogen Fuel News", "url": "https://www.hydrogenfuelnews.com/feed/", "type": "rss" },
+    { "name": "Fuel Cell Today", "url": "https://www.fuelcelltoday.com/rss", "type": "rss" }
+  ]
+} 

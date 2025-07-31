@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Mobile Nav Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #111;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-logo {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .nav-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: #111;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: 0.3s;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+        }
+        
+        .test-content {
+            margin-top: 100px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .debug {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">LOGO</div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="debug">
+        <div>Width: <span id="width"></span></div>
+        <div>Toggle: <span id="toggle-status">Not Found</span></div>
+        <div>Menu: <span id="menu-status">Not Found</span></div>
+        <div>Active: <span id="active-status">No</span></div>
+        <div>Clicks: <span id="clicks">0</span></div>
+    </div>
+
+    <div class="test-content">
+        <h1>Mobile Navigation Test</h1>
+        <p>Resize to mobile width and click the hamburger menu.</p>
+        <p>Check the debug info on the top right.</p>
+    </div>
+
+    <script>
+        // Simple mobile navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Simple mobile nav test loaded');
+            
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            console.log('Nav toggle:', navToggle);
+            console.log('Nav menu:', navMenu);
+            
+            if (navToggle && navMenu) {
+                let clickCount = 0;
+                
+                navToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clickCount++;
+                    console.log('Nav toggle clicked! Count:', clickCount);
+                    
+                    navToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    
+                    // Update debug info
+                    document.getElementById('clicks').textContent = clickCount;
+                    document.getElementById('active-status').textContent = 
+                        navMenu.classList.contains('active') ? 'Yes' : 'No';
+                });
+                
+                // Update debug info
+                document.getElementById('toggle-status').textContent = 'Found';
+                document.getElementById('menu-status').textContent = 'Found';
+            } else {
+                console.error('Elements not found!');
+                document.getElementById('toggle-status').textContent = 'Not Found';
+                document.getElementById('menu-status').textContent = 'Not Found';
+            }
+            
+            // Update width
+            function updateWidth() {
+                document.getElementById('width').textContent = window.innerWidth + 'px';
+            }
+            updateWidth();
+            window.addEventListener('resize', updateWidth);
+        });
+    </script>
+</body>
+</html> 

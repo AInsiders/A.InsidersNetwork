@@ -1,0 +1,18 @@
+{
+  "category": "Bioengineering",
+  "description": "Bioengineering and biotechnology news",
+  "feeds": [
+    { "name": "BioPharma Dive", "url": "https://www.biopharmadive.com/feeds/news/", "type": "rss" },
+    { "name": "Healthcare Data Breaches", "url": "https://federalnewsnetwork.com/category/federal-insights/combating-healthcare-data-breaches-with-intelligence/feed/", "type": "rss" },
+    { "name": "Dangerous Things Forum", "url": "https://forum.dangerousthings.com/latest.rss", "type": "rss" },
+    { "name": "Digital Health", "url": "https://www.bioworld.com/rss/22", "type": "rss" },
+    { "name": "HOLOLIFE Summit", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCpbppWVgOJcU0lf5rDYSSXw", "type": "youtube" },
+    { "name": "Labiotech.eu", "url": "https://www.labiotech.eu/feed/", "type": "rss" },
+    { "name": "Nature Biotechnology", "url": "https://www.nature.com/nbt.rss", "type": "rss" },
+    { "name": "Neuralink", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCLt4d8cACHzrVvAz9gtaARA", "type": "youtube" },
+    { "name": "Healthcare IT News", "url": "https://www.healthcareitnews.com/home/feed", "type": "rss" },
+    { "name": "Science", "url": "https://newatlas.com/science/index.rss", "type": "rss" },
+    { "name": "The Medical Futurist", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC8vwN4Sju7ER6KZzDADBKBQ", "type": "youtube" },
+    { "name": "Biohacking", "url": "https://hackaday.com/tag/biohacking/feed/", "type": "rss" }
+  ]
+} 

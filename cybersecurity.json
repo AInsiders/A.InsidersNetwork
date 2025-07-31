@@ -1,0 +1,20 @@
+{
+  "category": "Cybersecurity",
+  "description": "Cybersecurity and hacking news",
+  "feeds": [
+    { "name": "AI Dark Files", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRoXUiP5sBe5CZfh9yUv1lw", "type": "youtube" },
+    { "name": "Black Hat", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCJ6q9Ie29ajGqKApbLqfBOg", "type": "youtube" },
+    { "name": "David Bombal", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCP7WmQ_U4GB3K51Od9QvM0w", "type": "youtube" },
+    { "name": "HackerOne", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsgzmECky2Q9lQMWzDwMhYw", "type": "youtube" },
+    { "name": "Hak5", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3s0BtrBJpwNDaflRSoiieQ", "type": "youtube" },
+    { "name": "KitPloit", "url": "https://www.kitploit.com/feeds/posts/default", "type": "rss" },
+    { "name": "NetworkChuck", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9x0AN7BWHpCDHSm9NiJFJQ", "type": "youtube" },
+    { "name": "Spyboy Blog", "url": "https://spyboy.blog/category/networking/feed/", "type": "rss" },
+    { "name": "The Hacker News", "url": "https://feeds.feedburner.com/TheHackersNews", "type": "rss" },
+    { "name": "Security Week", "url": "https://www.securityweek.com/feed/", "type": "rss" },
+    { "name": "Dark Reading", "url": "https://www.darkreading.com/rss.xml", "type": "rss" },
+    { "name": "Threat Post", "url": "https://threatpost.com/feed/", "type": "rss" },
+    { "name": "Bleeping Computer", "url": "https://www.bleepingcomputer.com/feed/", "type": "rss" },
+    { "name": "Krebs on Security", "url": "https://krebsonsecurity.com/feed/", "type": "rss" }
+  ]
+} 

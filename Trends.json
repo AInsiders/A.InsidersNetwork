@@ -1,0 +1,7 @@
+{
+  "category": "Trends",
+  "description": "Latest trends and cool gadgets",
+  "feeds": [
+    { "name": "TrendHunter AI", "url": "https://www.trendhunter.com/rss/category/Cool-Gadgets-and-Gifts", "type": "rss" }
+  ]
+} 

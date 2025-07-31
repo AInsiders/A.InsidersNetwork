@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Navigation Debug</title>
+    <link rel="stylesheet" href="brain-styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 10000;
+        }
+        .nav-toggle {
+            border: 3px solid red !important;
+            background: rgba(255, 0, 0, 0.2) !important;
+        }
+        .nav-menu {
+            border: 3px solid blue !important;
+        }
+        .nav-menu.active {
+            border: 3px solid green !important;
+        }
+        .test-content {
+            padding: 100px 20px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-text">A.I</span>
+                <span class="logo-accent">NSIDERS</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link">AI Development</a></li>
+                        <li><a href="#" class="dropdown-link">Consulting</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="debug-info">
+        <div>Screen Width: <span id="screen-width"></span></div>
+        <div>Nav Toggle: <span id="toggle-status">Not Found</span></div>
+        <div>Nav Menu: <span id="menu-status">Not Found</span></div>
+        <div>Menu Active: <span id="menu-active">No</span></div>
+        <div>Clicks: <span id="click-count">0</span></div>
+    </div>
+
+    <div class="test-content">
+        <h1>Mobile Navigation Test</h1>
+        <p>Resize your browser to mobile width (768px or less) to see the mobile menu.</p>
+        <p>The hamburger menu should be visible and clickable.</p>
+        <p>Red border = Nav Toggle, Blue border = Nav Menu, Green border = Active Menu</p>
+    </div>
+
+    <script src="mobile-nav.js"></script>
+    <script>
+        // Debug script
+        function updateDebugInfo() {
+            document.getElementById('screen-width').textContent = window.innerWidth + 'px';
+            
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            document.getElementById('toggle-status').textContent = navToggle ? 'Found' : 'Not Found';
+            document.getElementById('menu-status').textContent = navMenu ? 'Found' : 'Not Found';
+            document.getElementById('menu-active').textContent = navMenu && navMenu.classList.contains('active') ? 'Yes' : 'No';
+        }
+
+        let clickCount = 0;
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.nav-toggle')) {
+                clickCount++;
+                document.getElementById('click-count').textContent = clickCount;
+                console.log('Nav toggle clicked!');
+            }
+        });
+
+        // Update debug info every 100ms
+        setInterval(updateDebugInfo, 100);
+        updateDebugInfo();
+
+        // Log when mobile nav script loads
+        console.log('Debug page loaded');
+    </script>
+</body>
+</html> 

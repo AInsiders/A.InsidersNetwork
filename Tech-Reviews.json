@@ -1,0 +1,8 @@
+{
+  "category": "Tech Reviews",
+  "description": "Technology reviews and product analysis",
+  "feeds": [
+    { "name": "Marques Brownlee", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ", "type": "youtube" },
+    { "name": "Mrwhosetheboss", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCMiJRAwDNSNzuYeN2uWa0pA", "type": "youtube" }
+  ]
+} 

@@ -5,6 +5,7 @@
 
 class IPBanTester {
     constructor() {
+        this.ipClient = new IPServerClient();
         this.blocklistLoader = new BlocklistLoader();
         this.blocklists = {};
         this.currentIP = null;
@@ -50,10 +51,11 @@ class IPBanTester {
         this.init();
     }
 
-    init() {
+    async init() {
+        await this.detectUserIP();
+        await this.loadBlocklists();
         this.setupEventListeners();
         this.setupKeyboardShortcuts();
-        this.loadBlocklists();
     }
 
     setupEventListeners() {
@@ -87,10 +89,8 @@ class IPBanTester {
 
     async detectUserIP() {
         try {
-            // Use ipinfo.io with API token for better reliability
-            const ipinfoToken = 'be04d3770d74df';
-            const response = await fetch(`https://ipinfo.io/json?token=${ipinfoToken}`);
-            const data = await response.json();
+            console.log('Detecting user IP via server...');
+            const data = await this.ipClient.detectIP();
             this.currentIP = data.ip;
             
             const ipInput = document.getElementById('ipInput');
@@ -103,8 +103,22 @@ class IPBanTester {
             // Show copy button for current IP
             copyCurrentIpBtn.style.display = 'flex';
         } catch (error) {
-            console.log('Could not detect user IP');
-            document.getElementById('currentIp').textContent = 'Unable to load';
+            console.log('Server-side IP detection failed, trying fallback...');
+            try {
+                const data = await this.ipClient.detectIPFallback();
+                this.currentIP = data.ip;
+                
+                const ipInput = document.getElementById('ipInput');
+                const currentIpElement = document.getElementById('currentIp');
+                const copyCurrentIpBtn = document.getElementById('copyCurrentIpBtn');
+                
+                ipInput.placeholder = `Your IP: ${data.ip} (test for bans)`;
+                currentIpElement.textContent = this.currentIP;
+                copyCurrentIpBtn.style.display = 'flex';
+            } catch (fallbackError) {
+                console.log('All IP detection methods failed');
+                document.getElementById('currentIp').textContent = 'Unable to load';
+            }
         }
     }
 
@@ -283,16 +297,12 @@ class IPBanTester {
 
     async getIPInfo(ip) {
         try {
-            // Fetch real IP geolocation data using ipapi.co (same as IP checker)
-            const response = await fetch(`https://ipapi.co/${ip}/json/`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch IP data');
-            }
-            const data = await response.json();
+            console.log(`Getting IP info for ${ip} via server...`);
+            const data = await this.ipClient.getIPInfo(ip);
             
             const ipInfo = {
-                'IP Address': ip,
-                'Country': data.country_name || 'Unknown',
+                'IP Address': data.ip,
+                'Country': data.country || 'Unknown',
                 'City': data.city || 'Unknown',
                 'ISP': data.org || 'Unknown',
                 'Organization': data.org || 'Unknown',
@@ -300,8 +310,7 @@ class IPBanTester {
                 'Timezone': data.timezone || 'Unknown',
                 'Latitude': data.latitude ? `${data.latitude}°` : 'Unknown',
                 'Longitude': data.longitude ? `${data.longitude}°` : 'Unknown',
-                'Coordinates': data.latitude && data.longitude ? 
-                    `${data.latitude}°${data.latitude >= 0 ? 'N' : 'S'}, ${data.longitude}°${data.longitude >= 0 ? 'E' : 'W'}` : 'Unknown'
+                'Coordinates': data.loc || 'Unknown'
             };
             return ipInfo;
         } catch (error) {

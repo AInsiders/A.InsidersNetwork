@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Server Test - A.Insiders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+        }
+        .test-section h3 {
+            color: #2d3748;
+            margin-top: 0;
+        }
+        button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #3182ce;
+        }
+        button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        .result {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            background: #c6f6d5;
+            border: 1px solid #68d391;
+            color: #22543d;
+        }
+        .error {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #742a2a;
+        }
+        .info {
+            background: #bee3f8;
+            border: 1px solid #63b3ed;
+            color: #2a4365;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.online {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .status.offline {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .comparison-item {
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        .comparison-item h4 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 IP Detection Server Test</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Testing server-side IP detection to bypass AdGuard blocking
+        </p>
+
+        <div class="test-section">
+            <h3>Server Status <span id="serverStatus" class="status offline">Offline</span></h3>
+            <p>Check if the IP detection server is running on localhost:3001</p>
+            <button onclick="checkServerStatus()">Check Server Status</button>
+            <div id="serverResult" class="result info" style="display: none;"></div>
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <h4>❌ Direct API Calls (Blocked by AdGuard)</h4>
+                <p>These calls are blocked by AdGuard and other privacy tools:</p>
+                <ul>
+                    <li>ipinfo.io</li>
+                    <li>ipapi.co</li>
+                    <li>api.ipify.org</li>
+                </ul>
+                <button onclick="testDirectAPIs()">Test Direct APIs</button>
+                <div id="directResult" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="comparison-item">
+                <h4>✅ Server-Side Detection (Bypasses AdGuard)</h4>
+                <p>These calls go through your server and bypass blocking:</p>
+                <ul>
+                    <li>/api/ip/detect</li>
+                    <li>/api/ip/info/:ip</li>
+                </ul>
+                <button onclick="testServerAPIs()">Test Server APIs</button>
+                <div id="serverAPIResult" class="result" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>IP Detection Test</h3>
+            <p>Test both methods to see the difference:</p>
+            <button onclick="detectIPDirect()">Detect IP (Direct)</button>
+            <button onclick="detectIPServer()">Detect IP (Server)</button>
+            <div id="ipResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>IP Information Test</h3>
+            <p>Test getting detailed IP information:</p>
+            <input type="text" id="testIP" placeholder="Enter IP address (e.g., 8.8.8.8)" style="padding: 8px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button onclick="getIPInfoDirect()">Get Info (Direct)</button>
+            <button onclick="getIPInfoServer()">Get Info (Server)</button>
+            <div id="ipInfoResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Setup Instructions</h3>
+            <div class="info" style="background: #f0fff4; border-color: #68d391;">
+                <h4>To run the server:</h4>
+                <ol>
+                    <li>Install Node.js from <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
+                    <li>Install dependencies: <code>npm install</code></li>
+                    <li>Start the server: <code>npm run start-server</code></li>
+                    <li>Server will run on <code>http://localhost:3001</code></li>
+                </ol>
+                <h4>Benefits:</h4>
+                <ul>
+                    <li>✅ Bypasses AdGuard and other privacy blockers</li>
+                    <li>✅ More reliable IP detection</li>
+                    <li>✅ Better error handling and fallbacks</li>
+                    <li>✅ Centralized API management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="ip-server-client.js"></script>
+    <script>
+        const ipClient = new IPServerClient();
+        const serverUrl = 'http://localhost:3001';
+
+        async function checkServerStatus() {
+            const resultDiv = document.getElementById('serverResult');
+            const statusSpan = document.getElementById('serverStatus');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Checking server status...';
+            
+            try {
+                const response = await fetch(`${serverUrl}/api/cache`);
+                if (response.ok) {
+                    statusSpan.textContent = 'Online';
+                    statusSpan.className = 'status online';
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✅ Server is running and responding!\n\nResponse:\n' + JSON.stringify(await response.json(), null, 2);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusSpan.textContent = 'Offline';
+                statusSpan.className = 'status offline';
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Server is not running or not accessible.\n\nError: ' + error.message + '\n\nMake sure to:\n1. Install Node.js\n2. Run: npm install\n3. Run: npm run start-server';
+            }
+        }
+
+        async function testDirectAPIs() {
+            const resultDiv = document.getElementById('directResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Testing direct API calls...\n\n';
+            
+            const apis = [
+                'https://ipinfo.io/json',
+                'https://ipapi.co/json/',
+                'https://api.ipify.org?format=json'
+            ];
+            
+            for (const api of apis) {
+                try {
+                    resultDiv.textContent += `Testing ${api}...\n`;
+                    const response = await fetch(api);
+                    if (response.ok) {
+                        const data = await response.json();
+                        resultDiv.textContent += `✅ Success: ${JSON.stringify(data, null, 2)}\n\n`;
+                    } else {
+                        resultDiv.textContent += `❌ Failed: HTTP ${response.status}\n\n`;
+                    }
+                } catch (error) {
+                    resultDiv.textContent += `❌ Blocked/Error: ${error.message}\n\n`;
+                }
+            }
+            
+            resultDiv.className = 'result error';
+        }
+
+        async function testServerAPIs() {
+            const resultDiv = document.getElementById('serverAPIResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Testing server API calls...\n\n';
+            
+            try {
+                // Test IP detection
+                resultDiv.textContent += 'Testing /api/ip/detect...\n';
+                const detectResponse = await fetch(`${serverUrl}/api/ip/detect`);
+                if (detectResponse.ok) {
+                    const detectData = await detectResponse.json();
+                    resultDiv.textContent += `✅ IP Detection: ${JSON.stringify(detectData, null, 2)}\n\n`;
+                } else {
+                    resultDiv.textContent += `❌ IP Detection Failed: HTTP ${detectResponse.status}\n\n`;
+                }
+                
+                // Test IP info
+                resultDiv.textContent += 'Testing /api/ip/info/8.8.8.8...\n';
+                const infoResponse = await fetch(`${serverUrl}/api/ip/info/8.8.8.8`);
+                if (infoResponse.ok) {
+                    const infoData = await infoResponse.json();
+                    resultDiv.textContent += `✅ IP Info: ${JSON.stringify(infoData, null, 2)}\n\n`;
+                } else {
+                    resultDiv.textContent += `❌ IP Info Failed: HTTP ${infoResponse.status}\n\n`;
+                }
+                
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent += `❌ Server Error: ${error.message}\n\nMake sure the server is running!`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function detectIPDirect() {
+            const resultDiv = document.getElementById('ipResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Detecting IP using direct API calls...\n\n';
+            
+            try {
+                const response = await fetch('https://ipinfo.io/json');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent += `✅ Direct API Success:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultDiv.textContent += `❌ Direct API Blocked/Error:\n${error.message}\n\nThis is why we need server-side detection!`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function detectIPServer() {
+            const resultDiv = document.getElementById('ipResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Detecting IP using server-side API...\n\n';
+            
+            try {
+                const data = await ipClient.detectIP();
+                resultDiv.textContent += `✅ Server API Success:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent += `❌ Server API Error:\n${error.message}\n\nMake sure the server is running!`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function getIPInfoDirect() {
+            const ip = document.getElementById('testIP').value || '8.8.8.8';
+            const resultDiv = document.getElementById('ipInfoResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `Getting IP info for ${ip} using direct API...\n\n`;
+            
+            try {
+                const response = await fetch(`https://ipapi.co/${ip}/json/`);
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent += `✅ Direct API Success:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultDiv.textContent += `❌ Direct API Blocked/Error:\n${error.message}\n\nThis is why we need server-side detection!`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function getIPInfoServer() {
+            const ip = document.getElementById('testIP').value || '8.8.8.8';
+            const resultDiv = document.getElementById('ipInfoResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `Getting IP info for ${ip} using server-side API...\n\n`;
+            
+            try {
+                const data = await ipClient.getIPInfo(ip);
+                resultDiv.textContent += `✅ Server API Success:\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent += `❌ Server API Error:\n${error.message}\n\nMake sure the server is running!`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Auto-check server status on page load
+        window.addEventListener('load', () => {
+            setTimeout(checkServerStatus, 1000);
+        });
+    </script>
+</body>
+</html> 

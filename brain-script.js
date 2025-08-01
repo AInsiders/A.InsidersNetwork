@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const nodes = [];
         const connections = [];
         
+        // Mobile detection function
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   (window.innerWidth <= 768 && 'ontouchstart' in window);
+        }
+        
         // Responsive orb system based on screen ratio
         function getResponsiveNodeCount() {
             const screenWidth = window.innerWidth;
@@ -122,7 +128,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to check if we should show the orb
         function shouldShowOrb() {
-            return isHomePage || isStartingScreen;
+            const currentPath = window.location.pathname;
+            const isToolsPage = currentPath.includes('tools.html');
+            const isIpCheckerPage = currentPath.includes('ip-checker.html');
+            const isUrlCheckerPage = currentPath.includes('url-redirect-checker.html');
+            const isIpBlacklistPage = currentPath.includes('ip-blacklist-checker.html');
+            const isAiTextDetectionPage = currentPath.includes('ai-text-detection.html');
+            const isAppsPage = currentPath.includes('apps.html');
+            const isAboutPage = currentPath.includes('about.html');
+            const isContactPage = currentPath.includes('contact.html');
+            const isNewsPage = currentPath.includes('news-enhanced.html');
+            
+            return isHomePage || isStartingScreen || isToolsPage || isIpCheckerPage || isUrlCheckerPage || isIpBlacklistPage || isAiTextDetectionPage || isAppsPage || isAboutPage || isContactPage || isNewsPage;
         }
         const mouse = { 
             x: 0, 
@@ -512,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
             const footerRect = footer ? footer.getBoundingClientRect() : null;
             
-            // Check if mouse is directly over navbar or footer
+            // Check if mouse is directly over navbar or footer (only on home page and starting screen)
             const isOverNavbar = navbarRect && 
                 e.clientX >= navbarRect.left && 
                 e.clientX <= navbarRect.right && 
@@ -525,17 +542,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.clientY >= footerRect.top && 
                 e.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer
-            if (!isOverNavbar && !isOverFooter) {
-                // Ensure mouse position is within canvas bounds with coordinate correction
+            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            if (isHomePage || isStartingScreen) {
+                if (!isOverNavbar && !isOverFooter) {
+                    // Ensure mouse position is within canvas bounds with coordinate correction
+                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                    
+                    // Mouse trail tracking removed for 120fps performance
+                } else {
+                    // Hide cursor orb when directly over navbar or footer
+                    mouse.x = -100;
+                    mouse.y = -100;
+                }
+            } else {
+                // On other pages, always show the cursor orb
                 mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
                 mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
-                
-                // Mouse trail tracking removed for 120fps performance
-            } else {
-                // Hide cursor orb when directly over navbar or footer
-                mouse.x = -100;
-                mouse.y = -100;
             }
             
             // Set moving state for neural connections (works for both home page and starting screen)
@@ -555,9 +578,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function handleMouseLeave() {
             mouse.isMoving = false;
-            // Hide cursor orb by setting it off-screen when mouse leaves
-            mouse.x = -100;
-            mouse.y = -100;
+            // Only hide cursor orb when mouse leaves on home page and starting screen
+            if (isHomePage || isStartingScreen) {
+                // Hide cursor orb by setting it off-screen when mouse leaves
+                mouse.x = -100;
+                mouse.y = -100;
+            }
             nodes.forEach(node => {
                 node.interactionRadius = 80;
             });
@@ -668,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
             const footerRect = footer ? footer.getBoundingClientRect() : null;
             
-            // Check if touch is directly over navbar or footer
+            // Check if touch is directly over navbar or footer (only on home page and starting screen)
             const isOverNavbar = navbarRect && 
                 touch.clientX >= navbarRect.left && 
                 touch.clientX <= navbarRect.right && 
@@ -681,15 +707,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 touch.clientY >= footerRect.top && 
                 touch.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer
-            if (!isOverNavbar && !isOverFooter) {
-                // Ensure mouse position is within canvas bounds with mobile optimization
+            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            if (isHomePage || isStartingScreen) {
+                if (!isOverNavbar && !isOverFooter) {
+                    // Ensure mouse position is within canvas bounds with mobile optimization
+                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                } else {
+                    // Hide cursor orb when directly over navbar or footer
+                    mouse.x = -100;
+                    mouse.y = -100;
+                }
+            } else {
+                // On other pages, always show the cursor orb
                 mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
                 mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
-            } else {
-                // Hide cursor orb when directly over navbar or footer
-                mouse.x = -100;
-                mouse.y = -100;
             }
             
             mouse.isMoving = true;
@@ -724,7 +756,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
             const footerRect = footer ? footer.getBoundingClientRect() : null;
             
-            // Check if touch is directly over navbar or footer
+            // Check if touch is directly over navbar or footer (only on home page and starting screen)
             const isOverNavbar = navbarRect && 
                 touch.clientX >= navbarRect.left && 
                 touch.clientX <= navbarRect.right && 
@@ -737,15 +769,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 touch.clientY >= footerRect.top && 
                 touch.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer
-            if (!isOverNavbar && !isOverFooter) {
-                // Ensure mouse position is within canvas bounds with mobile optimization
+            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            if (isHomePage || isStartingScreen) {
+                if (!isOverNavbar && !isOverFooter) {
+                    // Ensure mouse position is within canvas bounds with mobile optimization
+                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                } else {
+                    // Hide cursor orb when directly over navbar or footer
+                    mouse.x = -100;
+                    mouse.y = -100;
+                }
+            } else {
+                // On other pages, always show the cursor orb
                 mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
                 mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
-            } else {
-                // Hide cursor orb when directly over navbar or footer
-                mouse.x = -100;
-                mouse.y = -100;
             }
             
             mouse.isMoving = true;
@@ -780,37 +818,43 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
 
-        // Add event listeners for both mouse and touch (for home page and starting screen)
+        // Add event listeners for mouse and touch (conditional based on device type)
         if (shouldShowOrb()) {
-            // Mouse events
+            // Mouse events - always enabled for PC users
             canvas.addEventListener('mousemove', handleMouseMove);
             canvas.addEventListener('mouseenter', handleMouseEnter);
             canvas.addEventListener('mouseleave', handleMouseLeave);
             
-            // Touch events for mobile with enhanced options
-            canvas.addEventListener('touchstart', handleTouchStart, { 
-                passive: false, 
-                capture: false 
-            });
-            canvas.addEventListener('touchmove', handleTouchMove, { 
-                passive: false, 
-                capture: false 
-            });
-            canvas.addEventListener('touchend', handleTouchEnd, { 
-                passive: false, 
-                capture: false 
-            });
-            canvas.addEventListener('touchcancel', handleTouchEnd, { 
-                passive: false, 
-                capture: false 
-            });
-            
-            // Prevent default touch behaviors that might interfere
-            canvas.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
+            // Touch events - only enabled for non-mobile devices (PC users with touch screens)
+            if (!isMobileDevice()) {
+                canvas.addEventListener('touchstart', handleTouchStart, { 
+                    passive: false, 
+                    capture: false 
+                });
+                canvas.addEventListener('touchmove', handleTouchMove, { 
+                    passive: false, 
+                    capture: false 
+                });
+                canvas.addEventListener('touchend', handleTouchEnd, { 
+                    passive: false, 
+                    capture: false 
+                });
+                canvas.addEventListener('touchcancel', handleTouchEnd, { 
+                    passive: false, 
+                    capture: false 
+                });
+                
+                // Prevent default touch behaviors that might interfere
+                canvas.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+                
+                console.log('🖱️ Interactive background enabled for PC users');
+            } else {
+                console.log('📱 Interactive background disabled for mobile users to improve scrolling');
+            }
         }
         
         // Enhanced resize handler with orientation support

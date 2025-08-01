@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Blacklist Checker - A.Insiders</title>
+    <meta name="description" content="Comprehensive IP blacklist checker tool. Check IPs against spam, malware, TOR exits, proxies, and country-based blocklists.">
+    <meta name="keywords" content="ip blacklist checker, ip reputation, spam check, malware check, tor exit nodes, proxy detection, ip security">
+    
+    <!-- Fonts, CSS, Font Awesome links -->
+    <link rel="stylesheet" href="brain-styles.css">
+    <link rel="stylesheet" href="sidebar-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* IP Blacklist Checker Specific Styles */
+        .blacklist-checker-page {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            min-height: 100vh;
+        }
+
+        .blacklist-hero {
+            background: linear-gradient(135deg, rgba(0, 170, 0, 0.1) 0%, rgba(77, 148, 255, 0.05) 100%);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blacklist-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0,170,0,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .blacklist-hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .blacklist-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00aa00, #4d94ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .blacklist-hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .checker-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .ip-input-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .ip-input-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .ip-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .ip-input:focus {
+            outline: none;
+            border-color: #00aa00;
+            box-shadow: 0 0 20px rgba(0, 170, 0, 0.3);
+        }
+
+        .ip-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .check-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #00aa00, #008800);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 170, 0, 0.3);
+        }
+
+        .check-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .message-container.info {
+            background: rgba(77, 148, 255, 0.2);
+            border: 1px solid rgba(77, 148, 255, 0.3);
+            color: #4d94ff;
+        }
+
+        .message-container.error {
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+        }
+
+        .message-container.success {
+            background: rgba(0, 170, 0, 0.2);
+            border: 1px solid rgba(0, 170, 0, 0.3);
+            color: #00aa00;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        .status-indicator.clean {
+            background: #00aa00;
+            box-shadow: 0 0 10px rgba(0, 170, 0, 0.5);
+        }
+
+        .status-indicator.warning {
+            background: #ffaa00;
+            box-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        .status-indicator.danger {
+            background: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .blacklist-categories {
+            margin-top: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-item.found {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        .category-item.clean {
+            background: rgba(0, 170, 0, 0.1);
+            border-color: rgba(0, 170, 0, 0.3);
+        }
+
+        .category-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-name {
+            flex: 1;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .category-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .category-status.found {
+            color: #ff4444;
+        }
+
+        .category-status.clean {
+            color: #00aa00;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00aa00;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ip-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .ip-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ip-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .ip-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ip-detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .recommendations {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .recommendations h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendation-list li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .recommendation-list li::before {
+            content: '•';
+            color: #00aa00;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .blacklist-hero h1 {
+                font-size: 2rem;
+            }
+
+            .blacklist-hero p {
+                font-size: 1rem;
+            }
+
+            .checker-container {
+                padding: 1rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="blacklist-checker-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">...</div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="ainsiders-logo.png" alt="A.Insiders" class="logo-image">
+                        <span class="logo-text">A.<span class="logo-accent">Insiders</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="tools.html" class="nav-link">Tools</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="blacklist-hero">
+            <div class="container">
+                <h1>IP Blacklist Checker</h1>
+                <p>Comprehensive IP reputation checker that scans against multiple blocklists including spam, malware, TOR exits, proxies, and country-based lists. Check your IP or any IP address for security threats.</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="checker-container">
+            <!-- IP Input Section -->
+            <section class="ip-input-section">
+                <h2>Enter IP Address to Check</h2>
+                <div class="input-group">
+                    <input type="text" id="ipInput" class="ip-input" placeholder="Enter IP address (e.g., 8.8.8.8)" required>
+                    <button id="checkBtn" class="check-btn">
+                        <i class="fas fa-search"></i>
+                        Check IP
+                    </button>
+                </div>
+                <div id="messageContainer"></div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section">
+                <!-- Summary Cards -->
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3><i class="fas fa-shield-alt"></i> Overall Status <span id="overallStatus" class="status-indicator"></span></h3>
+                        <div id="overallInfo"></div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Threat Level <span id="threatStatus" class="status-indicator"></span></h3>
+                        <div id="threatInfo"></div>
+                    </div>
+                </div>
+
+                <!-- IP Information -->
+                <div class="ip-info">
+                    <h3><i class="fas fa-info-circle"></i> IP Information</h3>
+                    <div id="ipInfo" class="ip-details"></div>
+                </div>
+
+                <!-- Blacklist Categories -->
+                <div class="blacklist-categories">
+                    <h3 style="color: var(--text-primary); margin-bottom: 1.5rem;"><i class="fas fa-list"></i> Blacklist Categories</h3>
+                    <div id="categoryGrid" class="category-grid"></div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <h3><i class="fas fa-lightbulb"></i> Security Recommendations</h3>
+                    <div id="recommendations"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>A.Insiders</h4>
+                    <p>Advanced cybersecurity and AI solutions for the modern digital landscape.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="tools.html">Tools</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" title="LinkedIn" class="social-link"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+                        <a href="#" title="Twitter" class="social-link"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+                        <a href="#" title="GitHub" class="social-link"><i class="fab fa-github"></i><span>GitHub</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 A.Insiders. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="brain-script.js"></script>
+    <script src="shared-loader.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="sphere-loader.js"></script>
+    <script src="blocklist-loader.js"></script>
+    <script src="ip-blacklist-checker.js"></script>
+</body>
+</html> 

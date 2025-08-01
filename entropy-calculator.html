@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entropy Calculator - A.Insiders</title>
+    <meta name="description" content="Advanced entropy calculator for password strength analysis. Calculate information entropy in bits for passwords and random variables.">
+    <meta name="keywords" content="entropy calculator, password entropy, information theory, bits, password strength">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="brain-styles.css">
+    <link rel="stylesheet" href="sidebar-menu.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body.entropy-calculator-page {
+            background: var(--bg-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .entropy-calculator-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        .entropy-calculator-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .entropy-calculator-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .entropy-calculator-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .calculator-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.1);
+        }
+        
+        .calculator-card h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .info-btn {
+            background: none;
+            border: none;
+            color: var(--accent-primary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+        
+        .info-btn:hover {
+            background: rgba(0, 102, 255, 0.1);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(52, 199, 89, 0.1);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #34c759;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .result.error {
+            background: rgba(255, 59, 48, 0.1);
+            border-color: rgba(255, 59, 48, 0.3);
+            color: #ff3b30;
+        }
+        
+        .info-section {
+            background: rgba(0, 102, 255, 0.05);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-section h3 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .info-section p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-blue);
+        }
+        
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+        
+        .character-set-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .preset-btn {
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .preset-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+        
+        .preset-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+        
+        /* Popup Dialog */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+        }
+        
+        .popup-close {
+            float: right;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .popup-close:hover {
+            color: #ff3b30;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        
+        .popup-content {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .popup-content h4 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .entropy-calculator-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .entropy-calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="entropy-calculator-page">
+    <div class="entropy-calculator-container">
+        <a href="tools.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Tools
+        </a>
+        
+        <div class="entropy-calculator-header">
+            <h1>🧮 Entropy Calculator</h1>
+            <p>Calculate information entropy in bits for passwords and random variables</p>
+        </div>
+        
+        <div class="info-section">
+            <h3><i class="fas fa-info-circle"></i> What is Entropy?</h3>
+            <p>Entropy measures the uncertainty or randomness in a system. In password security, higher entropy means stronger passwords that are harder to crack.</p>
+        </div>
+        
+        <div class="calculator-grid">
+            <!-- Password Entropy Calculator -->
+            <div class="calculator-card">
+                <h3>
+                    <i class="fas fa-key"></i>
+                    Password Entropy
+                </h3>
+                
+                <div class="form-group">
+                    <label for="passwordLength">Password Length:</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="number" id="passwordLength" value="12" min="1" max="100">
+                        </div>
+                        <button class="info-btn" onclick="showInfo('lengthInfo')" title="Information">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="characterSet">Character Set Size:</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="number" id="characterSet" value="95" min="1">
+                        </div>
+                        <button class="info-btn" onclick="showInfo('charsetInfo')" title="Information">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="character-set-presets">
+                        <button class="preset-btn" onclick="setPreset(10, 'Digits only')">Digits (10)</button>
+                        <button class="preset-btn" onclick="setPreset(26, 'Lowercase letters')">Lowercase (26)</button>
+                        <button class="preset-btn" onclick="setPreset(52, 'Letters')">Letters (52)</button>
+                        <button class="preset-btn active" onclick="setPreset(62, 'Alphanumeric')">Alphanumeric (62)</button>
+                        <button class="preset-btn" onclick="setPreset(95, 'ASCII printable')">ASCII (95)</button>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcPasswordEntropy()">
+                    <i class="fas fa-calculator"></i>
+                    Calculate Password Entropy
+                </button>
+                
+                <div class="result" id="passwordResult"></div>
+            </div>
+            
+            <!-- Random Variable Entropy Calculator -->
+            <div class="calculator-card">
+                <h3>
+                    <i class="fas fa-dice"></i>
+                    Random Variable Entropy
+                </h3>
+                
+                <div class="form-group">
+                    <label for="outcomes">Number of Equally Likely Outcomes:</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="number" id="outcomes" value="1024" min="1">
+                        </div>
+                        <button class="info-btn" onclick="showInfo('outcomesInfo')" title="Information">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcRandomEntropy()">
+                    <i class="fas fa-calculator"></i>
+                    Calculate Random Entropy
+                </button>
+                
+                <div class="result" id="randomResult"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup Overlay and Box -->
+    <div class="overlay" id="overlay" onclick="hideInfo()"></div>
+    <div class="popup" id="popup">
+        <button class="popup-close" onclick="hideInfo()">×</button>
+        <div class="popup-content" id="popupContent"></div>
+    </div>
+    
+    <script>
+        // Information texts for popups
+        const infoTexts = {
+            lengthInfo: {
+                title: "Password Length",
+                content: "The number of characters in your password. Each additional character exponentially increases entropy. For example, a 12-character password is much stronger than an 8-character one."
+            },
+            charsetInfo: {
+                title: "Character Set Size",
+                content: "The number of unique characters that can appear in your password. Common sets: Digits (10), Lowercase letters (26), Uppercase letters (26), Letters (52), Alphanumeric (62), ASCII printable (95)."
+            },
+            outcomesInfo: {
+                title: "Equally Likely Outcomes",
+                content: "The number of possible outcomes in a random process where each outcome has equal probability. Entropy = log₂(outcomes). Examples: coin flip (2), dice roll (6), 8-bit number (256)."
+            }
+        };
+        
+        function calcPasswordEntropy() {
+            const length = parseInt(document.getElementById('passwordLength').value) || 0;
+            const charset = parseInt(document.getElementById('characterSet').value) || 1;
+            
+            if (length <= 0 || charset <= 0) {
+                showResult('passwordResult', 'Please enter valid positive numbers.', 'error');
+                return;
+            }
+            
+            const entropy = length * Math.log2(charset);
+            const strength = getEntropyStrength(entropy);
+            
+            showResult('passwordResult', 
+                `Entropy: ${entropy.toFixed(2)} bits\n` +
+                `Strength: ${strength}`, 
+                'success'
+            );
+        }
+        
+        function calcRandomEntropy() {
+            const outcomes = parseInt(document.getElementById('outcomes').value) || 1;
+            
+            if (outcomes <= 0) {
+                showResult('randomResult', 'Please enter a valid positive number.', 'error');
+                return;
+            }
+            
+            const entropy = Math.log2(outcomes);
+            const strength = getEntropyStrength(entropy);
+            
+            showResult('randomResult', 
+                `Entropy: ${entropy.toFixed(2)} bits\n` +
+                `Strength: ${strength}`, 
+                'success'
+            );
+        }
+        
+        function getEntropyStrength(entropy) {
+            if (entropy < 28) return 'Very Weak';
+            if (entropy < 36) return 'Weak';
+            if (entropy < 60) return 'Moderate';
+            if (entropy < 128) return 'Strong';
+            return 'Very Strong';
+        }
+        
+        function setPreset(size, description) {
+            document.getElementById('characterSet').value = size;
+            
+            // Update active preset button
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Auto-calculate
+            calcPasswordEntropy();
+        }
+        
+        function showResult(elementId, text, type = 'success') {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.className = `result ${type}`;
+        }
+        
+        function showInfo(key) {
+            const info = infoTexts[key];
+            if (!info) return;
+            
+            document.getElementById('popupContent').innerHTML = 
+                `<h4>${info.title}</h4><p>${info.content}</p>`;
+            
+            document.getElementById('popup').style.display = "block";
+            document.getElementById('overlay').style.display = "block";
+        }
+        
+        function hideInfo() {
+            document.getElementById('popup').style.display = "none";
+            document.getElementById('overlay').style.display = "none";
+        }
+        
+        // Auto-calculate on input change
+        document.getElementById('passwordLength').addEventListener('input', calcPasswordEntropy);
+        document.getElementById('characterSet').addEventListener('input', calcPasswordEntropy);
+        document.getElementById('outcomes').addEventListener('input', calcRandomEntropy);
+        
+        // Initialize calculations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            calcPasswordEntropy();
+            calcRandomEntropy();
+        });
+        
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideInfo();
+            }
+        });
+    </script>
+</body>
+</html> 

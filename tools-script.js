@@ -155,9 +155,26 @@ class ToolsManager {
 
         // Handle different tool actions
         switch (action) {
+            case 'Check IP':
+                window.location.href = 'ip-checker.html';
+                break;
+            case 'Check URL':
+                window.location.href = 'url-redirect-checker.html';
+                break;
+            case 'Check IP': // IP Blacklist Checker
+                window.location.href = 'ip-blacklist-checker.html';
+                break;
+            case 'Analyze Text': // AI Text Detection
+                window.location.href = 'ai-text-detection.html';
+                break;
+            case 'Check Password':
+                window.location.href = 'password-checker.html';
+                break;
+            case 'Calculate Entropy':
+                window.location.href = 'entropy-calculator.html';
+                break;
             case 'Launch Tool':
             case 'Try Beta':
-            case 'Check Password':
             case 'Encrypt Now':
             case 'Create Chart':
             case 'Calculate':

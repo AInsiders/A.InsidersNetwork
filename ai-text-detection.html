@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Detection - A.Insiders</title>
+    <meta name="description" content="Advanced AI-powered tool to detect AI-generated text using pattern analysis and linguistic markers. Analyze text authenticity with confidence scoring.">
+    <meta name="keywords" content="ai text detection, ai generated text, text analysis, bert model, pattern recognition, linguistic analysis">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="brain-styles.css">
+    <link rel="stylesheet" href="sidebar-menu.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* AI Text Detection Specific Styles */
+        body.ai-text-detection-page {
+            background: var(--bg-primary);
+        }
+        
+        body.ai-text-detection-page * {
+            color: var(--text-primary);
+        }
+        
+        body.ai-text-detection-page #aiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+        
+        .ai-detection-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-detection-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .ai-detection-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .ai-detection-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .detection-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .text-input-section {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .text-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition-smooth);
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results-section {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-dark);
+            display: none;
+        }
+        
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .result-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .status-human {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+        
+        .status-ai {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+        
+        .status-uncertain {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            color: #ffaa00;
+        }
+        
+        .confidence-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .analysis-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+        
+        .analysis-card h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .pattern-indicators {
+            margin-top: 2rem;
+        }
+        
+        .pattern-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .pattern-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .pattern-item:last-child {
+            border-bottom: none;
+        }
+        
+        .pattern-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .pattern-ai {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+        }
+        
+        .pattern-human {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+        
+        .pattern-neutral {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .message.info {
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            color: var(--accent-blue);
+        }
+        
+        .message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+        
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+        
+        .message.warning {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            color: #ffaa00;
+        }
+        
+        @media (max-width: 768px) {
+            .ai-detection-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .detection-container {
+                padding: 1rem;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="ai-text-detection-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Loading AI Text Detection Tool...</p>
+        </div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+        <!-- Interactive Background -->
+        <canvas id="aiCanvas"></canvas>
+        
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="index.html">
+                        <img src="logo.svg" alt="A.Insiders" class="logo">
+                    </a>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="tools.html" class="nav-link active">Tools</a>
+                    <a href="apps.html" class="nav-link">Apps</a>
+                    <a href="news-enhanced.html" class="nav-link">News</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </div>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="ai-detection-hero">
+            <div class="hero-content">
+                <h1>AI Text Detection</h1>
+                <p>Advanced AI-powered tool to detect AI-generated text using pattern analysis and linguistic markers. Analyze text authenticity with confidence scoring.</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="detection-container">
+            <!-- Text Input Section -->
+            <section class="text-input-section">
+                <h2>Text Analysis</h2>
+                <p>Enter the text you want to analyze for AI generation detection. Our advanced algorithm examines linguistic patterns, sentence structure, and semantic coherence.</p>
+                
+                <div class="input-group">
+                    <label for="textInput">Text to Analyze</label>
+                    <textarea 
+                        id="textInput" 
+                        class="text-input" 
+                        placeholder="Enter or paste the text you want to analyze for AI generation detection..."
+                        rows="8"
+                    ></textarea>
+                </div>
+                
+                <button id="analyzeBtn" class="analyze-btn">
+                    <i class="fas fa-robot"></i>
+                    Analyze Text
+                </button>
+            </section>
+
+            <!-- Message Display -->
+            <div id="messageContainer"></div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section">
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                    <div class="confidence-score" id="confidenceScore">0%</div>
+                </div>
+                
+                <div class="result-status" id="resultStatus">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Analysis pending...</span>
+                </div>
+                
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h3>Text Statistics</h3>
+                        <div class="metric-item">
+                            <span class="metric-label">Word Count</span>
+                            <span class="metric-value" id="wordCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Character Count</span>
+                            <span class="metric-value" id="charCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Sentence Count</span>
+                            <span class="metric-value" id="sentenceCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Average Words per Sentence</span>
+                            <span class="metric-value" id="avgWordsPerSentence">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <h3>Linguistic Analysis</h3>
+                        <div class="metric-item">
+                            <span class="metric-label">Vocabulary Diversity</span>
+                            <span class="metric-value" id="vocabularyDiversity">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Repetition Score</span>
+                            <span class="metric-value" id="repetitionScore">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Complexity Score</span>
+                            <span class="metric-value" id="complexityScore">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Coherence Score</span>
+                            <span class="metric-value" id="coherenceScore">0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <h3>AI Detection Metrics</h3>
+                        <div class="metric-item">
+                            <span class="metric-label">Pattern Consistency</span>
+                            <span class="metric-value" id="patternConsistency">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Semantic Coherence</span>
+                            <span class="metric-value" id="semanticCoherence">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Stylistic Markers</span>
+                            <span class="metric-value" id="stylisticMarkers">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Confidence Level</span>
+                            <span class="metric-value" id="confidenceLevel">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pattern-indicators">
+                    <h3>Pattern Analysis</h3>
+                    <ul class="pattern-list" id="patternList">
+                        <!-- Pattern indicators will be populated here -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>A.Insiders</h3>
+                    <p>Empowering innovation through technology and AI-driven solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="tools.html">Tools</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="ip-checker.html">IP Checker</a></li>
+                        <li><a href="url-redirect-checker.html">URL Redirect Checker</a></li>
+                        <li><a href="ip-blacklist-checker.html">IP Blacklist Checker</a></li>
+                        <li><a href="ai-text-detection.html">AI Text Detection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 A.Insiders. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="brain-script.js"></script>
+    <script src="shared-loader.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="sphere-loader.js"></script>
+    <script src="ai-text-detection.js"></script>
+</body>
+</html> 

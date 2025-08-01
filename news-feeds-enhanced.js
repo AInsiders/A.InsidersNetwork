@@ -2,41 +2,76 @@
 class EnhancedNewsFeedAggregator {
     constructor() {
         console.log('EnhancedNewsFeedAggregator constructor called');
+        this.currentCategory = 'all';
+        this.currentDateFilter = 'all';
+        this.currentPage = 1;
+        this.itemsPerPage = 12;
+        this.allArticles = [];
+        this.filteredArticles = [];
+        this.isLoading = false;
+        this.loadingCategories = new Set();
+        this.categoryStates = {}; // Track category states
+        this.failedFeeds = new Set(); // Track failed feeds for retry functionality
+        
+        // Caching system for static UI
+        this.articleCache = new Map(); // Cache articles by feed URL
+        this.lastFetchTimes = new Map(); // Track last fetch time for each feed
+        this.cacheExpiry = 5 * 60 * 1000; // 5 minutes cache expiry
+        this.isInitialLoad = true; // Track if this is the first load
+        this.staticArticles = []; // Articles that should remain static in UI
+        
+        // Server-side cache system for instant loading
+        this.serverCacheUrl = 'http://localhost:3001/api/cache';
+        this.backgroundRefreshInterval = null;
+        
+        console.log('Constructor properties initialized, calling init()...');
+        this.init();
+    }
+
+    async initializeFeeds() {
         try {
-            this.feeds = this.initializeFeeds(); // Now loads from hardcoded feeds, not external JSONs
-            console.log('Feeds initialized, categories:', Object.keys(this.feeds));
-            
-            this.currentCategory = 'all';
-            this.currentDateFilter = 'all';
-            this.currentPage = 1;
-            this.itemsPerPage = 12;
-            this.allArticles = [];
-            this.filteredArticles = [];
-            this.isLoading = false;
-            this.loadingCategories = new Set();
-            this.categoryStates = {}; // Track category states
-            this.failedFeeds = new Set(); // Track failed feeds for retry functionality
-            
-            // Caching system for static UI
-            this.articleCache = new Map(); // Cache articles by feed URL
-            this.lastFetchTimes = new Map(); // Track last fetch time for each feed
-            this.cacheExpiry = 5 * 60 * 1000; // 5 minutes cache expiry
-            this.isInitialLoad = true; // Track if this is the first load
-            this.staticArticles = []; // Articles that should remain static in UI
-            
-            // Server-side cache system for instant loading
-            this.serverCacheUrl = 'http://localhost:3001/api/cache';
-            this.backgroundRefreshInterval = null;
-            
-            console.log('Constructor properties initialized, calling init()...');
-            this.init();
+            // Load feeds from JSON files
+            const feeds = await this.loadFeedsFromJSON();
+            console.log('Feeds loaded from JSON files:', Object.keys(feeds));
+            return feeds;
         } catch (error) {
-            console.error('Error in constructor:', error);
-            console.error('Error stack:', error.stack);
+            console.error('Error loading feeds from JSON, falling back to hardcoded feeds:', error);
+            return this.getFallbackFeeds();
         }
     }
 
-    initializeFeeds() {
+    async loadFeedsFromJSON() {
+        const feeds = {};
+        
+        try {
+            // Load the categories index first
+            const categoriesResponse = await fetch('json-feeds/news-categories-index.json');
+            const categoriesData = await categoriesResponse.json();
+            
+            // Load each category's feeds
+            for (const category of categoriesData.categories) {
+                try {
+                    const feedResponse = await fetch(`json-feeds/${category.file}`);
+                    const feedData = await feedResponse.json();
+                    
+                    if (feedData.feeds && Array.isArray(feedData.feeds)) {
+                        feeds[category.name] = feedData.feeds;
+                        console.log(`Loaded ${feedData.feeds.length} feeds for category: ${category.name}`);
+                    }
+                } catch (error) {
+                    console.error(`Error loading feeds for category ${category.name}:`, error);
+                    // Continue with other categories
+                }
+            }
+            
+            return feeds;
+        } catch (error) {
+            console.error('Error loading categories index:', error);
+            throw error;
+        }
+    }
+
+    getFallbackFeeds() {
         return {
             'AI': [
                 { name: 'NVIDIA Blog', url: 'https://blogs.nvidia.com/blog/category/auto/feed/', type: 'rss' },
@@ -220,9 +255,13 @@ class EnhancedNewsFeedAggregator {
 
     async init() {
         console.log('EnhancedNewsFeedAggregator initializing...');
-        console.log('Total feeds to load:', Object.keys(this.feeds).reduce((total, category) => total + this.feeds[category].length, 0));
         
         try {
+            // Initialize feeds from JSON files
+            this.feeds = await this.initializeFeeds();
+            console.log('Feeds initialized, categories:', Object.keys(this.feeds));
+            console.log('Total feeds to load:', Object.keys(this.feeds).reduce((total, category) => total + this.feeds[category].length, 0));
+            
             this.setupEventListeners();
             console.log('Event listeners setup complete');
             

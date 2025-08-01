@@ -60,6 +60,7 @@
             height: 100%;
             z-index: -1;
             opacity: 0.3;
+            pointer-events: none;
             background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
         }
         
@@ -516,9 +517,11 @@
             </div>
         </nav>
 
+        <!-- AI Canvas for Background Effects -->
+        <canvas id="aiCanvas"></canvas>
+
         <!-- Hero Section -->
         <header class="tools-hero">
-            <canvas id="aiCanvas"></canvas>
             <div class="container">
                 <h1>Online Tools</h1>
                 <p>Discover our collection of powerful tools designed to enhance your workflow, from AI-powered utilities to cybersecurity essentials.</p>
@@ -611,20 +614,43 @@
                             <div class="tool-icon">
                                 <i class="fas fa-shield-alt"></i>
                             </div>
-                            <h3 class="tool-title">Password Strength Checker</h3>
-                            <p class="tool-description">Comprehensive password analysis tool that evaluates strength and provides security recommendations.</p>
+                            <h3 class="tool-title">Password Crack-Time Estimator</h3>
+                            <p class="tool-description">Advanced password strength analyzer with quantum computer simulation. Test passwords against various attack scenarios including quantum computers, supercomputers, and more.</p>
                             <span class="tool-status live">Live</span>
                         </div>
                         <div class="tool-content">
                             <ul class="tool-features">
-                                <li>Strength evaluation</li>
-                                <li>Security recommendations</li>
-                                <li>Breach checking</li>
-                                <li>Password generation</li>
+                                <li>Quantum computer simulation</li>
+                                <li>Multiple attack scenarios</li>
+                                <li>Entropy calculation</li>
+                                <li>Time projection analysis</li>
                             </ul>
                             <div class="tool-actions">
-                                <a href="#" class="tool-btn primary">Check Password</a>
+                                <a href="password-checker.html" class="tool-btn primary">Check Password</a>
                                 <a href="#" class="tool-btn">Security Tips</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="security">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h3 class="tool-title">Entropy Calculator</h3>
+                            <p class="tool-description">Calculate information entropy in bits for passwords and random variables. Essential tool for understanding password strength and information theory.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Password entropy calculation</li>
+                                <li>Random variable entropy</li>
+                                <li>Character set presets</li>
+                                <li>Real-time calculations</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="entropy-calculator.html" class="tool-btn primary">Calculate Entropy</a>
+                                <a href="#" class="tool-btn">Learn More</a>
                             </div>
                         </div>
                     </div>
@@ -651,6 +677,98 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tool-card" data-category="security">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3 class="tool-title">IP Location Checker</h3>
+                            <p class="tool-description">Comprehensive IP address analysis with location mapping and detailed network information.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Real-time IP geolocation</li>
+                                <li>Interactive world map</li>
+                                <li>Detailed network info</li>
+                                <li>ISP & organization data</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="ip-checker.html" class="tool-btn primary">Check IP</a>
+                                <a href="#" class="tool-btn">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                                                    <div class="tool-card" data-category="security">
+                                    <div class="tool-header">
+                                        <div class="tool-icon">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </div>
+                                        <h3 class="tool-title">URL Redirect Checker</h3>
+                                        <p class="tool-description">Comprehensive URL redirect analysis with detailed "who is" information for domains and IPs.</p>
+                                        <span class="tool-status live">Live</span>
+                                    </div>
+                                    <div class="tool-content">
+                                        <ul class="tool-features">
+                                            <li>Redirect chain analysis</li>
+                                            <li>Domain & IP "who is" lookup</li>
+                                            <li>Security status indicators</li>
+                                            <li>Detailed connection reports</li>
+                                        </ul>
+                                        <div class="tool-actions">
+                                            <a href="url-redirect-checker.html" class="tool-btn primary">Check URL</a>
+                                            <a href="#" class="tool-btn">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tool-card" data-category="security">
+                                    <div class="tool-header">
+                                        <div class="tool-icon">
+                                            <i class="fas fa-ban"></i>
+                                        </div>
+                                        <h3 class="tool-title">IP Blacklist Checker</h3>
+                                        <p class="tool-description">Comprehensive IP reputation checker against spam, malware, TOR exits, proxies, and country-based blocklists.</p>
+                                        <span class="tool-status live">Live</span>
+                                    </div>
+                                    <div class="tool-content">
+                                        <ul class="tool-features">
+                                            <li>Multi-category blocklist scanning</li>
+                                            <li>Real-time threat assessment</li>
+                                            <li>IP geolocation & ISP info</li>
+                                            <li>Security recommendations</li>
+                                        </ul>
+                                        <div class="tool-actions">
+                                            <a href="ip-blacklist-checker.html" class="tool-btn primary">Check IP</a>
+                                            <a href="#" class="tool-btn">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tool-card" data-category="ai">
+                                    <div class="tool-header">
+                                        <div class="tool-icon">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <h3 class="tool-title">AI Text Detection</h3>
+                                        <p class="tool-description">Advanced AI-powered tool to detect AI-generated text using pattern analysis and linguistic markers.</p>
+                                        <span class="tool-status live">Live</span>
+                                    </div>
+                                    <div class="tool-content">
+                                        <ul class="tool-features">
+                                            <li>BERT-based text analysis</li>
+                                            <li>Pattern recognition</li>
+                                            <li>Confidence scoring</li>
+                                            <li>Detailed analysis report</li>
+                                        </ul>
+                                        <div class="tool-actions">
+                                            <a href="ai-text-detection.html" class="tool-btn primary">Analyze Text</a>
+                                            <a href="#" class="tool-btn">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
 
                     <!-- Data Analysis Tools -->
                     <div class="tool-card" data-category="data">

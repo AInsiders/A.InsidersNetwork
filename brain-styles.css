@@ -4379,6 +4379,13 @@ body.home-page #aiCanvas {
   pointer-events: auto;
 }
 
+/* Disable interactive background for mobile users to improve scrolling */
+@media (max-width: 768px) {
+  #aiCanvas {
+    pointer-events: none !important;
+  }
+}
+
 /* Apps page layout fixes to prevent stretching */
 .apps-hero,
 .apps-categories,

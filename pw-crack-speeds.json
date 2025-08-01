@@ -1,0 +1,16 @@
+{
+  "updated": "2025-08-01T00:00:00Z",
+  "scenarios": {
+    "quantum":      { "S0": 1e9,  "Tdbl": 1.5, "qeff": 1   },
+    "super":        { "S0": 1e12, "Tdbl": 1.5               },
+    "workstation":  { "S0": 1e10, "Tdbl": 2                 },
+    "usb":          { "S0": 1e7,  "Tdbl": 3                 }
+  },
+  "hashes": {
+    "MD5":     1.3e13,
+    "SHA256":  9.0e11,
+    "bcrypt":  7.0e8,
+    "argon2":  8.0e4
+  },
+  "ai_penalty_bits": 10
+} 

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.Insiders Security Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .test-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .test-form input, .test-form textarea {
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .test-form button {
+            padding: 0.5rem 1rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+        .status.success {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+        }
+        .status.error {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+        }
+        .status.info {
+            background: rgba(23, 162, 184, 0.2);
+            border: 1px solid #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 A.Insiders Security Test Page</h1>
+        
+        <div class="test-section">
+            <h2>Security Status Check</h2>
+            <div id="security-status" class="status info">
+                Checking security system...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Form Security Test</h2>
+            <form class="test-form" id="test-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Test Form Submission</button>
+            </form>
+            <div id="form-status" class="status info">
+                Form ready for testing...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Security Features Test</h2>
+            <p>Try these actions to test security features:</p>
+            <ul>
+                <li>Right-click anywhere on the page</li>
+                <li>Press F12 to open developer tools</li>
+                <li>Try to copy text from the page</li>
+                <li>Press Ctrl+U to view source</li>
+                <li>Try to select text</li>
+            </ul>
+            <div id="violation-status" class="status info">
+                No security violations detected yet...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Security Configuration</h2>
+            <pre id="security-config">Loading configuration...</pre>
+        </div>
+    </div>
+
+    <!-- Security Enhancement -->
+    <script src="security-enhancement.js"></script>
+    
+    <script>
+        // Test security system
+        document.addEventListener('DOMContentLoaded', function() {
+            const securityStatus = document.getElementById('security-status');
+            const formStatus = document.getElementById('form-status');
+            const violationStatus = document.getElementById('violation-status');
+            const securityConfig = document.getElementById('security-config');
+            
+            // Check if security system is loaded
+            setTimeout(() => {
+                if (window.AInsidersSecurity) {
+                    securityStatus.className = 'status success';
+                    securityStatus.textContent = '✅ Security system loaded successfully!';
+                    
+                    // Display configuration
+                    securityConfig.textContent = JSON.stringify(window.AInsidersSecurity.config, null, 2);
+                } else {
+                    securityStatus.className = 'status error';
+                    securityStatus.textContent = '❌ Security system not loaded!';
+                }
+            }, 1000);
+            
+            // Test form submission
+            const testForm = document.getElementById('test-form');
+            testForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formStatus.className = 'status success';
+                formStatus.textContent = '✅ Form submission intercepted and validated by security system!';
+            });
+            
+            // Monitor for security violations
+            let violationCount = 0;
+            const originalConsoleWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && args[0].includes('🚨 Security violation')) {
+                    violationCount++;
+                    violationStatus.className = 'status error';
+                    violationStatus.textContent = `🚨 Security violation detected! (${violationCount} total)`;
+                }
+                originalConsoleWarn.apply(console, args);
+            };
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.Insiders - Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .offline-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        .offline-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .offline-message {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .offline-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cached-content {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cached-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .cached-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .cached-link {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cached-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cached-link-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cached-link-desc {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .status-online {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .status-offline {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .offline-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .offline-title {
+                font-size: 28px;
+            }
+
+            .offline-message {
+                font-size: 16px;
+            }
+
+            .offline-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .cached-links {
+                grid-template-columns: 1fr;
+            }
+
+            .connection-status {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                text-align: center;
+            }
+        }
+
+        /* Matrix rain effect for background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 14px;
+            animation: matrix-fall 3s linear infinite;
+        }
+
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100vh);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix rain background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <!-- Connection status -->
+    <div class="connection-status" id="connection-status">
+        <span id="status-text">Checking connection...</span>
+    </div>
+
+    <!-- Main offline content -->
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        <h1 class="offline-title">You're Offline</h1>
+        <p class="offline-message">
+            It looks like you've lost your internet connection. Don't worry! 
+            We've cached some content for you to browse while you're offline.
+        </p>
+        
+        <div class="offline-actions">
+            <button class="btn btn-primary" onclick="retryConnection()">
+                🔄 Try Again
+            </button>
+            <button class="btn btn-secondary" onclick="showCachedContent()">
+                📚 Browse Cached
+            </button>
+        </div>
+
+        <div class="cached-content" id="cached-content" style="display: none;">
+            <h3 class="cached-title">Available Offline Content</h3>
+            <div class="cached-links" id="cached-links">
+                <!-- Cached links will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix rain effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrix-bg');
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            
+            for (let i = 0; i < 50; i++) {
+                const rain = document.createElement('div');
+                rain.className = 'matrix-rain';
+                rain.style.left = Math.random() * 100 + '%';
+                rain.style.animationDelay = Math.random() * 3 + 's';
+                rain.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+                }
+                rain.innerHTML = text;
+                
+                matrixBg.appendChild(rain);
+            }
+        }
+
+        // Connection status monitoring
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connection-status');
+            const statusText = document.getElementById('status-text');
+            
+            if (navigator.onLine) {
+                statusElement.className = 'connection-status status-online';
+                statusText.textContent = '🟢 Online';
+                
+                // Auto-refresh when connection is restored
+                setTimeout(() => {
+                    if (navigator.onLine) {
+                        window.location.reload();
+                    }
+                }, 2000);
+            } else {
+                statusElement.className = 'connection-status status-offline';
+                statusText.textContent = '🔴 Offline';
+            }
+        }
+
+        // Retry connection
+        function retryConnection() {
+            const btn = event.target;
+            btn.textContent = '🔄 Checking...';
+            btn.disabled = true;
+            
+            // Simulate connection check
+            setTimeout(() => {
+                if (navigator.onLine) {
+                    window.location.reload();
+                } else {
+                    btn.textContent = '❌ No Connection';
+                    setTimeout(() => {
+                        btn.textContent = '🔄 Try Again';
+                        btn.disabled = false;
+                    }, 2000);
+                }
+            }, 1500);
+        }
+
+        // Show cached content
+        function showCachedContent() {
+            const cachedContent = document.getElementById('cached-content');
+            const cachedLinks = document.getElementById('cached-links');
+            
+            if (cachedContent.style.display === 'none') {
+                // Populate cached links
+                const cachedPages = [
+                    { title: 'Home', desc: 'Main landing page', url: '/index.html' },
+                    { title: 'About', desc: 'About A.Insiders', url: '/about.html' },
+                    { title: 'Contact', desc: 'Get in touch', url: '/contact.html' },
+                    { title: 'Apps', desc: 'Our applications', url: '/apps.html' },
+            
+                ];
+                
+                cachedLinks.innerHTML = cachedPages.map(page => `
+                    <a href="${page.url}" class="cached-link" onclick="loadCachedPage('${page.url}')">
+                        <div class="cached-link-title">${page.title}</div>
+                        <div class="cached-link-desc">${page.desc}</div>
+                    </a>
+                `).join('');
+                
+                cachedContent.style.display = 'block';
+                event.target.textContent = '📚 Hide Cached';
+            } else {
+                cachedContent.style.display = 'none';
+                event.target.textContent = '📚 Browse Cached';
+            }
+        }
+
+        // Load cached page
+        function loadCachedPage(url) {
+            event.preventDefault();
+            
+            // Show loading state
+            const link = event.target.closest('.cached-link');
+            const originalText = link.innerHTML;
+            link.innerHTML = '<div class="cached-link-title">Loading...</div>';
+            
+            // Try to load from cache
+            if ('caches' in window) {
+                caches.match(url).then(response => {
+                    if (response) {
+                        // Navigate to cached page
+                        window.location.href = url;
+                    } else {
+                        // Show error
+                        link.innerHTML = '<div class="cached-link-title">Not Available</div>';
+                        setTimeout(() => {
+                            link.innerHTML = originalText;
+                        }, 2000);
+                    }
+                }).catch(() => {
+                    link.innerHTML = '<div class="cached-link-title">Error</div>';
+                    setTimeout(() => {
+                        link.innerHTML = originalText;
+                    }, 2000);
+                });
+            } else {
+                // Fallback for browsers without cache API
+                window.location.href = url;
+            }
+        }
+
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered:', registration);
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createMatrixRain();
+            updateConnectionStatus();
+            
+            // Monitor connection changes
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+            
+            // Periodic connection check
+            setInterval(updateConnectionStatus, 5000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'r' || event.key === 'R') {
+                retryConnection();
+            } else if (event.key === 'c' || event.key === 'C') {
+                showCachedContent();
+            }
+        });
+    </script>
+    
+    <!-- Security Enhancement -->
+    <script src="security-enhancement.js"></script>
+</body>
+</html> 

@@ -4,10 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>A.Insiders - AI & Cybersecurity Intelligence</title>
-  <link rel="stylesheet" href="brain-styles.css">
+  <!-- Optimized Asset Caching System -->
+      <link rel="stylesheet" href="brain-styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="brain-script.js" as="script">
+  <link rel="preload" href="shared-loader.js" as="script">
+  <link rel="preload" href="mobile-nav.js" as="script">
+  <link rel="preload" href="sphere-loader.js" as="script">
+  <link rel="preload" href="ainsiders-logo.png" as="image">
+  <link rel="preload" href="logo.svg" as="image">
+  
+  <!-- Cache Manager and Asset Preloader -->
+  <script src="browser-cache-manager.js"></script>
+  <script src="asset-preloader.js"></script>
+  
+  <!-- Optimized Background System -->
+      <script src="brain-script.js"></script>
+  
+  <!-- Tawk.to Widget Styles -->
+  <style>
+    /* Make Tawk.to widget half the size */
+    #tawkto-container,
+    .tawkto-container,
+    .tawkto-widget,
+    .tawkto-minimized,
+    .tawkto-maximized,
+    .tawkto-iframe,
+    .tawkto-button,
+    .tawkto-bubble,
+    .tawkto-chat,
+    .tawkto-widget-container,
+    .tawkto-widget-container *,
+    iframe[src*="tawk.to"],
+    div[data-tawk-to],
+    .tawkto,
+    .tawkto * {
+      transform: scale(0.5) !important;
+      transform-origin: bottom right !important;
+    }
+  </style>
 </head>
 <body class="home-page">
       <!-- Loading Screen -->
@@ -182,24 +221,59 @@
 
       </div> <!-- End of website-content -->
 
-    <script src="brain-script.js"></script>
+  <!-- Tawk.to Widget -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/65f7c0c91ec1082f04e7c0c1/default';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+
+    <!-- Enhanced script loading with caching -->
+    <script>
+      // Initialize asset preloading for this page
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.assetPreloader) {
+          window.assetPreloader.preloadPage('index');
+        }
+        
+        // Preload next likely pages
+        setTimeout(() => {
+          if (window.browserCacheManager) {
+            window.browserCacheManager.preloadPage('about');
+            window.browserCacheManager.preloadPage('contact');
+          }
+        }, 2000);
+      });
+    </script>
+    
     <script src="sphere-loader.js"></script>
     <script src="mobile-nav.js"></script>
+    <script src="security-enhancement.js"></script>
     
-    <!--Start of Tawk.to Script with 25-second delay-->
+    <!-- Tawk.to Widget Configuration -->
     <script type="text/javascript">
-    setTimeout(function() {
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
-    }, 25000); // 25 seconds delay
+      Tawk_API.onLoad = function(){
+        if (typeof Tawk_API !== 'undefined') {
+          // Make Tawk.to widget half the size
+          const tawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk"], div[data-tawk-to], .tawkto, .tawkto *');
+          tawkElements.forEach(function(element) {
+            if (element.classList.contains('tawkto-widget') || 
+                element.classList.contains('tawkto-button') ||
+                element.classList.contains('tawkto-bubble') ||
+                element.classList.contains('tawkto-container')) {
+              // Make widget half the size
+              element.style.transform = 'scale(0.5)';
+              element.style.transformOrigin = 'bottom right';
+            }
+          });
+        }
+      };
     </script>
-    <!--End of Tawk.to Script-->
   </body>
 </html> 

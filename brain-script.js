@@ -17,32 +17,131 @@ document.addEventListener('DOMContentLoaded', function() {
         const ctx = canvas.getContext('2d');
         const nodes = [];
         const connections = [];
-        const nodeCount = 80;
-        const maxConnectionDistance = 180;
+        
+        // Responsive orb system based on screen ratio
+        function getResponsiveNodeCount() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const screenRatio = screenWidth / screenHeight;
+            const screenArea = screenWidth * screenHeight;
+            
+            let level, count;
+            
+            // 5 levels based on screen ratio and area
+            if (screenRatio >= 2.0 && screenArea >= 2000000) {
+                // Ultra-wide desktop (21:9, 32:9, etc.) - Level 5
+                level = 5;
+                count = 200; // Increased from 150 to 200 for ultra-wide displays
+            } else if (screenRatio >= 1.5 && screenArea >= 1500000) {
+                // Wide desktop (16:10, 16:9) - Level 4
+                level = 4;
+                count = 100; // Increased from 60 to 100 for wide displays
+            } else if (screenRatio >= 1.2 && screenArea >= 1000000) {
+                // Standard desktop (4:3, 5:4) - Level 3
+                level = 3;
+                count = 45;
+            } else if (screenRatio >= 0.8 && screenArea >= 500000) {
+                // Tablet landscape - Level 2
+                level = 2;
+                count = 30;
+            } else {
+                // Mobile portrait or small screens - Level 1
+                level = 1;
+                count = 20;
+            }
+            
+            // Log the responsive level for debugging
+            console.log(`🎯 Responsive Orb System: Level ${level} (${count} orbs) - Screen: ${screenWidth}x${screenHeight}, Ratio: ${screenRatio.toFixed(2)}, Area: ${screenArea.toLocaleString()}`);
+            
+            return count;
+        }
+        
+        // Responsive connection distance based on orb level
+        function getResponsiveConnectionDistance() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const screenRatio = screenWidth / screenHeight;
+            const screenArea = screenWidth * screenHeight;
+            
+            let level, distance;
+            
+            // 5 levels of connection distance based on screen ratio and area
+            if (screenRatio >= 2.0 && screenArea >= 2000000) {
+                // Ultra-wide desktop (21:9, 32:9, etc.) - Level 5
+                level = 5;
+                distance = 200; // Longest connections for ultra-wide displays
+            } else if (screenRatio >= 1.5 && screenArea >= 1500000) {
+                // Wide desktop (16:10, 16:9) - Level 4
+                level = 4;
+                distance = 160; // Longer connections for wide displays
+            } else if (screenRatio >= 1.2 && screenArea >= 1000000) {
+                // Standard desktop (4:3, 5:4) - Level 3
+                level = 3;
+                distance = 140; // Medium connections for standard displays
+            } else if (screenRatio >= 0.8 && screenArea >= 500000) {
+                // Tablet landscape - Level 2
+                level = 2;
+                distance = 120; // Shorter connections for tablets
+            } else {
+                // Mobile portrait or small screens - Level 1
+                level = 1;
+                distance = 100; // Shortest connections for mobile
+            }
+            
+            // Log the connection distance for debugging
+            console.log(`🔗 Responsive Connection Distance: Level ${level} (${distance}px) - Screen: ${screenWidth}x${screenHeight}, Ratio: ${screenRatio.toFixed(2)}, Area: ${screenArea.toLocaleString()}`);
+            
+            return distance;
+        }
+        
+        let nodeCount = getResponsiveNodeCount();
+        
+        let maxConnectionDistance = getResponsiveConnectionDistance();
         let performanceMode = false;
         let frameTime = 0;
         let lastFrameTime = 0;
+        let animationId = null;
+        let isVisible = true;
         
         // Check if we're on the contact page for color theming
         const isContactPage = document.body.classList.contains('contact-page');
         // Check if we're on the home page for mouse interactions
         const isHomePage = document.body.classList.contains('home-page');
+        // Check if we're on the starting screen (loader)
+        let isStartingScreen = false;
+        
+        // Log current page type for debugging
+        const currentPage = document.body.className || 'unknown';
+        console.log(`🌐 Current Page: ${currentPage} - Interactive Orbs: ${isHomePage || isStartingScreen ? 'Enabled' : 'Disabled (Passive Mode)'}`);
+        
+        // Function to update starting screen state
+        function updateStartingScreenState() {
+            const loader = document.querySelector('.loader');
+            isStartingScreen = loader && !loader.classList.contains('hidden');
+        }
+        
+        // Function to check if we should show the orb
+        function shouldShowOrb() {
+            return isHomePage || isStartingScreen;
+        }
         const mouse = { 
             x: 0, 
             y: 0, 
             isMoving: false,
-            velocity: { x: 0, y: 0 },
-            lastX: 0,
-            lastY: 0,
-            trail: [],
-            moveTimeout: null,
-            lastMoveTime: 0
+            moveTimeout: null
         };
         
-        // Resize canvas
+        // Resize canvas with device pixel ratio optimization
         function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            ctx.scale(dpr, dpr);
         }
         
         // Initialize nodes
@@ -58,7 +157,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     originalSize: Math.random() * 3 + 1,
                     targetSize: Math.random() * 3 + 1,
                     interactionRadius: 80,
-                    attractionForce: 0.01
+                    attractionForce: 0.01,
+                    // Pre-calculated noise offsets for performance
+                    noiseOffsetX: Math.random() * 1000,
+                    noiseOffsetY: Math.random() * 1000
                 });
             }
         }
@@ -100,47 +202,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 node.vx += repulsionForces[index].vx;
                 node.vy += repulsionForces[index].vy;
                 
-                // Calculate distance to mouse
-                const dx = mouse.x - node.x;
-                const dy = mouse.y - node.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // Enhanced mouse interaction - only when mouse is actually moving
-                if (distance < node.interactionRadius && mouse.isMoving) {
-                    // Only apply forces when mouse is actively moving
-                    const force = node.attractionForce * (1 - distance / node.interactionRadius) * 0.8;
-                    node.vx += dx * force * 0.01;
-                    node.vy += dy * force * 0.01;
+                // Calculate distance to mouse for interactive effects (only on home page and starting screen)
+                if (shouldShowOrb()) {
+                    const dx = mouse.x - node.x;
+                    const dy = mouse.y - node.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Enhanced scaling based on proximity
-                    const scaleFactor = 2.5;
-                    node.targetSize = node.originalSize * (1 + (1 - distance / node.interactionRadius) * scaleFactor);
-                    
-                    // Add repulsion effect for very close nodes to mouse
-                    if (distance < 30) {
-                        const repulsionForce = (30 - distance) * 0.02;
-                        node.vx -= dx * repulsionForce;
-                        node.vy -= dy * repulsionForce;
+                    // Interactive mouse effects (without gravity/pull)
+                    if (distance < node.interactionRadius) {
+                        // Visual scaling based on proximity (no movement)
+                        const scaleFactor = 2.5;
+                        node.targetSize = node.originalSize * (1 + (1 - distance / node.interactionRadius) * scaleFactor);
+                        
+                        // Add subtle repulsion effect for very close nodes to mouse
+                        if (distance < 30) {
+                            const repulsionForce = (30 - distance) * 0.02;
+                            node.vx -= dx * repulsionForce;
+                            node.vy -= dy * repulsionForce;
+                        }
+                    } else {
+                        node.targetSize = node.originalSize;
                     }
                 } else {
+                    // On other pages, keep nodes at original size
                     node.targetSize = node.originalSize;
                 }
                 
                 // Smooth size transition
                 node.size += (node.targetSize - node.size) * 0.1;
                 
-                // Enhanced constant movement (always active)
+                // Ultra-optimized movement for 120fps
                 const time = Date.now() * 0.001;
-                const noiseX = Math.sin(time + node.x * 0.01) * 0.3;
-                const noiseY = Math.cos(time + node.y * 0.01) * 0.3;
+                const noiseX = Math.sin(time + node.noiseOffsetX * 0.008) * 0.15; // Further reduced intensity
+                const noiseY = Math.cos(time + node.noiseOffsetY * 0.008) * 0.15; // Further reduced intensity
                 
-                // Add wave-like movement
-                node.vx += noiseX * 0.02;
-                node.vy += noiseY * 0.02;
+                // Add wave-like movement (ultra-reduced frequency)
+                node.vx += noiseX * 0.01; // Reduced from 0.015
+                node.vy += noiseY * 0.01; // Reduced from 0.015
                 
-                // Add random movement for more liveliness
-                node.vx += (Math.random() - 0.5) * 0.015;
-                node.vy += (Math.random() - 0.5) * 0.015;
+                // Add random movement for more liveliness (ultra-reduced frequency)
+                if (Math.random() < 0.2) { // Only 20% of the time for 120fps
+                    node.vx += (Math.random() - 0.5) * 0.008; // Reduced from 0.01
+                    node.vy += (Math.random() - 0.5) * 0.008; // Reduced from 0.01
+                }
                 
                 // Move nodes with dampening
                 node.x += node.vx;
@@ -174,7 +278,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function drawConnections() {
             const time = Date.now() * 0.001;
             let connectionCount = 0;
-            const maxConnections = 200; // Limit connections to prevent performance issues
+            // Responsive connection limit based on node count
+            const maxConnections = Math.min(nodeCount * 2, 200); // Scale with node count but cap at 200 for higher levels
             
             for (let i = 0; i < nodes.length && connectionCount < maxConnections; i++) {
                 for (let j = i + 1; j < nodes.length && connectionCount < maxConnections; j++) {
@@ -226,10 +331,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Enhanced connections from mouse to nearby nodes (only on home page)
-            if (isHomePage && mouse.isMoving) {
+            // Enhanced connections from mouse to nearby nodes (on home page and starting screen)
+            if (shouldShowOrb() && mouse.isMoving) {
                 let mouseConnectionCount = 0;
-                const maxMouseConnections = 15; // Limit mouse connections for performance
+                // Responsive mouse connection limit based on node count
+                const maxMouseConnections = Math.min(Math.floor(nodeCount * 0.3), 40); // Scale with node count but cap at 40 for higher levels
                 
                 nodes.forEach(node => {
                     if (mouseConnectionCount >= maxMouseConnections) return;
@@ -251,8 +357,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             gradient.addColorStop(0, `rgba(255, 255, 255, ${finalOpacity})`);
                             gradient.addColorStop(0.5, `rgba(0, 0, 0, ${finalOpacity * 0.8})`);
                             gradient.addColorStop(1, `rgba(50, 50, 50, ${finalOpacity * 0.6})`);
+                        } else if (isStartingScreen) {
+                            // White colors for starting screen
+                            gradient.addColorStop(0, `rgba(255, 255, 255, ${finalOpacity})`);
+                            gradient.addColorStop(0.5, `rgba(255, 255, 255, ${finalOpacity * 0.8})`);
+                            gradient.addColorStop(1, `rgba(255, 255, 255, ${finalOpacity * 0.6})`);
                         } else {
-                            // Original blue colors for other pages
+                            // Original blue colors for home page
                             gradient.addColorStop(0, `rgba(255, 255, 255, ${finalOpacity})`);
                             gradient.addColorStop(0.5, `rgba(0, 102, 255, ${finalOpacity * 0.8})`);
                             gradient.addColorStop(1, `rgba(77, 148, 255, ${finalOpacity * 0.6})`);
@@ -267,7 +378,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         ctx.stroke();
                         
                         // Add energy glow
-                        const shadowColor = isContactPage ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
+                        const shadowColor = isContactPage ? 'rgba(0, 0, 0, 0.5)' : 
+                                          isStartingScreen ? 'rgba(255, 255, 255, 0.5)' : 
+                                          'rgba(255, 255, 255, 0.5)';
                         ctx.shadowColor = shadowColor;
                         ctx.shadowBlur = 8;
                         ctx.stroke();
@@ -277,157 +390,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Draw mouse trail
-        function drawMouseTrail() {
-            if (mouse.trail.length > 1) {
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                
-                // Create smooth curve using quadratic bezier interpolation
-                const points = mouse.trail.filter(point => {
-                    const age = (Date.now() - point.time) / 1000;
-                    return age < 1.5; // Only show recent points
-                });
-                
-                if (points.length < 2) return;
-                
-                // Draw main trail with smooth curve
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-                
-                // Use quadratic bezier curves for smoother lines
-                for (let i = 1; i < points.length - 1; i++) {
-                    const current = points[i];
-                    const next = points[i + 1];
-                    
-                    // Calculate control point for smooth curve
-                    const cpX = (current.x + next.x) / 2;
-                    const cpY = (current.y + next.y) / 2;
-                    
-                    ctx.quadraticCurveTo(current.x, current.y, cpX, cpY);
-                }
-                
-                // Connect to the last point
-                if (points.length > 1) {
-                    ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
-                }
-                
-                // Create flowing gradient for the entire trail
-                const firstPoint = points[0];
-                const lastPoint = points[points.length - 1];
-                const gradient = ctx.createLinearGradient(
-                    firstPoint.x, firstPoint.y, lastPoint.x, lastPoint.y
-                );
-                
-                // Enhanced color stops for more fluid appearance
-                gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
-                gradient.addColorStop(0.15, 'rgba(0, 255, 255, 0.95)');
-                gradient.addColorStop(0.3, 'rgba(0, 200, 255, 0.9)');
-                gradient.addColorStop(0.5, 'rgba(0, 150, 255, 0.8)');
-                gradient.addColorStop(0.7, 'rgba(0, 100, 255, 0.6)');
-                gradient.addColorStop(0.85, 'rgba(0, 50, 255, 0.4)');
-                gradient.addColorStop(1, 'rgba(0, 0, 255, 0.1)');
-                
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 4;
-                
-                // Enhanced glow effect
-                ctx.shadowColor = 'rgba(0, 200, 255, 0.8)';
-                ctx.shadowBlur = 12;
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-                
-                // Draw secondary trail with different opacity for depth
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-                
-                for (let i = 1; i < points.length - 1; i++) {
-                    const current = points[i];
-                    const next = points[i + 1];
-                    const cpX = (current.x + next.x) / 2;
-                    const cpY = (current.y + next.y) / 2;
-                    ctx.quadraticCurveTo(current.x, current.y, cpX, cpY);
-                }
-                
-                if (points.length > 1) {
-                    ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
-                }
-                
-                // Secondary trail with different color
-                const secondaryGradient = ctx.createLinearGradient(
-                    firstPoint.x, firstPoint.y, lastPoint.x, lastPoint.y
-                );
-                secondaryGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-                secondaryGradient.addColorStop(0.5, 'rgba(0, 150, 255, 0.4)');
-                secondaryGradient.addColorStop(1, 'rgba(0, 100, 255, 0.2)');
-                
-                ctx.strokeStyle = secondaryGradient;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                // Add flowing energy particles with improved positioning
-                if (mouse.isMoving && points.length > 0) {
-                    const currentPoint = points[points.length - 1];
-                    const velocity = currentPoint.velocity || 0;
-                    const particleCount = Math.min(12, Math.floor(velocity / 6) + 4);
-                    
-                    // Draw particles along the smooth trail path
-                    for (let i = 0; i < particleCount; i++) {
-                        const trailProgress = i / particleCount;
-                        const trailIndex = Math.floor(trailProgress * (points.length - 1));
-                        
-                        if (trailIndex < points.length - 1) {
-                            const point = points[trailIndex];
-                            const nextPoint = points[trailIndex + 1];
-                            
-                            // Smooth interpolation along trail segment
-                            const t = (trailProgress * (points.length - 1)) % 1;
-                            const x = point.x + (nextPoint.x - point.x) * t;
-                            const y = point.y + (nextPoint.y - point.y) * t;
-                            
-                            // Dynamic particle size based on position
-                            const size = (1 - trailProgress) * 3 + 0.5;
-                            const particleOpacity = (1 - trailProgress) * 0.9 + 0.1;
-                            
-                            // Enhanced particle glow
-                            ctx.shadowColor = 'rgba(0, 255, 255, 0.9)';
-                            ctx.shadowBlur = size * 6;
-                            ctx.fillStyle = `rgba(255, 255, 255, ${particleOpacity})`;
-                            ctx.beginPath();
-                            ctx.arc(x, y, size, 0, Math.PI * 2);
-                            ctx.fill();
-                            ctx.shadowBlur = 0;
-                        }
-                    }
-                }
-                
-                // Add subtle sparkle effect at the trail head
-                if (mouse.isMoving && points.length > 0) {
-                    const headPoint = points[points.length - 1];
-                    const sparkleCount = 3;
-                    
-                    for (let i = 0; i < sparkleCount; i++) {
-                        const angle = (Date.now() * 0.01 + i * Math.PI * 2 / sparkleCount) % (Math.PI * 2);
-                        const radius = 8 + Math.sin(Date.now() * 0.02 + i) * 3;
-                        const x = headPoint.x + Math.cos(angle) * radius;
-                        const y = headPoint.y + Math.sin(angle) * radius;
-                        
-                        const sparkleOpacity = 0.7 + Math.sin(Date.now() * 0.03 + i) * 0.3;
-                        
-                        ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-                        ctx.shadowBlur = 4;
-                        ctx.fillStyle = `rgba(255, 255, 255, ${sparkleOpacity})`;
-                        ctx.beginPath();
-                        ctx.arc(x, y, 1, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.shadowBlur = 0;
-                    }
-                }
-            }
-        }
+        // Mouse trail function removed for 120fps performance
         
         // Draw nodes
         function drawNodes() {
+            // Draw regular nodes
             nodes.forEach(node => {
                 const pulseSize = Math.sin(node.pulse) * 0.5 + 1;
                 const size = node.size * pulseSize;
@@ -464,93 +431,146 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
                 ctx.fill();
             });
-        }
-        
-        // Enhanced mouse interaction with smoother trail
-        function handleMouseMove(e) {
-            const rect = canvas.getBoundingClientRect();
-            const newX = e.clientX - rect.left;
-            const newY = e.clientY - rect.top;
             
-            // Calculate mouse velocity for enhanced interaction
-            mouse.velocity.x = newX - mouse.x;
-            mouse.velocity.y = newY - mouse.y;
-            
-            // Update mouse position
-            mouse.x = newX;
-            mouse.y = newY;
-            
-            // Enhanced trail point management for smoother animation
-            const velocity = Math.sqrt(mouse.velocity.x * mouse.velocity.x + mouse.velocity.y * mouse.velocity.y);
-            
-            // Adaptive point addition based on velocity and time
-            const lastPoint = mouse.trail[mouse.trail.length - 1];
-            const timeSinceLastPoint = lastPoint ? Date.now() - lastPoint.time : 1000;
-            const distanceFromLastPoint = lastPoint ? 
-                Math.sqrt(Math.pow(mouse.x - lastPoint.x, 2) + Math.pow(mouse.y - lastPoint.y, 2)) : 100;
-            
-            // More responsive point addition for smoother curves
-            const shouldAddPoint = velocity > 1.5 || 
-                                 timeSinceLastPoint > 30 || 
-                                 distanceFromLastPoint > 8;
-            
-            if (shouldAddPoint) {
-                // Add point with enhanced data for smoother rendering
-                mouse.trail.push({ 
-                    x: mouse.x, 
-                    y: mouse.y, 
-                    time: Date.now(),
-                    velocity: velocity,
-                    pressure: Math.min(1, velocity / 10) // Add pressure data for line width variation
-                });
-                
-                // Optimize trail length for performance and smoothness
-                const optimalLength = Math.max(12, Math.min(20, Math.floor(velocity / 2) + 8));
-                if (mouse.trail.length > optimalLength) {
-                    mouse.trail.shift();
+            // Draw cursor orb (on home page or starting screen)
+            if (shouldShowOrb()) {
+                if (mouse.x !== -100 && mouse.y !== -100) {
+                    const cursorSize = 8;
+                    const pulseSize = Math.sin(Date.now() * 0.005) * 0.3 + 1;
+                    const finalSize = cursorSize * pulseSize;
+                    
+                    // Cursor orb glow effect
+                    const cursorGradient = ctx.createRadialGradient(
+                        mouse.x, mouse.y, 0,
+                        mouse.x, mouse.y, finalSize * 3
+                    );
+                    
+                    if (isContactPage) {
+                        cursorGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                        cursorGradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.8)');
+                        cursorGradient.addColorStop(0.7, 'rgba(0, 0, 0, 0.4)');
+                        cursorGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    } else {
+                        // Fluorescent blue colors for mouse orb
+                        cursorGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                        cursorGradient.addColorStop(0.3, 'rgba(0, 255, 255, 0.95)'); // Cyan
+                        cursorGradient.addColorStop(0.5, 'rgba(0, 191, 255, 0.9)'); // Deep sky blue
+                        cursorGradient.addColorStop(0.7, 'rgba(0, 150, 255, 0.6)'); // Dodger blue
+                        cursorGradient.addColorStop(1, 'rgba(0, 100, 255, 0)'); // Royal blue
+                    }
+                    
+                    ctx.fillStyle = cursorGradient;
+                    ctx.beginPath();
+                    ctx.arc(mouse.x, mouse.y, finalSize * 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Cursor orb core
+                    const cursorCoreColor = isContactPage ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 255, 255, 1)'; // Fluorescent cyan core
+                    ctx.fillStyle = cursorCoreColor;
+                    ctx.beginPath();
+                    ctx.arc(mouse.x, mouse.y, finalSize, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Add a subtle inner glow
+                    const innerGlow = ctx.createRadialGradient(
+                        mouse.x, mouse.y, 0,
+                        mouse.x, mouse.y, finalSize * 0.5
+                    );
+                    innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); // Bright white center
+                    innerGlow.addColorStop(0.5, 'rgba(0, 255, 255, 0.6)'); // Fluorescent cyan
+                    innerGlow.addColorStop(1, 'rgba(0, 255, 255, 0)'); // Fade to transparent
+                    
+                    ctx.fillStyle = innerGlow;
+                    ctx.beginPath();
+                    ctx.arc(mouse.x, mouse.y, finalSize * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
                 }
             }
+        }
+        
+        // Mouse interaction for cursor orb and neural connections
+        function handleMouseMove(e) {
+            const rect = canvas.getBoundingClientRect();
             
-            // Enhanced moving state detection
+            // Calculate accurate coordinates with device pixel ratio correction
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            // Get mouse coordinates relative to canvas
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            
+            // Apply coordinate correction for consistency
+            const correctedX = Math.round(mouseX);
+            const correctedY = Math.round(mouseY);
+            
+            // Check if mouse is actually over navbar or footer elements
+            const navbar = document.querySelector('.navbar');
+            const footer = document.querySelector('.footer');
+            
+            // Get navbar and footer bounding rectangles for precise detection
+            const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+            
+            // Check if mouse is directly over navbar or footer
+            const isOverNavbar = navbarRect && 
+                e.clientX >= navbarRect.left && 
+                e.clientX <= navbarRect.right && 
+                e.clientY >= navbarRect.top && 
+                e.clientY <= navbarRect.bottom;
+                
+            const isOverFooter = footerRect && 
+                e.clientX >= footerRect.left && 
+                e.clientX <= footerRect.right && 
+                e.clientY >= footerRect.top && 
+                e.clientY <= footerRect.bottom;
+            
+            // Only hide cursor orb when directly over navbar or footer
+            if (!isOverNavbar && !isOverFooter) {
+                // Ensure mouse position is within canvas bounds with coordinate correction
+                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                
+                // Mouse trail tracking removed for 120fps performance
+            } else {
+                // Hide cursor orb when directly over navbar or footer
+                mouse.x = -100;
+                mouse.y = -100;
+            }
+            
+            // Set moving state for neural connections (works for both home page and starting screen)
             mouse.isMoving = true;
-            
-            // Adaptive timeout based on velocity
-            const timeoutDuration = Math.max(100, Math.min(300, 200 - velocity * 10));
             clearTimeout(mouse.moveTimeout);
             mouse.moveTimeout = setTimeout(() => {
                 mouse.isMoving = false;
-            }, timeoutDuration);
+            }, 200);
         }
         
-        // Enhanced mouse enter
+        // Mouse enter/leave for neural interactions
         function handleMouseEnter() {
             nodes.forEach(node => {
                 node.interactionRadius = 150;
-                // Don't add energy burst - just enable interaction
             });
         }
         
-        // Enhanced mouse leave
         function handleMouseLeave() {
             mouse.isMoving = false;
-            mouse.trail = [];
+            // Hide cursor orb by setting it off-screen when mouse leaves
+            mouse.x = -100;
+            mouse.y = -100;
             nodes.forEach(node => {
-                node.interactionRadius = 100;
-                // Add a gentle repulsion effect when mouse leaves
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const dx = centerX - node.x;
-                const dy = centerY - node.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance > 0) {
-                    node.vx += (dx / distance) * 0.5;
-                    node.vy += (dy / distance) * 0.5;
-                }
+                node.interactionRadius = 80;
             });
         }
         
         // Animation loop
         function animate() {
+            // Skip animation if page is not visible
+            if (!isVisible) {
+                animationId = requestAnimationFrame(animate);
+                return;
+            }
+            
             const startTime = performance.now();
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -558,77 +578,174 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNodes();
             drawConnections();
             
-            // Only draw mouse trail on home page
-            if (isHomePage) {
-                drawMouseTrail();
-            }
+            // Mouse trail removed for 120fps performance
             
             drawNodes();
             
             // Performance monitoring
             frameTime = performance.now() - startTime;
             
-            // Adjust performance mode based on frame time
-            if (frameTime > 16.67) { // If frame time > 60fps threshold
+            // Adjust performance mode based on frame time for 120fps target
+            if (frameTime > 8.33) { // If frame time > 120fps threshold (8.33ms)
                 if (!performanceMode) {
                     performanceMode = true;
                     // Reduce connection distance when performance is poor
-                    maxConnectionDistance = Math.max(120, maxConnectionDistance - 20);
+                    const baseDistance = getResponsiveConnectionDistance();
+                    maxConnectionDistance = Math.max(baseDistance * 0.6, maxConnectionDistance - 30);
+                    console.log(`⚡ Performance mode activated: Reduced connection distance to ${maxConnectionDistance}px`);
                 }
-            } else if (frameTime < 12 && performanceMode) { // If performance is good
+            } else if (frameTime < 6 && performanceMode) { // If performance is good for 120fps
                 performanceMode = false;
-                // Gradually restore connection distance
-                maxConnectionDistance = Math.min(180, maxConnectionDistance + 10);
+                // Gradually restore connection distance to responsive level
+                const baseDistance = getResponsiveConnectionDistance();
+                maxConnectionDistance = Math.min(baseDistance, maxConnectionDistance + 15);
+                console.log(`⚡ Performance mode deactivated: Restored connection distance to ${maxConnectionDistance}px`);
             }
             
             lastFrameTime = frameTime;
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        // Handle visibility changes
+        function handleVisibilityChange() {
+            isVisible = !document.hidden;
         }
         
         // Initialize
         resizeCanvas();
         initNodes();
         
-        // Touch event handlers for mobile
+        // Log complete responsive configuration
+        console.log(`🎯 Complete Responsive Configuration:`);
+        console.log(`   📱 Page: ${document.body.className || 'unknown'}`);
+        console.log(`   🎯 Orbs: ${nodeCount} (Level ${getResponsiveNodeCount() === 200 ? 5 : getResponsiveNodeCount() === 100 ? 4 : getResponsiveNodeCount() === 45 ? 3 : getResponsiveNodeCount() === 30 ? 2 : 1})`);
+        console.log(`   🔗 Connections: ${maxConnectionDistance}px max distance`);
+        console.log(`   🖱️  Interactive: ${isHomePage || isStartingScreen ? 'Yes' : 'No (Passive Mode)'}`);
+        console.log(`   🎨 Theme: ${isContactPage ? 'Dark' : 'Blue'}`);
+        
+        // Initialize starting screen state
+        updateStartingScreenState();
+        
+        // Also check immediately if we should show the orb
+        const shouldShowOrbNow = shouldShowOrb();
+        
+        // Set up observer to watch for starting screen state changes
+        const loader = document.querySelector('.loader');
+        if (loader) {
+            const observer = new MutationObserver(updateStartingScreenState);
+            observer.observe(loader, { 
+                attributes: true, 
+                attributeFilter: ['class'] 
+            });
+        }
+        
+        // Touch event handlers for cursor orb and neural interactions
         function handleTouchStart(e) {
-            if (!isHomePage) return;
+            if (!shouldShowOrb()) return;
             e.preventDefault();
+            
+            // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            mouse.x = touch.clientX - rect.left;
-            mouse.y = touch.clientY - rect.top;
+            
+            // Calculate accurate touch coordinates with device pixel ratio correction
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            // Get touch coordinates relative to canvas
+            const touchX = (touch.clientX - rect.left) * scaleX;
+            const touchY = (touch.clientY - rect.top) * scaleY;
+            
+            // Apply additional mobile-specific corrections
+            const correctedX = Math.round(touchX);
+            const correctedY = Math.round(touchY);
+            
+            // Check if touch is actually over navbar or footer elements
+            const navbar = document.querySelector('.navbar');
+            const footer = document.querySelector('.footer');
+            
+            // Get navbar and footer bounding rectangles for precise detection
+            const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+            
+            // Check if touch is directly over navbar or footer
+            const isOverNavbar = navbarRect && 
+                touch.clientX >= navbarRect.left && 
+                touch.clientX <= navbarRect.right && 
+                touch.clientY >= navbarRect.top && 
+                touch.clientY <= navbarRect.bottom;
+                
+            const isOverFooter = footerRect && 
+                touch.clientX >= footerRect.left && 
+                touch.clientX <= footerRect.right && 
+                touch.clientY >= footerRect.top && 
+                touch.clientY <= footerRect.bottom;
+            
+            // Only hide cursor orb when directly over navbar or footer
+            if (!isOverNavbar && !isOverFooter) {
+                // Ensure mouse position is within canvas bounds with mobile optimization
+                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+            } else {
+                // Hide cursor orb when directly over navbar or footer
+                mouse.x = -100;
+                mouse.y = -100;
+            }
+            
             mouse.isMoving = true;
             handleMouseEnter();
         }
 
         function handleTouchMove(e) {
-            if (!isHomePage) return;
+            if (!shouldShowOrb()) return;
             e.preventDefault();
+            
+            // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            const newX = touch.clientX - rect.left;
-            const newY = touch.clientY - rect.top;
             
-            // Calculate velocity
-            mouse.velocity.x = newX - mouse.x;
-            mouse.velocity.y = newY - mouse.y;
-            mouse.x = newX;
-            mouse.y = newY;
+            // Calculate accurate touch coordinates with device pixel ratio correction
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
             
-            // Add to trail
-            const velocity = Math.sqrt(mouse.velocity.x * mouse.velocity.x + mouse.velocity.y * mouse.velocity.y);
-            mouse.trail.push({ 
-                x: mouse.x, 
-                y: mouse.y, 
-                time: Date.now(),
-                velocity: velocity,
-                pressure: Math.min(1, velocity / 10)
-            });
+            // Get touch coordinates relative to canvas
+            const touchX = (touch.clientX - rect.left) * scaleX;
+            const touchY = (touch.clientY - rect.top) * scaleY;
             
-            // Optimize trail length
-            const optimalLength = Math.max(8, Math.min(15, Math.floor(velocity / 2) + 6));
-            if (mouse.trail.length > optimalLength) {
-                mouse.trail.shift();
+            // Apply additional mobile-specific corrections
+            const correctedX = Math.round(touchX);
+            const correctedY = Math.round(touchY);
+            
+            // Check if touch is actually over navbar or footer elements
+            const navbar = document.querySelector('.navbar');
+            const footer = document.querySelector('.footer');
+            
+            // Get navbar and footer bounding rectangles for precise detection
+            const navbarRect = navbar ? navbar.getBoundingClientRect() : null;
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+            
+            // Check if touch is directly over navbar or footer
+            const isOverNavbar = navbarRect && 
+                touch.clientX >= navbarRect.left && 
+                touch.clientX <= navbarRect.right && 
+                touch.clientY >= navbarRect.top && 
+                touch.clientY <= navbarRect.bottom;
+                
+            const isOverFooter = footerRect && 
+                touch.clientX >= footerRect.left && 
+                touch.clientX <= footerRect.right && 
+                touch.clientY >= footerRect.top && 
+                touch.clientY <= footerRect.bottom;
+            
+            // Only hide cursor orb when directly over navbar or footer
+            if (!isOverNavbar && !isOverFooter) {
+                // Ensure mouse position is within canvas bounds with mobile optimization
+                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
+                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+            } else {
+                // Hide cursor orb when directly over navbar or footer
+                mouse.x = -100;
+                mouse.y = -100;
             }
             
             mouse.isMoving = true;
@@ -639,36 +756,61 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function handleTouchEnd(e) {
-            if (!isHomePage) return;
+            if (!isHomePage && !isStartingScreen) return;
             e.preventDefault();
             mouse.isMoving = false;
-            setTimeout(() => {
-                mouse.trail = [];
-            }, 500);
         }
 
         // Orientation change handler
         function handleOrientationChange() {
             setTimeout(() => {
                 resizeCanvas();
-                // Reinitialize nodes on orientation change
+                // Update node count and connection distance based on new orientation
+                const newNodeCount = getResponsiveNodeCount();
+                const newMaxConnectionDistance = getResponsiveConnectionDistance();
+                
+                // Always reinitialize on orientation change for better responsiveness
+                nodeCount = newNodeCount;
+                maxConnectionDistance = newMaxConnectionDistance;
                 nodes.length = 0;
                 initNodes();
+                
+                // Log the orientation change update
+                console.log(`📱 Orientation Change: ${nodeCount} orbs, ${maxConnectionDistance}px connections`);
             }, 100);
         }
 
-        // Add event listeners for both mouse and touch
-        if (isHomePage) {
+        // Add event listeners for both mouse and touch (for home page and starting screen)
+        if (shouldShowOrb()) {
             // Mouse events
             canvas.addEventListener('mousemove', handleMouseMove);
             canvas.addEventListener('mouseenter', handleMouseEnter);
             canvas.addEventListener('mouseleave', handleMouseLeave);
             
-            // Touch events for mobile
-            canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-            canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-            canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
-            canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+            // Touch events for mobile with enhanced options
+            canvas.addEventListener('touchstart', handleTouchStart, { 
+                passive: false, 
+                capture: false 
+            });
+            canvas.addEventListener('touchmove', handleTouchMove, { 
+                passive: false, 
+                capture: false 
+            });
+            canvas.addEventListener('touchend', handleTouchEnd, { 
+                passive: false, 
+                capture: false 
+            });
+            canvas.addEventListener('touchcancel', handleTouchEnd, { 
+                passive: false, 
+                capture: false 
+            });
+            
+            // Prevent default touch behaviors that might interfere
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
         }
         
         // Enhanced resize handler with orientation support
@@ -677,13 +819,28 @@ document.addEventListener('DOMContentLoaded', function() {
             // Debounce node reinitialization for better performance
             clearTimeout(window.resizeTimeout);
             window.resizeTimeout = setTimeout(() => {
-                nodes.length = 0;
-                initNodes();
+                // Update node count and connection distance based on new screen size
+                const newNodeCount = getResponsiveNodeCount();
+                const newMaxConnectionDistance = getResponsiveConnectionDistance();
+                
+                // Only reinitialize if the counts actually changed
+                if (newNodeCount !== nodeCount || newMaxConnectionDistance !== maxConnectionDistance) {
+                    nodeCount = newNodeCount;
+                    maxConnectionDistance = newMaxConnectionDistance;
+                    nodes.length = 0;
+                    initNodes();
+                    
+                    // Log the responsive update
+                    console.log(`🔄 Responsive Update: ${nodeCount} orbs, ${maxConnectionDistance}px connections`);
+                }
             }, 300);
         });
         
         // Orientation change support
         window.addEventListener('orientationchange', handleOrientationChange);
+        
+        // Visibility change support for performance
+        document.addEventListener('visibilitychange', handleVisibilityChange);
         
         animate();
     }
@@ -943,8 +1100,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
          console.log('🤖 AI Nexus initialized successfully!');
      
-     // Security: Block right-click and inspect element
+     // Security: Block right-click and inspect element (only after 3 user inputs within 10 seconds)
      function initSecurity() {
+         // User input tracking variables
+         let userInputCount = 0;
+         let lastInputTime = 0;
+         let securityEnabled = false;
+         
          // F12/Developer Tools Related Jokes
          const f12Jokes = [
              "F12? In this economy? Try Ctrl+Alt+Delete on your career instead",
@@ -1044,6 +1206,26 @@ document.addEventListener('DOMContentLoaded', function() {
              "Right-click blocked. Left-click your way to success"
          ];
 
+         // Function to track user inputs
+         function trackUserInput() {
+             const currentTime = Date.now();
+             
+             // Reset counter if more than 10 seconds have passed
+             if (currentTime - lastInputTime > 10000) {
+                 userInputCount = 0;
+             }
+             
+             userInputCount++;
+             lastInputTime = currentTime;
+             
+             // Enable security after 3 inputs within 10 seconds
+             if (userInputCount >= 3) {
+                 securityEnabled = true;
+                 // Reset counter after enabling security
+                 userInputCount = 0;
+             }
+         }
+
          // Function to get random F12 joke
          function getRandomF12Joke() {
              return f12Jokes[Math.floor(Math.random() * f12Jokes.length)];
@@ -1056,6 +1238,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
          // Function to show security joke notification
          function showSecurityJoke(jokeType = 'f12') {
+             // Only show joke if security is enabled
+             if (!securityEnabled) return;
+             
              const joke = jokeType === 'rightclick' ? getRandomRightClickJoke() : getRandomF12Joke();
              const notification = document.createElement('div');
              notification.className = 'security-joke-notification';
@@ -1134,61 +1319,60 @@ document.addEventListener('DOMContentLoaded', function() {
              }, 4000);
          }
 
-         // Block right-click context menu
+         // Track user inputs from various sources
+         document.addEventListener('click', trackUserInput);
+         document.addEventListener('keydown', trackUserInput);
+         document.addEventListener('input', trackUserInput);
+         document.addEventListener('scroll', trackUserInput);
+
+         // Block right-click context menu (only when security is enabled)
          document.addEventListener('contextmenu', function(e) {
-             e.preventDefault();
-             showSecurityJoke('rightclick');
-             return false;
+             if (securityEnabled) {
+                 e.preventDefault();
+                 showSecurityJoke('rightclick');
+                 return false;
+             }
          });
          
-         // Block F12 key (inspect element)
+         // Block F12 key (inspect element) - only when security is enabled
          document.addEventListener('keydown', function(e) {
-             if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'J') || (e.ctrlKey && e.key === 'U')) {
+             if (securityEnabled && (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'J') || (e.ctrlKey && e.key === 'U'))) {
                  e.preventDefault();
                  showSecurityJoke('f12');
                  return false;
              }
          });
          
-         // Block Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-         document.addEventListener('keydown', function(e) {
-             if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) {
-                 e.preventDefault();
-                 showSecurityJoke('f12');
-                 return false;
-             }
-             if (e.ctrlKey && e.key === 'U') {
-                 e.preventDefault();
-                 showSecurityJoke('f12');
-                 return false;
-             }
-         });
-         
-         // Block developer tools via console.log detection
+         // Block developer tools via console.log detection (only when security is enabled)
          let devtools = { open: false, orientation: null };
          setInterval(() => {
-             const threshold = 160;
-             if (window.outerHeight - window.innerHeight > threshold || window.outerWidth - window.innerWidth > threshold) {
-                 if (!devtools.open) {
-                     devtools.open = true;
-                     showSecurityJoke('f12');
-                     // Don't replace entire body, just show joke
+             if (securityEnabled) {
+                 const threshold = 160;
+                 if (window.outerHeight - window.innerHeight > threshold || window.outerWidth - window.innerWidth > threshold) {
+                     if (!devtools.open) {
+                         devtools.open = true;
+                         showSecurityJoke('f12');
+                     }
+                 } else {
+                     devtools.open = false;
                  }
-             } else {
-                 devtools.open = false;
              }
          }, 500);
          
-         // Disable text selection
+         // Disable text selection (only when security is enabled)
          document.addEventListener('selectstart', function(e) {
-             e.preventDefault();
-             return false;
+             if (securityEnabled) {
+                 e.preventDefault();
+                 return false;
+             }
          });
          
-         // Disable drag and drop
+         // Disable drag and drop (only when security is enabled)
          document.addEventListener('dragstart', function(e) {
-             e.preventDefault();
-             return false;
+             if (securityEnabled) {
+                 e.preventDefault();
+                 return false;
+             }
          });
      }
      

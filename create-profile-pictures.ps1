@@ -2,7 +2,7 @@
 # This script creates circular profile pictures from the source image
 
 param(
-    [string]$SourceImage = "b7e307ba-fc5b-43e8-a3c2-d4c758735a12.jpg",
+    [string]$SourceImage = "blake-zimmerman.jpg",
     [string]$OutputDir = "profile-pictures"
 )
 

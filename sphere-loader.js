@@ -9,6 +9,8 @@
    time: 0,
    isGrowing: false,
    growthTime: 0,
+   hasInteracted: false, // Track if user has interacted
+   orbHidden: false, // Track if orb should be hidden
   
   // Responsive parameters
   getResponsiveParams: function() {
@@ -20,17 +22,20 @@
     if (screenArea < 500000) { // Small screens (mobile)
       return {
         orbSize: 8,
-        glowSize: 20
+        glowSize: 20,
+        isMobile: true
       };
     } else if (screenArea < 1000000) { // Medium screens (tablet)
       return {
         orbSize: 12,
-        glowSize: 30
+        glowSize: 30,
+        isMobile: false
       };
     } else { // Large screens (desktop)
       return {
         orbSize: 15,
-        glowSize: 40
+        glowSize: 40,
+        isMobile: false
       };
     }
   },
@@ -40,6 +45,9 @@
   },
 
      DrawOrb: function() {
+     // Don't draw orb if it's hidden
+     if (D.orbHidden) return;
+     
      var params = D.getResponsiveParams();
      
      // Calculate growth effect
@@ -48,31 +56,77 @@
        growthMultiplier = 1.0 + Math.sin(D.growthTime * 0.02) * 0.3; // Pulsing growth
      }
      
-     var currentOrbSize = params.orbSize * growthMultiplier;
-     var currentGlowSize = params.glowSize * growthMultiplier;
+     // Add subtle hover effect when mouse is near center (desktop only)
+     var centerX = D.canvas.width / 2;
+     var centerY = D.canvas.height / 2;
+     var hoverEffect = 0;
+     if (!params.isMobile) {
+       var distanceFromCenter = Math.sqrt((D.mouseX - centerX) ** 2 + (D.mouseY - centerY) ** 2);
+       hoverEffect = Math.max(0, 1 - distanceFromCenter / 200); // Hover effect within 200px of center
+     }
+     
+     // Add smooth fluid animation to the orb
+     var time = Date.now() * 0.001;
+     var fluidPulse = Math.sin(time * 3) * 0.1 + 1; // Subtle pulsing
+     var fluidWobble = Math.sin(time * 2) * 0.05; // Subtle wobble
+     var fluidRotation = Math.sin(time * 1.5) * 0.02; // Subtle rotation effect
+     
+     var currentOrbSize = params.orbSize * growthMultiplier * fluidPulse * (1 + hoverEffect * 0.2);
+     var currentGlowSize = params.glowSize * growthMultiplier * fluidPulse * (1 + hoverEffect * 0.3);
+     
+     // Use mouse position directly for cursor-like behavior with fluid effects
+     var orbX = D.mouseX + fluidWobble;
+     var orbY = D.mouseY + fluidRotation;
      
      // Create radial gradient for glow effect
      var gradient = D.ctx.createRadialGradient(
-       D.centerX, D.centerY, 0,
-       D.centerX, D.centerY, currentGlowSize
+       orbX, orbY, 0,
+       orbX, orbY, currentGlowSize
      );
      
-     // Add glow stops
-     gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-     gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.6)');
-     gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.2)');
+     // Add glow stops - white theme for startup screen
+     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+     gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.9)');
+     gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.7)');
+     gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.4)');
      gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
      
      // Draw the glowing orb
      D.ctx.beginPath();
-     D.ctx.arc(D.centerX, D.centerY, currentGlowSize, 0, 2 * Math.PI, false);
+     D.ctx.arc(orbX, orbY, currentGlowSize, 0, 2 * Math.PI, false);
      D.ctx.fillStyle = gradient;
      D.ctx.fill();
      
      // Draw the core orb
      D.ctx.beginPath();
-     D.ctx.arc(D.centerX, D.centerY, currentOrbSize, 0, 2 * Math.PI, false);
-     D.ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+     D.ctx.arc(orbX, orbY, currentOrbSize, 0, 2 * Math.PI, false);
+     D.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+     D.ctx.fill();
+     
+     // Add inner glow for enhanced effect
+     var innerGlow = D.ctx.createRadialGradient(
+       orbX, orbY, 0,
+       orbX, orbY, currentOrbSize * 0.5
+     );
+     innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+     innerGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+     
+     D.ctx.beginPath();
+     D.ctx.arc(orbX, orbY, currentOrbSize * 0.5, 0, 2 * Math.PI, false);
+     D.ctx.fillStyle = innerGlow;
+     D.ctx.fill();
+     
+     // Add subtle trail effect for fluid movement
+     var trailGradient = D.ctx.createRadialGradient(
+       orbX - 5, orbY - 5, 0,
+       orbX, orbY, currentGlowSize * 0.3
+     );
+     trailGradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+     trailGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+     
+     D.ctx.beginPath();
+     D.ctx.arc(orbX - 5, orbY - 5, currentGlowSize * 0.3, 0, 2 * Math.PI, false);
+     D.ctx.fillStyle = trailGradient;
      D.ctx.fill();
    },
 
@@ -157,33 +211,6 @@
    },
 
      Update: function() {
-     // Calculate screen center
-     var screenCenterX = D.canvas.width / 2;
-     var screenCenterY = D.canvas.height / 2;
-     
-     // Calculate distance from mouse to screen center
-     var mouseDistanceFromCenter = Math.sqrt(
-       Math.pow(D.mouseX - screenCenterX, 2) + 
-       Math.pow(D.mouseY - screenCenterY, 2)
-     );
-     
-     // Calculate maximum distance (diagonal of screen)
-     var maxDistance = Math.sqrt(
-       Math.pow(D.canvas.width, 2) + 
-       Math.pow(D.canvas.height, 2)
-     );
-     
-     // Calculate gravity strength based on distance (0.3 to 0.9) - stronger gravity
-     var gravityStrength = 0.3 + (mouseDistanceFromCenter / maxDistance) * 0.6;
-     
-     // Calculate target position (blend between mouse and center)
-     var targetX = D.mouseX * (1 - gravityStrength) + screenCenterX * gravityStrength;
-     var targetY = D.mouseY * (1 - gravityStrength) + screenCenterY * gravityStrength;
-     
-     // Smooth interpolation for orb movement
-     D.centerX += (targetX - D.centerX) * 0.08;
-     D.centerY += (targetY - D.centerY) * 0.08;
-     
      // Update growth time
      if (D.isGrowing) {
        D.growthTime += 1;
@@ -201,31 +228,74 @@
   },
 
   Set: function() {
-    D.centerX = D.canvas.width / 2;
-    D.centerY = D.canvas.height / 2;
-    D.mouseX = D.canvas.width / 2;
-    D.mouseY = D.canvas.height / 2;
+    // Initialize mouse position based on screen size
+    const params = D.getResponsiveParams();
+    if (params.isMobile) {
+      // Fixed position in center for mobile
+      D.mouseX = D.canvas.width / 2;
+      D.mouseY = D.canvas.height / 2;
+    } else {
+      // Start at center but will follow mouse on desktop
+      D.mouseX = D.canvas.width / 2;
+      D.mouseY = D.canvas.height / 2;
+    }
   },
 
   Size: function() {
     D.canvas.width = window.innerWidth;
     D.canvas.height = window.innerHeight;
-    D.centerX = D.canvas.width / 2;
-    D.centerY = D.canvas.height / 2;
+    // Update mouse position based on screen size when resizing
+    const params = D.getResponsiveParams();
+    if (params.isMobile) {
+      // Keep fixed in center for mobile
+      D.mouseX = D.canvas.width / 2;
+      D.mouseY = D.canvas.height / 2;
+    }
+    // On desktop, let the mouse position remain where it is
   },
 
   Run: function() {
     D.canvas = document.querySelector('#loader canvas');
     D.ctx = D.canvas.getContext('2d');
+    
+    // Hide cursor on canvas
+    if (D.canvas) {
+      D.canvas.style.cursor = 'none';
+    }
+    
     window.addEventListener('resize', D.Size, false);
     D.Size();
     
-    // Add mouse movement listener
+    // Add mouse movement listener with smooth tracking (desktop only)
     D.mouseMoveHandler = function(e) {
-      D.mouseX = e.clientX;
-      D.mouseY = e.clientY;
+      const params = D.getResponsiveParams();
+      if (params.isMobile) return; // Don't move orb on mobile
+      
+      const rect = D.canvas.getBoundingClientRect();
+      const targetX = e.clientX - rect.left;
+      const targetY = e.clientY - rect.top;
+      
+      // Smooth interpolation for fluid movement
+      D.mouseX += (targetX - D.mouseX) * 0.15; // Smooth following
+      D.mouseY += (targetY - D.mouseY) * 0.15; // Smooth following
+      
+
     };
     D.canvas.addEventListener('mousemove', D.mouseMoveHandler);
+    
+    // Add touch support for mobile (orb stays fixed in center)
+    D.touchHandler = function(e) {
+      e.preventDefault();
+      const params = D.getResponsiveParams();
+      if (!params.isMobile) return; // Only handle touch on mobile
+      
+      // Keep orb fixed in center on mobile
+      D.mouseX = D.canvas.width / 2;
+      D.mouseY = D.canvas.height / 2;
+      
+
+    };
+    D.canvas.addEventListener('touchmove', D.touchHandler, { passive: false });
   },
 
   Init: function() {
@@ -235,15 +305,26 @@
   },
   
      Cleanup: function() {
+     // Mark orb as hidden
+     D.orbHidden = true;
+     
      // Stop animation
      if (D.animationId) {
        cancelAnimationFrame(D.animationId);
        D.animationId = null;
      }
      
+     // Clear the canvas to remove the orb
+     if (D.canvas && D.ctx) {
+       D.ctx.clearRect(0, 0, D.canvas.width, D.canvas.height);
+     }
+     
      // Remove event listeners
      if (D.canvas && D.mouseMoveHandler) {
        D.canvas.removeEventListener('mousemove', D.mouseMoveHandler);
+     }
+     if (D.canvas && D.touchHandler) {
+       D.canvas.removeEventListener('touchmove', D.touchHandler);
      }
      window.removeEventListener('resize', D.Size);
    },
@@ -265,6 +346,9 @@
        }
        return;
      }
+     
+     // Clear canvas before drawing sparks to ensure orb is gone
+     D.ctx.clearRect(0, 0, D.canvas.width, D.canvas.height);
      
      D.ctx.save();
      D.ctx.globalCompositeOperation = 'lighter';
@@ -362,6 +446,10 @@ function initSphereLoader() {
              loader.style.pointerEvents = 'none';
              loader.style.zIndex = '-1';
              loader.classList.add('hidden');
+             
+             // Restore default cursor for returning users
+             loader.style.cursor = '';
+             document.body.style.cursor = '';
          }
          
          if (websiteContent) {
@@ -374,12 +462,28 @@ function initSphereLoader() {
          return; // Don't initialize the loader at all
      }
     
-         // Initialize glowing orb animation
-     D.Init();
+             // Initialize glowing orb animation
+    D.Init();
+    
+
+    
+    // Hide default cursor on startup screen
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.cursor = 'none';
+    }
+    document.body.style.cursor = 'none';
     
     // Set up click handler and timer
     let hasProceeded = false;
-    const loader = document.getElementById('loader');
+    
+    // Add visible class to continue text after it fades in
+    setTimeout(() => {
+        const continueText = document.querySelector('.continue-text');
+        if (continueText) {
+            continueText.classList.add('visible');
+        }
+    }, 5000); // 3s fade in + 2s delay
     
                                                                                                                                                                     function proceedToHome() {
              if (hasProceeded) return;
@@ -392,7 +496,7 @@ function initSphereLoader() {
              D.growthTime = 0;
              
              // Create sparks from orb position (not mouse position)
-             D.CreateSparks(D.centerX, D.centerY);
+             D.CreateSparks(D.mouseX, D.mouseY);
              
              // Hide text elements immediately
              const sparkText = document.querySelector('.spark-text');
@@ -412,14 +516,19 @@ function initSphereLoader() {
               // Mark session as visited
               sessionStorage.setItem('hasVisitedHomeThisSession', 'true');
              
-             // Show home page after white flash starts (at 600ms - during white phase)
+             // Hide orb immediately and start transition
              setTimeout(() => {
-                 // Stop the glowing orb animation but keep sparks running
+                 // Stop the glowing orb animation immediately
                  D.Cleanup();
                  
                  // Start spark-only animation
                  D.DrawSparksOnly();
                  
+                 console.log('Orb hidden, sparks continuing');
+             }, 100); // Hide orb very early in the transition
+             
+             // Show home page after white flash starts (at 600ms - during white phase)
+             setTimeout(() => {
                  // Hide loader and show home page while flash is still white
                  loader.style.display = 'none';
                  loader.style.visibility = 'hidden';
@@ -427,6 +536,10 @@ function initSphereLoader() {
                  loader.style.pointerEvents = 'none';
                  loader.style.zIndex = '-1';
                  loader.classList.add('hidden');
+                 
+                 // Restore default cursor when startup screen is hidden
+                 loader.style.cursor = '';
+                 document.body.style.cursor = '';
                  
                  // Show website content
                  const websiteContent = document.getElementById('website-content');
@@ -441,17 +554,45 @@ function initSphereLoader() {
              }, 600); // Show home page during white phase (2.0s total - 600ms = 1400ms white flash continues on home page)
         }
     
-                   // Click handler
-      loader.addEventListener('click', function(e) {
+                   // Click handler for both mouse and touch
+      function handleInteraction(e) {
+          if (D.hasInteracted) return; // Prevent multiple triggers
+          D.hasInteracted = true;
+          
+          // Create immediate spark effect at interaction point
+          const rect = D.canvas.getBoundingClientRect();
+          let x, y;
+          
+          if (e.type === 'touchstart' || e.type === 'touchend') {
+              const touch = e.touches[0] || e.changedTouches[0];
+              x = touch.clientX - rect.left;
+              y = touch.clientY - rect.top;
+          } else {
+              x = e.clientX - rect.left;
+              y = e.clientY - rect.top;
+          }
+          
+          // Create sparks at interaction point
+          D.CreateSparks(x, y);
+          
+          // Proceed to home
           proceedToHome();
-      });
+      }
+      
+      // Add event listeners for both click and touch
+      loader.addEventListener('click', handleInteraction);
+      loader.addEventListener('touchstart', handleInteraction, { passive: false });
+      loader.addEventListener('touchend', handleInteraction, { passive: false });
      
      // 20-second timer
      setTimeout(function() {
-         proceedToHome();
+         if (!D.hasInteracted) {
+             console.log('Timeout reached - proceeding to home');
+             proceedToHome();
+         }
      }, 20000);
     
-         console.log('Glowing orb loader initialized - click or wait 20 seconds to proceed');
+         console.log('Glowing orb loader initialized - click/tap or wait 20 seconds to proceed');
 }
 
 // Initialize when DOM is ready

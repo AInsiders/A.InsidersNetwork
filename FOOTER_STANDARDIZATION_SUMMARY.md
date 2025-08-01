@@ -37,7 +37,7 @@ Successfully standardized the footer across all main pages to match the enhanced
 - Enhanced social links with icons and platform-specific colors
 - Added footer links (Privacy Policy, Terms of Service, Cookie Policy)
 
-### 5. **consulting.html** ✅
+
 - Updated footer structure to match news page
 - Added logo image, enhanced description
 - Standardized Quick Links and Resources sections

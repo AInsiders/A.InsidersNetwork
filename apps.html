@@ -19,6 +19,29 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+      <!-- Tawk.to Widget Styles -->
+  <style>
+    /* Make Tawk.to widget half the size */
+    #tawkto-container,
+    .tawkto-container,
+    .tawkto-widget,
+    .tawkto-minimized,
+    .tawkto-maximized,
+    .tawkto-iframe,
+    .tawkto-button,
+    .tawkto-bubble,
+    .tawkto-chat,
+    .tawkto-widget-container,
+    .tawkto-widget-container *,
+    iframe[src*="tawk.to"],
+    div[data-tawk-to],
+    .tawkto,
+    .tawkto * {
+      transform: scale(0.5) !important;
+      transform-origin: bottom right !important;
+    }
+  </style>
+    
     <style>
         /* Apps Page Specific Styles */
         .apps-hero {
@@ -693,8 +716,22 @@
 
     </div> <!-- End of website-content -->
 
+  <!-- Tawk.to Widget -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/65f7c0c91ec1082f04e7c0c1/default';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+
     <script src="brain-script.js"></script>
     <script src="mobile-nav.js"></script>
+    <script src="security-enhancement.js"></script>
     <script>
         // Apps page specific functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -736,18 +773,24 @@
         });
     </script>
     
-    <!--Start of Tawk.to Script-->
+        <!-- Tawk.to Widget Configuration -->
     <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+      Tawk_API.onLoad = function(){
+        if (typeof Tawk_API !== 'undefined') {
+          // Make Tawk.to widget half the size
+          const tawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk"], div[data-tawk-to], .tawkto, .tawkto *');
+          tawkElements.forEach(function(element) {
+            if (element.classList.contains('tawkto-widget') || 
+                element.classList.contains('tawkto-button') ||
+                element.classList.contains('tawkto-bubble') ||
+                element.classList.contains('tawkto-container')) {
+              // Make widget half the size
+              element.style.transform = 'scale(0.5)';
+              element.style.transformOrigin = 'bottom right';
+            }
+          });
+        }
+      };
     </script>
-    <!--End of Tawk.to Script-->
 </body>
 </html> 

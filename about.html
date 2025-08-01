@@ -4,12 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About A.Insiders - Company Overview</title>
+  <!-- Preload critical assets for faster loading -->
+  <link rel="preload" href="brain-script.js" as="script">
+  <link rel="preload" href="shared-loader.js" as="script">
+  <link rel="preload" href="mobile-nav.js" as="script">
+  <link rel="preload" href="sphere-loader.js" as="script">
+  <link rel="preload" href="ainsiders-logo.png" as="image">
+  <link rel="preload" href="logo.svg" as="image">
+  
   <link rel="stylesheet" href="brain-styles.css">
   <link rel="stylesheet" href="sidebar-menu.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Cache System Integration -->
+  <script src="browser-cache-manager.js"></script>
+  <script src="asset-preloader.js"></script>
   <script src="shared-loader.js"></script>
+  
+  <!-- Tawk.to Widget Styles -->
+  <style>
+    /* Make Tawk.to widget half the size */
+    #tawkto-container,
+    .tawkto-container,
+    .tawkto-widget,
+    .tawkto-minimized,
+    .tawkto-maximized,
+    .tawkto-iframe,
+    .tawkto-button,
+    .tawkto-bubble,
+    .tawkto-chat,
+    .tawkto-widget-container,
+    .tawkto-widget-container *,
+    iframe[src*="tawk.to"],
+    div[data-tawk-to],
+    .tawkto,
+    .tawkto * {
+      transform: scale(0.5) !important;
+      transform-origin: bottom right !important;
+    }
+  </style>
   <style>
     .team-profile-picture {
       width: 100%;
@@ -129,7 +164,7 @@
       <div class="overview-content">
         <div class="overview-text">
           <h2>About A.Insiders</h2>
-          <p class="intro-text">A.Insiders is a cutting-edge technology company founded on the principle that innovation should be accessible, secure, and transformative. We specialize in developing Android applications, news platforms, security solutions, and AI consulting services that push the boundaries of what's possible in the digital landscape.</p>
+          <p class="intro-text">A.Insiders is a cutting-edge technology company founded on the principle that innovation should be accessible, secure, and transformative. We specialize in developing Android applications, news platforms, and security solutions that push the boundaries of what's possible in the digital landscape.</p>
           
           <p>Our mission is to create technology solutions that not only meet today's challenges but anticipate tomorrow's opportunities. From our flagship news application to our upcoming security tools, every product we develop is designed with the user's privacy, security, and experience at the forefront.</p>
           
@@ -493,21 +528,59 @@
     </div>
   </footer>
 
-      <script src="brain-script.js"></script>
-    <script src="mobile-nav.js"></script>
-    
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+  </div> <!-- End of website-content -->
+
+  <!-- Tawk.to Widget -->
+  <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/688b284b9abe48192a749848/1j1fpapuu';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/65f7c0c91ec1082f04e7c0c1/default';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
     })();
+  </script>
+
+      <script src="brain-script.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="security-enhancement.js"></script>
+    
+    <!-- Cache System Initialization -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.assetPreloader) {
+          window.assetPreloader.preloadPage('about');
+        }
+        setTimeout(() => {
+          if (window.browserCacheManager) {
+            window.browserCacheManager.preloadPage('index');
+            window.browserCacheManager.preloadPage('contact');
+            window.browserCacheManager.preloadPage('apps');
+          }
+        }, 2000);
+      });
     </script>
-    <!--End of Tawk.to Script-->
+    
+        <!-- Tawk.to Widget Configuration -->
+    <script type="text/javascript">
+      Tawk_API.onLoad = function(){
+        if (typeof Tawk_API !== 'undefined') {
+          // Make Tawk.to widget half the size
+          const tawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk"], div[data-tawk-to], .tawkto, .tawkto *');
+          tawkElements.forEach(function(element) {
+            if (element.classList.contains('tawkto-widget') || 
+                element.classList.contains('tawkto-button') ||
+                element.classList.contains('tawkto-bubble') ||
+                element.classList.contains('tawkto-container')) {
+              // Make widget half the size
+              element.style.transform = 'scale(0.5)';
+              element.style.transformOrigin = 'bottom right';
+            }
+          });
+        }
+      };
+    </script>
 </body>
 </html> 

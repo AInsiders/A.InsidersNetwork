@@ -1,6 +1,24 @@
-# A.Insiders - AI & Cybersecurity News Website
+# A.Insiders Website
 
-A modern, responsive website for a company focused on artificial intelligence and cybersecurity news, analysis, and insights.
+A modern, responsive website showcasing A.Insiders' services and expertise in AI, technology, and business solutions.
+
+## Recent Updates
+
+### Orb Spark Feature (Latest)
+- **Enhanced orb interaction**: The glowing orb now responds to both mouse clicks and touch taps
+- **Immediate spark creation**: Sparks are generated instantly at the interaction point
+- **Improved timeout**: 20-second automatic transition to home screen if no interaction
+- **Mobile optimization**: Better touch support with proper event handling
+- **Visual feedback**: Subtle hover effects and pulsing animations to indicate interactivity
+- **Smooth transitions**: Enhanced spark animations and home screen reveal
+
+## Features
+
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Interactive Elements**: Smooth animations and hover effects
+- **News Integration**: Real-time news feeds with category filtering
+- **Contact Forms**: Functional contact and newsletter signup forms
+- **Performance Optimized**: Fast loading times and smooth animations
 
 ## 🌟 Features
 

@@ -87,7 +87,9 @@ class IPBanTester {
 
     async detectUserIP() {
         try {
-            const response = await fetch('https://api.ipify.org?format=json');
+            // Use ipinfo.io with API token for better reliability
+            const ipinfoToken = 'be04d3770d74df';
+            const response = await fetch(`https://ipinfo.io/json?token=${ipinfoToken}`);
             const data = await response.json();
             this.currentIP = data.ip;
             

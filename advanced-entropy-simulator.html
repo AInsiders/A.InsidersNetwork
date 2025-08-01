@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Password Cracking Checker - A.Insiders</title>
+    <meta name="description" content="Advanced password strength analyzer with parallel cracking simulation. Calculate password strength and estimate crack times across multiple attack scenarios and hardware configurations.">
+    <meta name="keywords" content="password cracking, entropy calculator, parallel processing, crack time estimator, password security, hardware simulation">
+    
+    <!-- Cache Control Headers for Cloudflare -->
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+    <meta http-equiv="Expires" content="31536000">
+    
+    <!-- DNS Prefetch and Preconnect for External Resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="brain-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="sidebar-menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="brain-script.js" as="script">
+    <link rel="preload" href="shared-loader.js" as="script">
+    <link rel="preload" href="mobile-nav.js" as="script">
+    <link rel="preload" href="sphere-loader.js" as="script">
+    <link rel="preload" href="ainsiders-logo.png" as="image">
+    
+    <!-- Fonts with Display Swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS with Fallback -->
+    <noscript>
+        <link rel="stylesheet" href="brain-styles.css">
+        <link rel="stylesheet" href="sidebar-menu.css">
+    </noscript>
+    
+    <!-- Font Awesome with CDN and Fallback -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Tawk.to Widget Styles -->
+    <style>
+        /* Make Tawk.to widget half the size */
+        #tawkto-container,
+        .tawkto-container,
+        .tawkto-widget,
+        .tawkto-minimized,
+        .tawkto-maximized,
+        .tawkto-iframe,
+        .tawkto-button,
+        .tawkto-bubble,
+        .tawkto-chat,
+        .tawkto-widget-container,
+        .tawkto-widget-container *,
+        iframe[src*="tawk.to"],
+        div[data-tawk-to],
+        .tawkto,
+        .tawkto * {
+            transform: scale(0.5) !important;
+            transform-origin: bottom right !important;
+        }
+    </style>
+    
+    <style>
+        /* Advanced Entropy Simulator Page Specific Styles */
+        body.advanced-entropy-page {
+            background: var(--bg-primary);
+        }
+        
+        body.advanced-entropy-page * {
+            color: var(--text-primary);
+        }
+        
+        body.advanced-entropy-page #aiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+        
+        .advanced-entropy-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .advanced-entropy-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .advanced-entropy-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .advanced-entropy-hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .advanced-entropy-section {
+            padding: 4rem 0;
+        }
+        
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .calculator-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+            margin-bottom: 2rem;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calculator-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .calculator-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .input-label .info-btn {
+            margin-left: 0.5rem;
+            color: var(--accent-primary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+        
+        .input-label .info-btn:hover {
+            color: var(--accent-secondary);
+            transform: scale(1.1);
+        }
+        
+        .input-field, .input-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+        
+        .input-field:focus, .input-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            border: none;
+            border-radius: var(--border-radius);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-bottom: 1rem;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .result-display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: pre-wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .math-equation {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .math-equation h4 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            max-width: 400px;
+            z-index: 1000;
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .info-popup.show {
+            display: block;
+        }
+        
+        .info-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .info-popup-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .info-popup-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        
+        .info-popup-close:hover {
+            color: var(--accent-primary);
+        }
+        
+        .info-popup-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .advanced-entropy-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .calculator-card {
+                padding: 1.5rem;
+            }
+            
+            .result-display {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="advanced-entropy-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <canvas></canvas>
+        <div class="spark-text">It All Starts With A Spark</div>
+        <div class="continue-text">Click Anywhere To Continue</div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+
+                    <li><a href="apps.html" class="nav-link">Apps</a></li>
+                    <li><a href="tools.html" class="nav-link">Tools</a></li>
+                    <li class="nav-dropdown">
+                        <div class="nav-link-container">
+                            <a href="about.html" class="nav-link">About</a>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+                            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- AI Canvas for Background Effects -->
+        <canvas id="aiCanvas"></canvas>
+
+        <!-- Hero Section -->
+        <header class="advanced-entropy-hero">
+            <div class="container">
+                <h1>🔐 Advanced Password Cracking Checker</h1>
+                <p>Advanced password strength analyzer with parallel cracking simulation. Calculate password strength and estimate crack times across multiple attack scenarios and hardware configurations.</p>
+            </div>
+        </header>
+
+        <!-- Calculator Section -->
+        <section class="advanced-entropy-section">
+            <div class="container">
+                <div class="calculator-container">
+                    <!-- Password Entropy & Parallel Crack Time Calculator -->
+                    <div class="calculator-card">
+                        <div class="calculator-header">
+                            <div class="calculator-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h3 class="calculator-title">Password Entropy & Parallel Crack Time</h3>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">
+                                Password Length
+                                <button class="info-btn" onclick="showInfo('lengthInfo')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </label>
+                            <input type="number" id="length" class="input-field" value="12" min="1" max="1000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">
+                                Character Set Size
+                                <button class="info-btn" onclick="showInfo('charsetInfo')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </label>
+                            <input type="number" id="charset" class="input-field" value="95" min="1" max="10000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">
+                                Cracking Method
+                                <button class="info-btn" onclick="showInfo('methodInfo')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </label>
+                            <select id="method" class="input-select" onchange="updateSpeed()">
+                                <option value="100000000">USB Password Cracker (~1×10⁸/sec)</option>
+                                <option value="1000000000000">Modern Workstation (~1×10¹²/sec)</option>
+                                <option value="1000000000000000">Supercomputer (~1×10¹⁵/sec)</option>
+                                <option value="1000000000000000000">Quantum (~1×10¹⁸/sec)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">
+                                Speed per Unit (guesses/sec)
+                                <button class="info-btn" onclick="showInfo('speedInfo')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </label>
+                            <input type="number" id="speed" class="input-field" value="100000000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">
+                                Number of Units
+                                <button class="info-btn" onclick="showInfo('unitsInfo')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </label>
+                            <input type="number" id="units" class="input-field" value="1" min="1">
+                        </div>
+                        
+                        <button class="calculate-btn" onclick="calculate()">
+                            <i class="fas fa-calculator"></i> Calculate Entropy & Crack Time
+                        </button>
+                        
+                        <div class="result-display" id="entropyResult">
+                            Enter values and click calculate
+                        </div>
+                        
+                        <div class="result-display" id="timeResult">
+                            Crack time will appear here
+                        </div>
+                        
+                        <div class="math-equation">
+                            <h4>Mathematical Formula:</h4>
+                            <div>Entropy (bits) = Length × log₂(Character Set Size)</div>
+                            <div>Keyspace = Character Set Size^Length</div>
+                            <div>Average Crack Time = (Keyspace ÷ 2) ÷ (Speed × Units)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="30" height="30">
+                            <span class="logo-text">A.I</span>
+                            <span class="logo-accent">NSIDERS</span>
+                        </div>
+                        <p>Leading source for AI and cybersecurity intelligence. Empowering organizations with knowledge to secure the digital future.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="apps.html">Apps</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Research Papers</a></li>
+                            <li><a href="#">White Papers</a></li>
+                            <li><a href="#">Case Studies</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+                            <li><a href="#">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Newsletter</h4>
+                        <p>Subscribe to our newsletter for the latest updates and insights.</p>
+                        <form class="newsletter-form" id="newsletter-form">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Connect With Us</h4>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-of-service.html">Terms of Service</a>
+                        <a href="cookie-policy.html">Cookie Policy</a>
+                    </div>
+                    <p>&copy; 2024 A.Insiders. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Info Popup -->
+    <div class="overlay" id="overlay" onclick="hideInfo()"></div>
+    <div class="info-popup" id="infoPopup">
+        <div class="info-popup-header">
+            <h3 class="info-popup-title" id="infoTitle">Information</h3>
+            <button class="info-popup-close" onclick="hideInfo()">&times;</button>
+        </div>
+        <div class="info-popup-content" id="infoContent"></div>
+    </div>
+
+    <!-- Scripts with Performance Optimization -->
+    <script src="brain-script.js" defer></script>
+    <script src="shared-loader.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="sphere-loader.js" defer></script>
+    <script src="cache-optimizer.js" defer></script>
+    <script src="security-enhancement.js"></script>
+    
+    <!-- Service Worker Registration for Caching -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+    <!-- Advanced Entropy Calculator Script -->
+    <script>
+        // Information texts for popups
+        const infoTexts = {
+            lengthInfo: {
+                title: "Password Length",
+                content: "Number of characters in the password. More length → exponentially more keyspace. Each additional character multiplies the total possible combinations."
+            },
+            charsetInfo: {
+                title: "Character Set Size",
+                content: "Number of unique symbols possible per character. Examples: Digits (10), Lowercase letters (26), Uppercase letters (26), Alphanumeric (62), ASCII printable (95), Unicode (65,536+)."
+            },
+            methodInfo: {
+                title: "Cracking Method",
+                content: "Predefined per-unit guess rates based on different hardware configurations. Choose based on the attacker's hardware capabilities. USB crackers are slower but portable, while quantum computers represent theoretical maximum speeds."
+            },
+            speedInfo: {
+                title: "Speed per Unit",
+                content: "Customizable guesses per second per machine (auto-filled by method selection). This represents the raw processing power of a single cracking unit. Higher values mean faster cracking attempts."
+            },
+            unitsInfo: {
+                title: "Number of Units",
+                content: "How many machines/cores working in parallel. Total speed = per-unit speed × units. More units working together can significantly reduce crack time through parallel processing."
+            }
+        };
+
+        // Show information popup
+        function showInfo(key) {
+            const info = infoTexts[key];
+            if (info) {
+                document.getElementById('infoTitle').textContent = info.title;
+                document.getElementById('infoContent').textContent = info.content;
+                document.getElementById('infoPopup').classList.add('show');
+                document.getElementById('overlay').classList.add('show');
+            }
+        }
+
+        // Hide information popup
+        function hideInfo() {
+            document.getElementById('infoPopup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Update the speed field when user selects a method
+        function updateSpeed() {
+            const method = document.getElementById('method');
+            document.getElementById('speed').value = method.value;
+        }
+
+        // Main calculation function
+        function calculate() {
+            const length = parseInt(document.getElementById('length').value) || 0;
+            const charset = parseInt(document.getElementById('charset').value) || 1;
+            const unitSpeed = parseFloat(document.getElementById('speed').value) || 1;
+            const units = parseInt(document.getElementById('units').value) || 1;
+
+            if (length <= 0 || charset <= 0 || unitSpeed <= 0 || units <= 0) {
+                document.getElementById('entropyResult').textContent = 'Please enter valid values';
+                document.getElementById('timeResult').textContent = '';
+                return;
+            }
+
+            // Calculate entropy in bits
+            const entropyBits = length * Math.log2(charset);
+            document.getElementById('entropyResult').textContent = `Entropy: ${entropyBits.toFixed(2)} bits`;
+
+            // Calculate total guesses per second across all units
+            const totalSpeed = unitSpeed * units;
+
+            // Calculate total keyspace and average time to hit half
+            const keyspace = Math.pow(charset, length);
+            const avgSeconds = (keyspace / 2) / totalSpeed;
+
+            // Convert to human-readable format
+            const ms = avgSeconds * 1000;
+            const mins = avgSeconds / 60;
+            const hrs = avgSeconds / 3600;
+            const days = avgSeconds / 86400;
+            const months = avgSeconds / (30 * 86400);
+            const years = avgSeconds / (365 * 86400);
+
+            let timeResult = `Estimated Crack Time (average):\n`;
+            
+            if (years >= 1) {
+                timeResult += `~${years.toFixed(2)} years | ${months.toFixed(2)} months | ${days.toFixed(2)} days`;
+            } else if (months >= 1) {
+                timeResult += `~${months.toFixed(2)} months | ${days.toFixed(2)} days | ${hrs.toFixed(2)} hours`;
+            } else if (days >= 1) {
+                timeResult += `~${days.toFixed(2)} days | ${hrs.toFixed(2)} hours | ${mins.toFixed(2)} minutes`;
+            } else if (hrs >= 1) {
+                timeResult += `~${hrs.toFixed(2)} hours | ${mins.toFixed(2)} minutes | ${ms.toFixed(2)} milliseconds`;
+            } else if (mins >= 1) {
+                timeResult += `~${mins.toFixed(2)} minutes | ${ms.toFixed(2)} milliseconds`;
+            } else {
+                timeResult += `~${ms.toFixed(2)} milliseconds`;
+            }
+
+            timeResult += `\n\n(${hrs.toFixed(2)} hr | ${mins.toFixed(2)} min | ${ms.toFixed(2)} ms)`;
+
+            document.getElementById('timeResult').textContent = timeResult;
+        }
+
+        // Auto-calculate on input change
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('length').addEventListener('input', calculate);
+            document.getElementById('charset').addEventListener('input', calculate);
+            document.getElementById('speed').addEventListener('input', calculate);
+            document.getElementById('units').addEventListener('input', calculate);
+            
+            // Initialize calculation
+            calculate();
+        });
+    </script>
+
+</body>
+</html> 

@@ -1,0 +1,213 @@
+# Cloudflare Caching Optimization for A.Insiders Website
+# This file optimizes caching for Cloudflare CDN
+
+# Enable Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive on
+    
+    # Default expiration: 1 month after request
+    ExpiresDefault "access plus 1 month"
+    
+    # CSS and JS files: 1 year
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+    
+    # Images: 1 year
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/ico "access plus 1 year"
+    ExpiresByType image/icon "access plus 1 year"
+    ExpiresByType text/ico "access plus 1 year"
+    ExpiresByType application/ico "access plus 1 year"
+    
+    # Fonts: 1 year
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/x-font-woff2 "access plus 1 year"
+    
+    # HTML: 1 hour
+    ExpiresByType text/html "access plus 1 hour"
+    
+    # XML: 1 day
+    ExpiresByType application/xml "access plus 1 day"
+    ExpiresByType text/xml "access plus 1 day"
+    
+    # JSON: 1 day
+    ExpiresByType application/json "access plus 1 day"
+</IfModule>
+
+# Cache Control Headers
+<IfModule mod_headers.c>
+    # Set default cache control
+    Header set Cache-Control "public, max-age=31536000"
+    
+    # HTML files: 1 hour
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+    
+    # CSS and JS files: 1 year
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # Images: 1 year
+    <FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # Fonts: 1 year
+    <FilesMatch "\.(woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # JSON files: 1 day
+    <FilesMatch "\.json$">
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+    
+    # Enhanced Security Headers
+    # X-Content-Type-Options: Prevent MIME type sniffing
+    Header always set X-Content-Type-Options nosniff
+    
+    # X-Frame-Options: Prevent clickjacking
+    Header always set X-Frame-Options DENY
+    
+    # X-XSS-Protection: Enable XSS filtering
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer-Policy: Control referrer information
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy: Prevent XSS and other attacks
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://formsubmit.co https://cdnjs.cloudflare.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://formsubmit.co https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co"
+    
+    # Permissions Policy: Control browser features
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    
+    # Strict-Transport-Security: Force HTTPS
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Cloudflare Specific Headers
+    Header always set CF-Cache-Status "DYNAMIC"
+    
+    # Remove server signature and version information
+    Header unset Server
+    Header unset X-Powered-By
+    Header unset X-AspNet-Version
+    Header unset X-AspNetMvc-Version
+</IfModule>
+
+# Enable Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# Enhanced Security: Prevent access to sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql|conf|config|env|key|pem|crt|csr|p12|pfx)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to hidden files and directories
+<FilesMatch "^\.">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to backup and temporary files
+<FilesMatch "\.(bak|backup|tmp|temp|swp|swo|~)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to version control files
+<FilesMatch "\.(git|svn|hg|bzr|cvs)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to package files
+<FilesMatch "\.(json|lock|yaml|yml|toml|ini|conf)$">
+    <If "%{REQUEST_URI} !~ m#^/json-feeds/#">
+        Order Allow,Deny
+        Deny from all
+    </If>
+</FilesMatch>
+
+# Enable ETags
+FileETag MTime Size
+
+# Disable ETags for better caching
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# Additional Security Measures
+
+# Prevent directory browsing
+Options -Indexes
+
+# Prevent access to sensitive directories
+<DirectoryMatch "/(\.git|\.svn|\.hg|\.bzr|\.cvs|node_modules|vendor|logs|backup|temp|tmp)/">
+    Order Allow,Deny
+    Deny from all
+</DirectoryMatch>
+
+# Rate limiting for form submissions (if mod_ratelimit is available)
+<IfModule mod_ratelimit.c>
+    <Location "/contact.html">
+        SetOutputFilter RATE_LIMIT
+        SetEnv rate-limit 400
+    </Location>
+</IfModule>
+
+# Block suspicious user agents
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Block common bot user agents
+    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^.*(libwww-perl|curl|wget|python|nikto|scan) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^.*(winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC]
+    RewriteRule .* - [F,L]
+    
+    # Block access to sensitive files
+    RewriteRule ^(\.htaccess|\.htpasswd|\.env|\.git|\.svn|\.hg|\.bzr|\.cvs|node_modules|vendor|logs|backup|temp|tmp) - [F,L]
+</IfModule>
+
+# Prevent access to server configuration files
+<Files "*.conf">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Prevent access to log files
+<Files "*.log">
+    Order Allow,Deny
+    Deny from all
+</Files> 

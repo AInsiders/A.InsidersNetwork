@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Apps - A.Insiders</title>
-    <meta name="description" content="Discover our innovative AI-powered applications and tools designed to empower businesses and individuals.">
-    <meta name="keywords" content="apps, AI apps, tools, software, applications, AI tools">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="brain-styles.css">
-    <link rel="stylesheet" href="sidebar-menu.css">
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Apps - A.Insiders</title>
+  
+  <!-- Favicon Setup -->
+  <link rel="icon" type="image/png" href="ainsiders-logo.png" id="main-favicon">
+  <link rel="apple-touch-icon" href="ainsiders-logo.png">
+  <meta name="description" content="Discover our innovative AI-powered applications and tools designed to empower businesses and individuals.">
+  <meta name="keywords" content="apps, AI apps, tools, software, applications, AI tools">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  
+  <!-- Cache Control Headers for Cloudflare -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+  <meta http-equiv="Expires" content="31536000">
+  
+  <!-- Optimized Asset Caching System -->
+  <link rel="stylesheet" href="brain-styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="brain-script.js" as="script">
+  <link rel="preload" href="shared-loader.js" as="script">
+  <link rel="preload" href="mobile-nav.js" as="script">
+  <link rel="preload" href="sphere-loader.js" as="script">
+  <link rel="preload" href="ainsiders-logo.png" as="image">
+  <link rel="preload" href="logo.svg" as="image">
+  
+  <!-- Cache Manager and Asset Preloader -->
+  <script src="browser-cache-manager.js"></script>
+  <script src="asset-preloader.js"></script>
+  
+  <!-- Optimized Background System -->
+  <script src="brain-script.js"></script>
+  
+  <!-- Font Awesome with CDN and Fallback -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  
+  <!-- Favicon Animation Script -->
+  <script src="favicon-animation.js"></script>
     
       <!-- Tawk.to Widget Styles -->
   <style>
@@ -330,23 +360,11 @@
     <script src="shared-loader.js"></script>
 </head>
 <body class="apps-page">
-    <!-- Loader -->
+    <!-- Loading Screen -->
     <div id="loader" class="loader">
-        <div class="loader-content">
-            <div class="ai-loader">
-                <div class="ai-node"></div>
-                <div class="ai-node"></div>
-                <div class="ai-node"></div>
-                <div class="ai-node"></div>
-                <div class="ai-node"></div>
-                <div class="ai-node"></div>
-            </div>
-            <div class="loader-text">Initializing Startup</div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-            <div class="loading-percentage">0%</div>
-        </div>
+        <canvas></canvas>
+        <div class="spark-text">It All Starts With A Spark</div>
+        <div class="continue-text">Click Anywhere To Continue</div>
     </div>
 
     <!-- Website Content -->
@@ -362,33 +380,7 @@
                 </a>
       <ul class="nav-menu">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li class="nav-dropdown">
-          <div class="nav-link-container">
-            <a href="news-enhanced.html" class="nav-link">News</a>
-            <span class="dropdown-arrow">▼</span>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
-            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
-            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
-            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
-            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
-            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
-            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
-            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
-            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
-            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
-            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
-            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
-            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
-            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
-            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
-            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
-            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
-            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
-            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
-          </ul>
-        </li>
+
                             <li><a href="apps.html" class="nav-link active">Apps</a></li>
                     <li><a href="tools.html" class="nav-link">Tools</a></li>
                     <li class="nav-dropdown">
@@ -662,7 +654,7 @@
                             <li><a href="about.html">About</a></li>
                             <li><a href="apps.html">Apps</a></li>
                             <li><a href="tools.html">Tools</a></li>
-                            <li><a href="news-enhanced.html">News</a></li>
+
                             <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
@@ -710,9 +702,9 @@
             <div class="footer-bottom">
                 <p>&copy; 2024 A.Insiders Network. All rights reserved.</p>
                 <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
+                    <a href="cookie-policy.html">Cookie Policy</a>
                 </div>
             </div>
         </div>
@@ -733,12 +725,23 @@
     })();
   </script>
 
-    <script src="brain-script.js"></script>
-    <script src="mobile-nav.js"></script>
-    <script src="security-enhancement.js"></script>
+    <!-- Enhanced script loading with caching -->
     <script>
-        // Apps page specific functionality
+        // Initialize asset preloading for this page
         document.addEventListener('DOMContentLoaded', function() {
+            if (window.assetPreloader) {
+                window.assetPreloader.preloadPage('apps');
+            }
+            
+            // Preload next likely pages
+            setTimeout(() => {
+                if (window.browserCacheManager) {
+                    window.browserCacheManager.preloadPage('tools');
+                    window.browserCacheManager.preloadPage('contact');
+                }
+            }, 2000);
+            
+            // Apps page specific functionality
             // Category filtering
             const categoryFilters = document.querySelectorAll('.category-filter');
             const appCards = document.querySelectorAll('.app-card');
@@ -776,6 +779,10 @@
             }
         });
     </script>
+    
+    <script src="sphere-loader.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="security-enhancement.js"></script>
     
         <!-- Tawk.to Widget Configuration -->
     <script type="text/javascript">

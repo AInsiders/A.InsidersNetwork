@@ -43,7 +43,7 @@
         
         .ai-detection-hero {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
-            padding: 4rem 0;
+            padding: 2.5rem 0;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -63,7 +63,7 @@
         }
         
         .ai-detection-hero h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
             -webkit-background-clip: text;
@@ -74,10 +74,10 @@
         }
         
         .ai-detection-hero p {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             max-width: 600px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 1.5rem;
             position: relative;
             z-index: 1;
         }
@@ -127,6 +127,41 @@
             outline: none;
             border-color: var(--accent-primary);
             box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .api-key-section {
+            background: rgba(0, 102, 255, 0.05);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .api-key-section label {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        .api-key-section small {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .sample-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        
+        .sample-btn:hover {
+            background: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
         }
         
         .analyze-btn {
@@ -343,7 +378,16 @@
         
         @media (max-width: 768px) {
             .ai-detection-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+            
+            .ai-detection-hero p {
+                font-size: 1rem;
+                margin: 0 auto 1rem;
+            }
+            
+            .ai-detection-hero {
+                padding: 2rem 0;
             }
             
             .detection-container {
@@ -389,7 +433,7 @@
                     <a href="about.html" class="nav-link">About</a>
                     <a href="tools.html" class="nav-link active">Tools</a>
                     <a href="apps.html" class="nav-link">Apps</a>
-                    <a href="news-enhanced.html" class="nav-link">News</a>
+
                     <a href="contact.html" class="nav-link">Contact</a>
                 </div>
                 <div class="nav-toggle">
@@ -413,7 +457,7 @@
             <!-- Text Input Section -->
             <section class="text-input-section">
                 <h2>Text Analysis</h2>
-                <p>Enter the text you want to analyze for AI generation detection. Our advanced algorithm examines linguistic patterns, sentence structure, and semantic coherence.</p>
+                <p>Enter the text you want to analyze for AI generation detection. Our tool uses real AI models from Hugging Face to detect AI-generated text with high accuracy. You can optionally provide your own API key for unlimited requests.</p>
                 
                 <div class="input-group">
                     <label for="textInput">Text to Analyze</label>
@@ -553,6 +597,11 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 A.Insiders. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
+                    <a href="cookie-policy.html">Cookie Policy</a>
+                </div>
             </div>
         </footer>
     </div>
@@ -563,5 +612,6 @@
     <script src="mobile-nav.js"></script>
     <script src="sphere-loader.js"></script>
     <script src="ai-text-detection.js"></script>
+    <script src="security-enhancement.js"></script>
 </body>
 </html> 

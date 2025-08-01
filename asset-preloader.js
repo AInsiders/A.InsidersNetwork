@@ -595,10 +595,7 @@ class AssetPreloader {
                 { url: 'sphere-loader.js', priority: 'critical' },
                 { url: 'matrix-loader.js', priority: 'high' }
             ],
-            'news': [
-                { url: 'news-feeds-enhanced.js', priority: 'critical' },
-                { url: 'news-script.js', priority: 'high' }
-            ],
+
             'about': [
                 { url: 'mobile-nav.js', priority: 'high' }
             ],

@@ -4,24 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About A.Insiders - Company Overview</title>
-  <!-- Preload critical assets for faster loading -->
-  <link rel="preload" href="brain-script.js" as="script">
-  <link rel="preload" href="shared-loader.js" as="script">
-  <link rel="preload" href="mobile-nav.js" as="script">
-  <link rel="preload" href="sphere-loader.js" as="script">
-  <link rel="preload" href="ainsiders-logo.png" as="image">
-  <link rel="preload" href="logo.svg" as="image">
   
+  <!-- Favicon Setup -->
+  <link rel="icon" type="image/png" href="ainsiders-logo.png" id="main-favicon">
+  <link rel="apple-touch-icon" href="ainsiders-logo.png">
+  <meta name="description" content="Learn about A.Insiders, a leading company in AI and cybersecurity intelligence. Discover our mission, values, and the team behind our innovative solutions.">
+  <meta name="keywords" content="A.Insiders, about, company, AI, cybersecurity, team, mission, values">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  
+  <!-- Enhanced Cache Control Headers for Cloudflare -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable, stale-while-revalidate=86400">
+  <meta http-equiv="Expires" content="31536000">
+  <meta http-equiv="ETag" content="about-v1.0">
+  <meta http-equiv="Last-Modified" content="2024-01-01T00:00:00Z">
+  
+  <!-- Optimized Asset Caching System with Cloudflare Headers -->
   <link rel="stylesheet" href="brain-styles.css">
-  <link rel="stylesheet" href="sidebar-menu.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- Cache System Integration -->
+  <!-- Preload critical assets with Cloudflare caching -->
+  <link rel="preload" href="brain-script.js?v=1.0" as="script" crossorigin="anonymous">
+  <link rel="preload" href="shared-loader.js?v=1.0" as="script" crossorigin="anonymous">
+  <link rel="preload" href="mobile-nav.js?v=1.0" as="script" crossorigin="anonymous">
+  <link rel="preload" href="sphere-loader.js?v=1.0" as="script" crossorigin="anonymous">
+  <link rel="preload" href="ainsiders-logo.png?v=1.0" as="image" type="image/png">
+  <link rel="preload" href="logo.svg?v=1.0" as="image" type="image/svg+xml">
+  
+  <!-- Cache Manager and Asset Preloader with Cloudflare caching -->
   <script src="browser-cache-manager.js"></script>
   <script src="asset-preloader.js"></script>
-  <script src="shared-loader.js"></script>
+  
+  <!-- Optimized Background System -->
+  <script src="brain-script.js"></script>
+  
+  <!-- Font Awesome with CDN and Fallback -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  
+  <!-- Favicon Animation Script -->
+  <script src="favicon-animation.js"></script>
   
   <!-- Tawk.to Widget Styles -->
   <style>
@@ -70,26 +98,106 @@
       align-items: center;
       justify-content: center;
     }
+    
+    /* Enhanced Performance Animations */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .fade-section.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .team-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+    
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .product-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .value-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+    
+    .value-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Performance optimizations */
+    .team-card *,
+    .product-card *,
+    .value-card * {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .team-card,
+      .product-card,
+      .value-card,
+      .fade-section {
+        transition: none;
+        animation: none;
+      }
+    }
+    
+    /* Ensure background extends all the way down */
+    body.about-page {
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+    
+    .website-content {
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+    
+    #aiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="about-page">
-  <!-- Loader -->
+  <!-- Loading Screen -->
   <div id="loader" class="loader">
-    <div class="loader-content">
-      <div class="ai-loader">
-        <div class="ai-node"></div>
-        <div class="ai-node"></div>
-        <div class="ai-node"></div>
-        <div class="ai-node"></div>
-        <div class="ai-node"></div>
-        <div class="ai-node"></div>
-      </div>
-      <div class="loader-text">Initializing</div>
-      <div class="loading-bar">
-        <div class="loading-progress"></div>
-      </div>
-    </div>
+    <canvas></canvas>
+    <div class="spark-text">It All Starts With A Spark</div>
+    <div class="continue-text">Click Anywhere To Continue</div>
   </div>
+
+  <!-- Website Content -->
+  <div id="website-content" class="website-content">
 
   <!-- Navigation -->
   <nav class="navbar">
@@ -101,33 +209,7 @@
                 </a>
       <ul class="nav-menu">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li class="nav-dropdown">
-          <div class="nav-link-container">
-            <a href="news-enhanced.html" class="nav-link">News</a>
-            <span class="dropdown-arrow">▼</span>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
-            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
-            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
-            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
-            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
-            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
-            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
-            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
-            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
-            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
-            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
-            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
-            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
-            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
-            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
-            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
-            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
-            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
-            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
-          </ul>
-        </li>
+
                             <li><a href="apps.html" class="nav-link">Apps</a></li>
                     <li><a href="tools.html" class="nav-link">Tools</a></li>
                     <li class="nav-dropdown">
@@ -149,6 +231,13 @@
       </div>
     </div>
   </nav>
+
+  <!-- Performance Optimization: Preload critical images -->
+  <link rel="preload" href="blake-zimmerman.jpg" as="image" type="image/jpeg">
+  <link rel="preload" href="ainsiders-logo.png" as="image" type="image/png">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
   <!-- Company Hero Section -->
   <header class="page-hero">
@@ -474,7 +563,7 @@
                             <li><a href="about.html">About</a></li>
                             <li><a href="apps.html">Apps</a></li>
                             <li><a href="tools.html">Tools</a></li>
-                            <li><a href="news-enhanced.html">News</a></li>
+
                             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -522,9 +611,9 @@
       <div class="footer-bottom">
         <p>&copy; 2024 A.Insiders Network. All rights reserved.</p>
         <div class="footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Cookie Policy</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="cookie-policy.html">Cookie Policy</a>
         </div>
       </div>
     </div>
@@ -532,57 +621,132 @@
 
   </div> <!-- End of website-content -->
 
-  <!-- Tawk.to Widget -->
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/65f7c0c91ec1082f04e7c0c1/default';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
-    })();
-  </script>
-
-      <script src="brain-script.js"></script>
-    <script src="mobile-nav.js"></script>
-    <script src="security-enhancement.js"></script>
-    
-    <!-- Cache System Initialization -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        if (window.assetPreloader) {
-          window.assetPreloader.preloadPage('about');
-        }
+  <!-- Essential Scripts with Cloudflare caching -->
+  <script src="shared-loader.js"></script>
+  <script src="mobile-nav.js"></script>
+  <script src="sphere-loader.js"></script>
+  
+  <!-- About Page Enhancement Script -->
+  <script>
+    // About Page Enhancement Script
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('About page loaded with enhanced performance!');
+        
+        // Initialize about page functionality
+        initializeAboutPage();
+        
+        // Preload next likely pages for better UX
         setTimeout(() => {
-          if (window.browserCacheManager) {
-            window.browserCacheManager.preloadPage('index');
-            window.browserCacheManager.preloadPage('contact');
-            window.browserCacheManager.preloadPage('apps');
-          }
-        }, 2000);
-      });
-    </script>
-    
-        <!-- Tawk.to Widget Configuration -->
-    <script type="text/javascript">
-      Tawk_API.onLoad = function(){
-        if (typeof Tawk_API !== 'undefined') {
-          // Make Tawk.to widget half the size
-          const tawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk"], div[data-tawk-to], .tawkto, .tawkto *');
-          tawkElements.forEach(function(element) {
-            if (element.classList.contains('tawkto-widget') || 
-                element.classList.contains('tawkto-button') ||
-                element.classList.contains('tawkto-bubble') ||
-                element.classList.contains('tawkto-container')) {
-              // Make widget half the size
-              element.style.transform = 'scale(0.5)';
-              element.style.transformOrigin = 'bottom right';
+            if (window.browserCacheManager) {
+                window.browserCacheManager.preloadPage('index');
+                window.browserCacheManager.preloadPage('contact');
             }
-          });
+        }, 2000);
+    });
+    
+    function initializeAboutPage() {
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Enhanced team card interactions
+        const teamCards = document.querySelectorAll('.team-card');
+        teamCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Smooth fade-in animations for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+        
+        // Performance monitoring
+        if ('performance' in window) {
+            window.addEventListener('load', function() {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log(`About page loaded in ${loadTime}ms`);
+                
+                // Report performance metrics
+                if (window.gtag) {
+                    window.gtag('event', 'timing_complete', {
+                        'name': 'load',
+                        'value': loadTime
+                    });
+                }
+            });
         }
-      };
-    </script>
+        
+        // Enhanced image loading
+        const images = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
+    }
+    
+    // Export for potential use in other scripts
+    window.aboutPage = {
+        initialize: initializeAboutPage
+    };
+    
+    // Ensure smooth loading by preloading critical images
+    window.addEventListener('load', function() {
+        // Preload team member images
+        const teamImages = [
+            'blake-zimmerman.jpg',
+            'ainsiders-logo.png'
+        ];
+        
+        teamImages.forEach(src => {
+            const img = new Image();
+            img.src = src + '?v=1.0';
+        });
+        
+        // Force a repaint to ensure smooth animations
+        document.body.style.display = 'none';
+        document.body.offsetHeight; // Trigger reflow
+        document.body.style.display = '';
+    });
+  </script>
+  
+  <script src="security-enhancement.js"></script>
+
 </body>
 </html> 

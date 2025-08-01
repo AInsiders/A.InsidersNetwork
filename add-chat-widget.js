@@ -188,7 +188,7 @@ const chatWidgetScript = `
 // List of HTML files that need the chat widget
 const htmlFiles = [
   'apps.html',
-  'news-enhanced.html',
+
   
   'blake-zimmerman.html',
   'blake-zimmerman-profile.html',

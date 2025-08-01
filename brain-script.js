@@ -137,9 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const isAppsPage = currentPath.includes('apps.html');
             const isAboutPage = currentPath.includes('about.html');
             const isContactPage = currentPath.includes('contact.html');
-            const isNewsPage = currentPath.includes('news-enhanced.html');
+
             
-            return isHomePage || isStartingScreen || isToolsPage || isIpCheckerPage || isUrlCheckerPage || isIpBlacklistPage || isAiTextDetectionPage || isAppsPage || isAboutPage || isContactPage || isNewsPage;
+            // Exclude tools page and IP ban tester from interactive background to prevent mouse issues
+            return isHomePage || isStartingScreen || isIpCheckerPage || isUrlCheckerPage || isAiTextDetectionPage || isAppsPage || isAboutPage || isContactPage;
         }
         const mouse = { 
             x: 0, 
@@ -150,15 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Resize canvas with device pixel ratio optimization
         function resizeCanvas() {
-            const dpr = window.devicePixelRatio || 1;
             const rect = canvas.getBoundingClientRect();
             
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
+            // Use display dimensions directly without DPR scaling for better orb positioning
+            canvas.width = rect.width;
+            canvas.height = rect.height;
             canvas.style.width = rect.width + 'px';
             canvas.style.height = rect.height + 'px';
-            
-            ctx.scale(dpr, dpr);
         }
         
         // Initialize nodes
@@ -509,13 +508,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function handleMouseMove(e) {
             const rect = canvas.getBoundingClientRect();
             
-            // Calculate accurate coordinates with device pixel ratio correction
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            // Get mouse coordinates relative to canvas
-            const mouseX = (e.clientX - rect.left) * scaleX;
-            const mouseY = (e.clientY - rect.top) * scaleY;
+            // Get mouse coordinates relative to canvas using pure user input (no DPR scaling)
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
             
             // Apply coordinate correction for consistency
             const correctedX = Math.round(mouseX);
@@ -542,10 +537,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.clientY >= footerRect.top && 
                 e.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            // Only handle mouse movement for interactive pages (home page and starting screen)
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds with coordinate correction
+                    // Ensure mouse position is within canvas bounds (using display dimensions)
                     mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
                     mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
                     
@@ -556,9 +551,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     mouse.y = -100;
                 }
             } else {
-                // On other pages, always show the cursor orb
-                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                // On non-interactive pages (like tools page), don't track mouse for orb
+                // This prevents mouse disappearing issues
+                mouse.x = -100;
+                mouse.y = -100;
             }
             
             // Set moving state for neural connections (works for both home page and starting screen)
@@ -571,14 +567,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Mouse enter/leave for neural interactions
         function handleMouseEnter() {
-            nodes.forEach(node => {
-                node.interactionRadius = 150;
-            });
+            // Only enable neural interactions on home page and starting screen
+            if (isHomePage || isStartingScreen) {
+                nodes.forEach(node => {
+                    node.interactionRadius = 150;
+                });
+            }
         }
         
         function handleMouseLeave() {
             mouse.isMoving = false;
-            // Only hide cursor orb when mouse leaves on home page and starting screen
+            // Only handle mouse leave on home page and starting screen
             if (isHomePage || isStartingScreen) {
                 // Hide cursor orb by setting it off-screen when mouse leaves
                 mouse.x = -100;
@@ -673,14 +672,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
             
-            // Calculate accurate touch coordinates with device pixel ratio correction
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            // Get touch coordinates relative to canvas
-            const touchX = (touch.clientX - rect.left) * scaleX;
-            const touchY = (touch.clientY - rect.top) * scaleY;
+            // Get touch coordinates relative to canvas and scale by device pixel ratio
+            const touchX = (touch.clientX - rect.left) * dpr;
+            const touchY = (touch.clientY - rect.top) * dpr;
             
             // Apply additional mobile-specific corrections
             const correctedX = Math.round(touchX);
@@ -710,9 +706,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Only hide cursor orb when directly over navbar or footer on home page and starting screen
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds with mobile optimization
-                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                    // Ensure mouse position is within canvas bounds (using rect dimensions)
+                    mouse.x = Math.max(0, Math.min(rect.width, correctedX));
+                    mouse.y = Math.max(0, Math.min(rect.height, correctedY));
                 } else {
                     // Hide cursor orb when directly over navbar or footer
                     mouse.x = -100;
@@ -720,8 +716,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                 // On other pages, always show the cursor orb
-                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                mouse.x = Math.max(0, Math.min(rect.width, correctedX));
+                mouse.y = Math.max(0, Math.min(rect.height, correctedY));
             }
             
             mouse.isMoving = true;
@@ -735,14 +731,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
             
-            // Calculate accurate touch coordinates with device pixel ratio correction
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            // Get touch coordinates relative to canvas
-            const touchX = (touch.clientX - rect.left) * scaleX;
-            const touchY = (touch.clientY - rect.top) * scaleY;
+            // Get touch coordinates relative to canvas and scale by device pixel ratio
+            const touchX = (touch.clientX - rect.left) * dpr;
+            const touchY = (touch.clientY - rect.top) * dpr;
             
             // Apply additional mobile-specific corrections
             const correctedX = Math.round(touchX);
@@ -772,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Only hide cursor orb when directly over navbar or footer on home page and starting screen
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds with mobile optimization
+                    // Ensure mouse position is within canvas bounds (using display dimensions)
                     mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
                     mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
                 } else {

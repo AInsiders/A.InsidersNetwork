@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 
-class NewsCacheServer {
+class CacheServer {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 3001;
@@ -340,7 +340,7 @@ class NewsCacheServer {
 
     start() {
         this.app.listen(this.port, () => {
-            console.log(`News Cache Server running on port ${this.port}`);
+            console.log(`Cache Server running on port ${this.port}`);
             console.log(`Cache directory: ${this.cacheDir}`);
             console.log(`Cache expiry: ${this.cacheExpiry / 60000} minutes`);
             console.log(`Update interval: ${this.updateInterval / 60000} minutes`);
@@ -350,8 +350,8 @@ class NewsCacheServer {
 
 // Start the server if this file is run directly
 if (require.main === module) {
-    const server = new NewsCacheServer();
+    const server = new CacheServer();
     server.start();
 }
 
-module.exports = NewsCacheServer; 
+module.exports = CacheServer; 

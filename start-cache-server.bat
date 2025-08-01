@@ -1,5 +1,5 @@
 @echo off
-echo Starting A.Insiders News Cache Server...
+echo Starting A.Insiders Cache Server...
 echo.
 
 REM Check if Node.js is installed

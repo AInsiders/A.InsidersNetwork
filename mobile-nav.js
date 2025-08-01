@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
             
-            // Close menu when clicking outside
+            // Close menu when clicking outside with improved dropdown handling
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.nav-toggle') && 
                     !e.target.closest('.nav-menu') && 
@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     navMenu.classList.remove('active');
                 }
             });
+
+            // Removed hover delay to prevent orb tracking interference
             
             // Close menu on ESC key
             document.addEventListener('keydown', function(e) {

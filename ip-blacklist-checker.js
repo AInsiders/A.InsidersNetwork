@@ -1,50 +1,48 @@
 /**
- * IP Blacklist Checker JavaScript
- * Comprehensive IP reputation checker using multiple blocklists
+ * IP Ban Tester JavaScript
+ * Test IP addresses against multiple ban lists and blocklists
  */
 
-class IPBlacklistChecker {
+class IPBanTester {
     constructor() {
         this.blocklistLoader = new BlocklistLoader();
         this.blocklists = {};
+        this.currentIP = null;
+        this.map = null;
+        this.marker = null;
         this.categories = {
+            gaming: {
+                name: 'Gaming Bans',
+                icon: 'fas fa-gamepad',
+                lists: ['iblocklist_org_steam', 'iblocklist_org_riot_games', 'iblocklist_org_blizzard', 'iblocklist_org_electronic_arts', 'iblocklist_org_activision', 'iblocklist_org_nintendo', 'iblocklist_org_sony_online', 'iblocklist_org_ubisoft']
+            },
             spam: {
-                name: 'Spam & Abuse',
+                name: 'Spam Bans',
                 icon: 'fas fa-envelope',
                 lists: ['spamhaus_drop', 'spamhaus_edrop', 'stopforumspam', 'stopforumspam_30d', 'stopforumspam_7d', 'stopforumspam_1d']
             },
-            malware: {
-                name: 'Malware & Viruses',
-                icon: 'fas fa-bug',
-                lists: ['vxvault', 'malc0de', 'abuse_zeus', 'abuse_spyeye', 'abuse_palevo', 'ciarmy_malicious']
-            },
-            tor: {
-                name: 'TOR Exit Nodes',
-                icon: 'fas fa-user-secret',
-                lists: ['tor_exits', 'tor_exits_30d', 'tor_exits_7d', 'tor_exits_1d']
+            security: {
+                name: 'Security Bans',
+                icon: 'fas fa-shield-alt',
+                lists: ['vxvault', 'malc0de', 'abuse_zeus', 'abuse_spyeye', 'abuse_palevo', 'ciarmy_malicious', 'feodo', 'feodo_badips']
             },
             proxy: {
-                name: 'Proxy & VPN',
+                name: 'Proxy/VPN Bans',
                 icon: 'fas fa-network-wired',
                 lists: ['sslproxies', 'sslproxies_30d', 'sslproxies_7d', 'sslproxies_1d', 'socks_proxy', 'socks_proxy_30d', 'socks_proxy_7d', 'socks_proxy_1d']
             },
-            php: {
-                name: 'PHP Attackers',
-                icon: 'fas fa-code',
-                lists: ['php_spammers', 'php_harvesters', 'php_dictionary', 'php_commenters', 'php_spammers_30d', 'php_harvesters_30d', 'php_dictionary_30d', 'php_commenters_30d']
+            tor: {
+                name: 'TOR Exit Bans',
+                icon: 'fas fa-user-secret',
+                lists: ['tor_exits', 'tor_exits_30d', 'tor_exits_7d', 'tor_exits_1d']
             },
-            firehol: {
-                name: 'FireHOL Blocklists',
-                icon: 'fas fa-fire',
-                lists: ['firehol_level1', 'firehol_level2', 'firehol_level3', 'firehol_level4', 'firehol_abusers_30d']
-            },
-            gaming: {
-                name: 'Gaming Services',
-                icon: 'fas fa-gamepad',
-                lists: ['iblocklist_org_steam', 'iblocklist_org_riot_games', 'iblocklist_org_blizzard', 'iblocklist_org_electronic_arts', 'iblocklist_org_activision', 'iblocklist_org_nintendo']
+            abuse: {
+                name: 'Abuse Bans',
+                icon: 'fas fa-exclamation-triangle',
+                lists: ['firehol_level1', 'firehol_level2', 'firehol_level3', 'firehol_level4', 'firehol_abusers_30d', 'php_spammers', 'php_harvesters', 'php_dictionary', 'php_commenters']
             },
             isp: {
-                name: 'ISP Networks',
+                name: 'ISP Bans',
                 icon: 'fas fa-building',
                 lists: ['iblocklist_isp_comcast', 'iblocklist_isp_verizon', 'iblocklist_isp_att', 'iblocklist_isp_charter', 'iblocklist_isp_twc', 'iblocklist_isp_sprint']
             }
@@ -61,12 +59,18 @@ class IPBlacklistChecker {
     setupEventListeners() {
         const checkBtn = document.getElementById('checkBtn');
         const ipInput = document.getElementById('ipInput');
+        const copyCurrentIpBtn = document.getElementById('copyCurrentIpBtn');
 
         checkBtn.addEventListener('click', () => this.checkIP());
         ipInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.checkIP();
             }
+        });
+
+        // Copy current IP button
+        copyCurrentIpBtn.addEventListener('click', () => {
+            this.copyToClipboard(this.currentIP);
         });
 
         // Auto-detect user's IP
@@ -85,26 +89,36 @@ class IPBlacklistChecker {
         try {
             const response = await fetch('https://api.ipify.org?format=json');
             const data = await response.json();
+            this.currentIP = data.ip;
+            
             const ipInput = document.getElementById('ipInput');
-            ipInput.placeholder = `Your IP: ${data.ip} (or enter another IP)`;
+            const currentIpElement = document.getElementById('currentIp');
+            const copyCurrentIpBtn = document.getElementById('copyCurrentIpBtn');
+            
+            ipInput.placeholder = `Your IP: ${data.ip} (test for bans)`;
+            currentIpElement.textContent = this.currentIP;
+            
+            // Show copy button for current IP
+            copyCurrentIpBtn.style.display = 'flex';
         } catch (error) {
             console.log('Could not detect user IP');
+            document.getElementById('currentIp').textContent = 'Unable to load';
         }
     }
 
     async loadBlocklists() {
-        this.showMessage('Loading blocklists...', 'info');
+        this.showMessage('Loading ban lists...', 'info');
         
         // Set up progress callback
         this.blocklistLoader.setProgressCallback((loaded, total, listName, count) => {
             const progress = Math.round((loaded / total) * 100);
-            this.showMessage(`Loading blocklists... ${progress}% (${listName}: ${count} entries)`, 'info');
+            this.showMessage(`Loading ban lists... ${progress}% (${listName}: ${count} entries)`, 'info');
         });
 
         // Set up completion callback
         this.blocklistLoader.setCompleteCallback((blocklists) => {
             this.blocklists = blocklists;
-            this.showMessage('Blocklists loaded successfully!', 'success');
+            this.showMessage('Ban lists loaded successfully!', 'success');
             setTimeout(() => this.hideMessage(), 3000);
             
             // Log statistics
@@ -267,19 +281,29 @@ class IPBlacklistChecker {
 
     async getIPInfo(ip) {
         try {
-            // Simulated IP information
+            // Fetch real IP geolocation data using ipapi.co (same as IP checker)
+            const response = await fetch(`https://ipapi.co/${ip}/json/`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch IP data');
+            }
+            const data = await response.json();
+            
             const ipInfo = {
                 'IP Address': ip,
-                'Country': this.getRandomCountry(),
-                'City': this.getRandomCity(),
-                'ISP': this.getRandomISP(),
-                'Organization': this.getRandomOrg(),
-                'ASN': this.getRandomASN(),
-                'Timezone': this.getRandomTimezone(),
-                'Coordinates': this.getRandomCoordinates()
+                'Country': data.country_name || 'Unknown',
+                'City': data.city || 'Unknown',
+                'ISP': data.org || 'Unknown',
+                'Organization': data.org || 'Unknown',
+                'ASN': data.asn || 'Unknown',
+                'Timezone': data.timezone || 'Unknown',
+                'Latitude': data.latitude ? `${data.latitude}°` : 'Unknown',
+                'Longitude': data.longitude ? `${data.longitude}°` : 'Unknown',
+                'Coordinates': data.latitude && data.longitude ? 
+                    `${data.latitude}°${data.latitude >= 0 ? 'N' : 'S'}, ${data.longitude}°${data.longitude >= 0 ? 'E' : 'W'}` : 'Unknown'
             };
             return ipInfo;
         } catch (error) {
+            console.error('Error fetching IP info:', error);
             return {
                 'IP Address': ip,
                 'Country': 'Unknown',
@@ -288,69 +312,46 @@ class IPBlacklistChecker {
                 'Organization': 'Unknown',
                 'ASN': 'Unknown',
                 'Timezone': 'Unknown',
+                'Latitude': 'Unknown',
+                'Longitude': 'Unknown',
                 'Coordinates': 'Unknown'
             };
         }
     }
 
-    getRandomCountry() {
-        const countries = ['United States', 'Germany', 'Netherlands', 'United Kingdom', 'Canada', 'France', 'Japan', 'Australia'];
-        return countries[Math.floor(Math.random() * countries.length)];
-    }
 
-    getRandomCity() {
-        const cities = ['New York', 'Berlin', 'Amsterdam', 'London', 'Toronto', 'Paris', 'Tokyo', 'Sydney'];
-        return cities[Math.floor(Math.random() * cities.length)];
-    }
-
-    getRandomISP() {
-        const isps = ['Comcast', 'Verizon', 'AT&T', 'Charter', 'Time Warner', 'Sprint', 'Deutsche Telekom', 'Orange'];
-        return isps[Math.floor(Math.random() * isps.length)];
-    }
-
-    getRandomOrg() {
-        const orgs = ['Google LLC', 'Amazon.com', 'Microsoft Corporation', 'Cloudflare', 'DigitalOcean', 'OVH', 'Hetzner', 'Linode'];
-        return orgs[Math.floor(Math.random() * orgs.length)];
-    }
-
-    getRandomASN() {
-        const asns = ['AS15169', 'AS16509', 'AS8075', 'AS13335', 'AS14061', 'AS16276', 'AS3320', 'AS24940'];
-        return asns[Math.floor(Math.random() * asns.length)];
-    }
-
-    getRandomTimezone() {
-        const timezones = ['America/New_York', 'Europe/Berlin', 'Europe/Amsterdam', 'Europe/London', 'America/Toronto', 'Europe/Paris', 'Asia/Tokyo', 'Australia/Sydney'];
-        return timezones[Math.floor(Math.random() * timezones.length)];
-    }
-
-    getRandomCoordinates() {
-        const coords = ['40.7128°N, 74.0060°W', '52.5200°N, 13.4050°E', '52.3676°N, 4.9041°E', '51.5074°N, 0.1278°W', '43.6532°N, 79.3832°W', '48.8566°N, 2.3522°E', '35.6762°N, 139.6503°E', '33.8688°S, 151.2093°E'];
-        return coords[Math.floor(Math.random() * coords.length)];
-    }
 
     generateRecommendations(results) {
         const recommendations = [];
 
         if (results.overallStatus === 'clean') {
-            recommendations.push('Your IP address appears to be clean and not listed in any major blocklists.');
-            recommendations.push('Continue to practice good security hygiene and monitor your network traffic.');
+            recommendations.push('Your IP address is not banned in any major databases.');
+            recommendations.push('You should be able to access most gaming platforms and services normally.');
         } else if (results.overallStatus === 'warning') {
-            recommendations.push('Your IP address is listed in some blocklists. Consider investigating the cause.');
-            recommendations.push('Check if your network has been compromised or if you\'re using a shared IP.');
-            recommendations.push('Contact your ISP if you believe this is a false positive.');
+            recommendations.push('Your IP address is partially banned in some databases.');
+            recommendations.push('You may experience issues with certain gaming platforms or services.');
+            recommendations.push('Consider contacting the service providers if you believe this is a false positive.');
         } else {
-            recommendations.push('Your IP address is listed in multiple blocklists. Immediate action is recommended.');
-            recommendations.push('Scan your system for malware and check for unauthorized access.');
-            recommendations.push('Consider changing your IP address or contacting your ISP.');
-            recommendations.push('Review your security practices and consider using a VPN.');
+            recommendations.push('Your IP address is banned in multiple databases. Immediate action is recommended.');
+            recommendations.push('You will likely be blocked from accessing many gaming platforms and services.');
+            recommendations.push('Consider changing your IP address or contacting your ISP for a new one.');
+            recommendations.push('Review your online activities and ensure compliance with service terms.');
+        }
+
+        if (results.categoryResults.gaming?.found) {
+            recommendations.push('Gaming platform bans detected. You may be unable to access Steam, Riot Games, or other platforms.');
         }
 
         if (results.categoryResults.tor?.found) {
-            recommendations.push('TOR exit node detected. This may affect your ability to access certain services.');
+            recommendations.push('TOR exit node detected. Many services block TOR connections for security reasons.');
         }
 
         if (results.categoryResults.proxy?.found) {
-            recommendations.push('Proxy/VPN detected. Some services may block proxy connections.');
+            recommendations.push('Proxy/VPN detected. Some gaming platforms and services block proxy connections.');
+        }
+
+        if (results.categoryResults.spam?.found) {
+            recommendations.push('Spam-related bans detected. This may affect email services and forum access.');
         }
 
         return recommendations;
@@ -363,6 +364,7 @@ class IPBlacklistChecker {
         this.displayOverallStatus(results);
         this.displayThreatLevel(results);
         this.displayIPInfo(results.ipInfo);
+        this.displayMap(results.ipInfo);
         this.displayCategories(results.categoryResults);
         this.displayRecommendations(results.recommendations);
     }
@@ -373,12 +375,12 @@ class IPBlacklistChecker {
 
         overallStatus.className = `status-indicator ${results.overallStatus}`;
         
-        const statusText = results.overallStatus === 'clean' ? 'Clean' : 
-                          results.overallStatus === 'warning' ? 'Warning' : 'Danger';
+        const statusText = results.overallStatus === 'clean' ? 'Not Banned' : 
+                          results.overallStatus === 'warning' ? 'Partially Banned' : 'Banned';
         
         overallInfo.innerHTML = `
             <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${statusText}</p>
-            <p style="color: var(--text-secondary);">Found in ${results.foundInLists.length} blocklist(s)</p>
+            <p style="color: var(--text-secondary);">Found in ${results.foundInLists.length} ban list(s)</p>
         `;
     }
 
@@ -388,12 +390,12 @@ class IPBlacklistChecker {
 
         threatStatus.className = `status-indicator ${results.threatLevel === 'low' ? 'clean' : results.threatLevel === 'medium' ? 'warning' : 'danger'}`;
         
-        const threatText = results.threatLevel === 'low' ? 'Low Risk' : 
-                          results.threatLevel === 'medium' ? 'Medium Risk' : 'High Risk';
+        const threatText = results.threatLevel === 'low' ? 'Low Ban Risk' : 
+                          results.threatLevel === 'medium' ? 'Medium Ban Risk' : 'High Ban Risk';
         
         threatInfo.innerHTML = `
             <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${threatText}</p>
-            <p style="color: var(--text-secondary);">${results.foundInLists.length} threat(s) detected</p>
+            <p style="color: var(--text-secondary);">${results.foundInLists.length} ban(s) detected</p>
         `;
     }
 
@@ -404,11 +406,74 @@ class IPBlacklistChecker {
         for (const [label, value] of Object.entries(ipInfo)) {
             const detailDiv = document.createElement('div');
             detailDiv.className = 'ip-detail';
+            
+            // Add copy button for IP address
+            let valueHtml = value;
+            if (label === 'IP Address' && value !== 'Unknown') {
+                valueHtml = `
+                    ${value}
+                    <button class="copy-ip-btn small" onclick="ipBanTester.copyToClipboard('${value}')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                `;
+            }
+            
             detailDiv.innerHTML = `
                 <span class="detail-label">${label}:</span>
-                <span class="detail-value">${value}</span>
+                <span class="detail-value">${valueHtml}</span>
             `;
             ipInfoContainer.appendChild(detailDiv);
+        }
+    }
+
+    displayMap(ipInfo) {
+        const mapPlaceholder = document.getElementById('mapPlaceholder');
+        const ipMap = document.getElementById('ipMap');
+        
+        // Extract latitude and longitude from IP info
+        const lat = ipInfo['Latitude']?.replace('°', '');
+        const lng = ipInfo['Longitude']?.replace('°', '');
+        
+        if (lat && lng && lat !== 'Unknown' && lng !== 'Unknown') {
+            // Hide placeholder and show map
+            mapPlaceholder.style.display = 'none';
+            ipMap.style.display = 'block';
+            
+            // Initialize map with Leaflet
+            this.initializeMap(parseFloat(lat), parseFloat(lng), `${ipInfo['City'] || 'Unknown'}, ${ipInfo['Country'] || 'Unknown'}`);
+        } else {
+            // Show placeholder if coordinates are not available
+            mapPlaceholder.style.display = 'flex';
+            ipMap.style.display = 'none';
+            mapPlaceholder.innerHTML = `
+                <i class="fas fa-map"></i>
+                <p>Location coordinates not available</p>
+            `;
+        }
+    }
+
+    initializeMap(lat, lng, location) {
+        const mapContainer = document.getElementById('ipMap');
+
+        // Remove existing map
+        if (this.map) {
+            this.map.remove();
+        }
+
+        // Initialize new map
+        this.map = L.map('ipMap').setView([lat || 0, lng || 0], 10);
+
+        // Add tile layer (dark theme)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '©OpenStreetMap, ©CartoDB',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(this.map);
+
+        // Add marker
+        if (lat && lng) {
+            this.marker = L.marker([lat, lng]).addTo(this.map);
+            this.marker.bindPopup(`<b>${location}</b><br>IP Location`).openPopup();
         }
     }
 
@@ -426,7 +491,7 @@ class IPBlacklistChecker {
                 </div>
                 <div class="category-name">${category.name}</div>
                 <div class="category-status ${category.found ? 'found' : 'clean'}">
-                    ${category.found ? 'Found' : 'Clean'}
+                    ${category.found ? 'Banned' : 'Not Banned'}
                 </div>
             `;
             
@@ -456,17 +521,34 @@ class IPBlacklistChecker {
         if (loading) {
             checkBtn.disabled = true;
             ipInput.disabled = true;
-            checkBtn.innerHTML = '<div class="loading-spinner"></div> Checking...';
+            checkBtn.innerHTML = '<div class="loading-spinner"></div> Testing...';
         } else {
             checkBtn.disabled = false;
             ipInput.disabled = false;
-            checkBtn.innerHTML = '<i class="fas fa-search"></i> Check IP';
+            checkBtn.innerHTML = '<i class="fas fa-ban"></i> Test for Bans';
         }
     }
 
     clearResults() {
         const resultsSection = document.getElementById('resultsSection');
         resultsSection.style.display = 'none';
+        
+        // Reset map to placeholder
+        const mapPlaceholder = document.getElementById('mapPlaceholder');
+        const ipMap = document.getElementById('ipMap');
+        mapPlaceholder.style.display = 'flex';
+        ipMap.style.display = 'none';
+        mapPlaceholder.innerHTML = `
+            <i class="fas fa-map"></i>
+            <p>Map will be displayed here after IP check</p>
+        `;
+        
+        // Remove existing map
+        if (this.map) {
+            this.map.remove();
+            this.map = null;
+            this.marker = null;
+        }
     }
 
     showMessage(message, type = 'info') {
@@ -480,9 +562,52 @@ class IPBlacklistChecker {
         const messageContainer = document.getElementById('messageContainer');
         messageContainer.style.display = 'none';
     }
+
+    async copyToClipboard(text) {
+        if (!text || text === 'N/A') {
+            this.showMessage('No IP address to copy', 'error');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(text);
+            this.showCopySuccess();
+        } catch (err) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                this.showCopySuccess();
+            } catch (fallbackErr) {
+                this.showMessage('Failed to copy IP address', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+    }
+
+    showCopySuccess() {
+        // Show success message
+        this.showMessage('IP address copied to clipboard!', 'success');
+        
+        // Update button appearance temporarily
+        const copyButtons = document.querySelectorAll('.copy-ip-btn');
+        copyButtons.forEach(btn => {
+            const originalHTML = btn.innerHTML;
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+            
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = originalHTML;
+            }, 2000);
+        });
+    }
 }
 
-// Initialize the checker when the DOM is fully loaded
+// Initialize the ban tester when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    window.ipBlacklistChecker = new IPBlacklistChecker();
+    window.ipBanTester = new IPBanTester();
 }); 

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Encryption Tool - Real Cryptography</title>
+  
+  <!-- Favicon Setup -->
+  <link rel="icon" type="image/png" href="ainsiders-logo.png" id="main-favicon">
+  <link rel="apple-touch-icon" href="ainsiders-logo.png">
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a1a1a;
+      --bg-tertiary: #2a2a2a;
+      --accent-primary: #00ff88;
+      --accent-secondary: #00cc6a;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --border-color: rgba(0, 255, 136, 0.3);
+      --border-radius: 8px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .header h1 {
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button:hover,
+    .tab-button.active {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .tab {
+      display: none;
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+    }
+
+    .tab.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .result h3 {
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    .result pre {
+      background: var(--bg-primary);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .format-selector {
+      margin-bottom: 1rem;
+    }
+
+    .format-selector label {
+      margin-right: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .format-selector select {
+      padding: 8px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      color: var(--text-primary);
+    }
+
+    /* Validation styles */
+    .test-report {
+      background: var(--bg-tertiary);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+
+    .test-summary {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .test-stat {
+      text-align: center;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .test-stat.success {
+      border-color: var(--accent-primary);
+    }
+
+    .test-stat.error {
+      border-color: #ff4444;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent-primary);
+    }
+
+    .test-result {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .test-result.success {
+      border-color: var(--accent-primary);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .test-result.error {
+      border-color: #ff4444;
+      background: rgba(255, 68, 68, 0.1);
+    }
+
+    .test-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .test-icon {
+      font-size: 1.2rem;
+    }
+
+    .test-status {
+      margin-left: auto;
+      font-weight: bold;
+    }
+
+    .test-error {
+      color: #ff4444;
+      margin-top: 0.5rem;
+    }
+
+    .details-grid {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .detail-item {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .detail-item strong {
+      min-width: 120px;
+      color: var(--accent-primary);
+    }
+
+    .long-value {
+      background: var(--bg-primary);
+      padding: 0.5rem;
+      border-radius: var(--border-radius);
+      font-family: monospace;
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+
+    .data-display {
+      margin-top: 1rem;
+    }
+
+    .format-tabs {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .format-tab {
+      background: var(--bg-tertiary);
+      padding: 0.5rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .format-tab code {
+      background: var(--bg-primary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .spinner {
+      border: 3px solid var(--bg-tertiary);
+      border-top: 3px solid var(--accent-primary);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  
+  <!-- Favicon Animation Script -->
+  <script src="favicon-animation.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔐 Enhanced Encryption Tool</h1>
+      <p>Real Cryptography - Industry Standard Algorithms</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('symmetric')">Symmetric Encryption</button>
+      <button class="tab-button" onclick="showTab('asymmetric')">Asymmetric Encryption</button>
+      <button class="tab-button" onclick="showTab('signatures')">Digital Signatures</button>
+      <button class="tab-button" onclick="showTab('hashing')">Hashing & KDF</button>
+      <button class="tab-button" onclick="showTab('file')">File Encryption</button>
+      <button class="tab-button" onclick="showTab('validation')">Validation & Testing</button>
+    </div>
+
+    <!-- Symmetric Encryption Tab -->
+    <div id="symmetric" class="tab active">
+      <h2>🔐 Symmetric Encryption</h2>
+      <p>Encrypt and decrypt data using the same key</p>
+      
+      <div class="form-group">
+        <label for="symmetric-algorithm">Algorithm:</label>
+        <select id="symmetric-algorithm">
+          <option value="aes-gcm">AES-256-GCM (Authenticated)</option>
+          <option value="aes-cbc">AES-256-CBC</option>
+          <option value="chacha20">ChaCha20-Poly1305</option>
+          <option value="twofish">Twofish-CBC</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="symmetric-password">Password/Key:</label>
+        <input type="password" id="symmetric-password" placeholder="Enter password or key">
+      </div>
+
+      <div class="form-group">
+        <label for="symmetric-input">Input Data:</label>
+        <textarea id="symmetric-input" placeholder="Enter text to encrypt or decrypt"></textarea>
+      </div>
+
+      <div class="format-selector">
+        <label>Output Format:</label>
+        <select id="symmetric-format">
+          <option value="base64">Base64</option>
+          <option value="hex">Hexadecimal</option>
+          <option value="bytes">Raw Bytes</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="encryptSymmetric()">🔒 Encrypt</button>
+      <button class="btn" onclick="decryptSymmetric()">🔓 Decrypt</button>
+
+      <div id="symmetric-result" class="result" style="display: none;"></div>
+    </div>
+
+    <!-- Asymmetric Encryption Tab -->
+    <div id="asymmetric" class="tab">
+      <h2>🔑 Asymmetric Encryption</h2>
+      <p>Encrypt with public key, decrypt with private key</p>
+      
+      <div class="form-group">
+        <label for="asymmetric-algorithm">Algorithm:</label>
+        <select id="asymmetric-algorithm">
+          <option value="rsa-oaep">RSA-OAEP (2048 bits)</option>
+          <option value="rsa-pkcs1">RSA-PKCS1 (2048 bits)</option>
+          <option value="ecdh">ECDH (P-256)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="asymmetric-input">Input Data:</label>
+        <textarea id="asymmetric-input" placeholder="Enter text to encrypt"></textarea>
+      </div>
+
+      <button class="btn" onclick="generateKeyPair()">🔑 Generate Key Pair</button>
+      <button class="btn" onclick="encryptAsymmetric()">🔒 Encrypt</button>
+      <button class="btn" onclick="decryptAsymmetric()">🔓 Decrypt</button>
+
+      <div id="asymmetric-result" class="result" style="display: none;"></div>
+    </div>
+
+    <!-- Digital Signatures Tab -->
+    <div id="signatures" class="tab">
+      <h2>✍️ Digital Signatures</h2>
+      <p>Sign data with private key, verify with public key</p>
+      
+      <div class="form-group">
+        <label for="signature-algorithm">Algorithm:</label>
+        <select id="signature-algorithm">
+          <option value="ed25519">Ed25519</option>
+          <option value="ecdsa">ECDSA (P-256)</option>
+          <option value="rsa-pss">RSA-PSS (2048 bits)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="signature-input">Message:</label>
+        <textarea id="signature-input" placeholder="Enter message to sign"></textarea>
+      </div>
+
+      <button class="btn" onclick="generateSignatureKeyPair()">🔑 Generate Key Pair</button>
+      <button class="btn" onclick="signMessage()">✍️ Sign</button>
+      <button class="btn" onclick="verifySignature()">✅ Verify</button>
+
+      <div id="signature-result" class="result" style="display: none;"></div>
+    </div>
+
+    <!-- Hashing & KDF Tab -->
+    <div id="hashing" class="tab">
+      <h2>🔍 Hashing & Key Derivation</h2>
+      <p>Hash functions and key derivation functions</p>
+      
+      <div class="form-group">
+        <label for="hash-algorithm">Algorithm:</label>
+        <select id="hash-algorithm">
+          <option value="sha256">SHA-256</option>
+          <option value="sha512">SHA-512</option>
+          <option value="blake2b">BLAKE2b</option>
+          <option value="pbkdf2">PBKDF2</option>
+          <option value="scrypt">Scrypt</option>
+          <option value="argon2">Argon2id</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="hash-input">Input Data:</label>
+        <textarea id="hash-input" placeholder="Enter data to hash or password for KDF"></textarea>
+      </div>
+
+      <button class="btn" onclick="hashData()">🔍 Hash/Generate</button>
+
+      <div id="hash-result" class="result" style="display: none;"></div>
+    </div>
+
+    <!-- File Encryption Tab -->
+    <div id="file" class="tab">
+      <h2>📁 File Encryption</h2>
+      <p>Encrypt and decrypt files</p>
+      
+      <div class="form-group">
+        <label for="file-input">Select File:</label>
+        <input type="file" id="file-input">
+      </div>
+
+      <div class="form-group">
+        <label for="file-password">Password:</label>
+        <input type="password" id="file-password" placeholder="Enter password">
+      </div>
+
+      <button class="btn" onclick="encryptFile()">🔒 Encrypt File</button>
+      <button class="btn" onclick="decryptFile()">🔓 Decrypt File</button>
+
+      <div id="file-result" class="result" style="display: none;"></div>
+    </div>
+
+    <!-- Validation & Testing Tab -->
+    <div id="validation" class="tab">
+      <h2>🔬 Validation & Testing</h2>
+      <p>Comprehensive testing to verify encryption methods are working correctly</p>
+      
+      <div class="validation-info">
+        <h3>What This Validates:</h3>
+        <ul>
+          <li>✅ All encryption algorithms work correctly</li>
+          <li>✅ Data can be encrypted and decrypted successfully</li>
+          <li>✅ Digital signatures can be created and verified</li>
+          <li>✅ Key derivation functions generate proper keys</li>
+          <li>✅ Hash functions produce consistent results</li>
+          <li>✅ Entropy analysis shows proper randomization</li>
+          <li>✅ Hybrid encryption combines multiple algorithms</li>
+        </ul>
+      </div>
+
+      <button class="btn" onclick="runValidationTests()">🔬 Run All Tests</button>
+      <button class="btn" onclick="clearValidationResults()">🗑️ Clear Results</button>
+
+      <div id="validation-result" class="result" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script src="enhanced-crypto.js"></script>
+  <script src="encryption-validator.js"></script>
+  <script>
+    let crypto = new EnhancedCrypto();
+    let validator = new EncryptionValidator();
+    let currentKeyPair = null;
+    let currentSignatureKeyPair = null;
+
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Symmetric Encryption Functions
+    async function encryptSymmetric() {
+      const algorithm = document.getElementById('symmetric-algorithm').value;
+      const password = document.getElementById('symmetric-password').value;
+      const input = document.getElementById('symmetric-input').value;
+      const format = document.getElementById('symmetric-format').value;
+
+      if (!password || !input) {
+        alert('Please enter both password and input data');
+        return;
+      }
+
+      try {
+        let encrypted;
+        switch (algorithm) {
+          case 'aes-gcm':
+            encrypted = await crypto.encryptAESGCM(input, password);
+            break;
+          case 'aes-cbc':
+            encrypted = await crypto.encryptAESCBC(input, password);
+            break;
+          case 'chacha20':
+            encrypted = await crypto.encryptChaCha20(input, password);
+            break;
+          case 'twofish':
+            encrypted = await crypto.encryptTwofish(input, password);
+            break;
+        }
+
+        displayResult('symmetric-result', 'Encrypted Data', encrypted, format);
+      } catch (error) {
+        displayError('symmetric-result', error.message);
+      }
+    }
+
+    async function decryptSymmetric() {
+      const algorithm = document.getElementById('symmetric-algorithm').value;
+      const password = document.getElementById('symmetric-password').value;
+      const input = document.getElementById('symmetric-input').value;
+
+      if (!password || !input) {
+        alert('Please enter both password and encrypted data');
+        return;
+      }
+
+      try {
+        let decrypted;
+        switch (algorithm) {
+          case 'aes-gcm':
+            decrypted = await crypto.decryptAESGCM(input, password);
+            break;
+          case 'aes-cbc':
+            decrypted = await crypto.decryptAESCBC(input, password);
+            break;
+          case 'chacha20':
+            decrypted = await crypto.decryptChaCha20(input, password);
+            break;
+          case 'twofish':
+            decrypted = await crypto.decryptTwofish(input, password);
+            break;
+        }
+
+        displayResult('symmetric-result', 'Decrypted Data', decrypted, 'text');
+      } catch (error) {
+        displayError('symmetric-result', error.message);
+      }
+    }
+
+    // Asymmetric Encryption Functions
+    async function generateKeyPair() {
+      try {
+        currentKeyPair = await crypto.generateRSAKeyPair();
+        displayResult('asymmetric-result', 'Generated Key Pair', 
+          `Public Key: ${currentKeyPair.publicKey}\n\nPrivate Key: ${currentKeyPair.privateKey}`, 'text');
+      } catch (error) {
+        displayError('asymmetric-result', error.message);
+      }
+    }
+
+    async function encryptAsymmetric() {
+      const input = document.getElementById('asymmetric-input').value;
+      
+      if (!currentKeyPair || !input) {
+        alert('Please generate a key pair and enter data to encrypt');
+        return;
+      }
+
+      try {
+        const encrypted = await crypto.encryptRSA(input, currentKeyPair.publicKey);
+        displayResult('asymmetric-result', 'Encrypted Data', encrypted, 'base64');
+      } catch (error) {
+        displayError('asymmetric-result', error.message);
+      }
+    }
+
+    async function decryptAsymmetric() {
+      const input = document.getElementById('asymmetric-input').value;
+      
+      if (!currentKeyPair || !input) {
+        alert('Please generate a key pair and enter encrypted data');
+        return;
+      }
+
+      try {
+        const decrypted = await crypto.decryptRSA(input, currentKeyPair.privateKey);
+        displayResult('asymmetric-result', 'Decrypted Data', decrypted, 'text');
+      } catch (error) {
+        displayError('asymmetric-result', error.message);
+      }
+    }
+
+    // Digital Signature Functions
+    async function generateSignatureKeyPair() {
+      try {
+        currentSignatureKeyPair = await crypto.generateEd25519KeyPair();
+        displayResult('signature-result', 'Generated Signature Key Pair', 
+          `Public Key: ${currentSignatureKeyPair.publicKey}\n\nPrivate Key: ${currentSignatureKeyPair.privateKey}`, 'text');
+      } catch (error) {
+        displayError('signature-result', error.message);
+      }
+    }
+
+    async function signMessage() {
+      const input = document.getElementById('signature-input').value;
+      
+      if (!currentSignatureKeyPair || !input) {
+        alert('Please generate a key pair and enter a message to sign');
+        return;
+      }
+
+      try {
+        const signature = await crypto.signEd25519(input, currentSignatureKeyPair.privateKey);
+        displayResult('signature-result', 'Digital Signature', signature, 'base64');
+      } catch (error) {
+        displayError('signature-result', error.message);
+      }
+    }
+
+    async function verifySignature() {
+      const input = document.getElementById('signature-input').value;
+      
+      if (!currentSignatureKeyPair || !input) {
+        alert('Please generate a key pair and enter a message to verify');
+        return;
+      }
+
+      try {
+        const verified = await crypto.verifyEd25519(input, input, currentSignatureKeyPair.publicKey);
+        displayResult('signature-result', 'Signature Verification', 
+          verified ? '✅ Signature is valid' : '❌ Signature is invalid', 'text');
+      } catch (error) {
+        displayError('signature-result', error.message);
+      }
+    }
+
+    // Hashing Functions
+    async function hashData() {
+      const algorithm = document.getElementById('hash-algorithm').value;
+      const input = document.getElementById('hash-input').value;
+
+      if (!input) {
+        alert('Please enter data to hash');
+        return;
+      }
+
+      try {
+        let result;
+        switch (algorithm) {
+          case 'sha256':
+            result = await crypto.hashSHA256(input);
+            break;
+          case 'sha512':
+            result = await crypto.hashSHA512(input);
+            break;
+          case 'blake2b':
+            result = await crypto.hashBLAKE2b(input);
+            break;
+          case 'pbkdf2':
+            result = await crypto.deriveKeyPBKDF2(input, crypto.getRandomValues(new Uint8Array(16)), 100000);
+            result = crypto.arrayBufferToHex(result);
+            break;
+          case 'scrypt':
+            result = await crypto.deriveKeyScrypt(input, crypto.getRandomValues(new Uint8Array(16)), 16384, 8, 1);
+            result = crypto.arrayBufferToHex(result);
+            break;
+          case 'argon2':
+            result = await crypto.deriveKeyArgon2(input, crypto.getRandomValues(new Uint8Array(16)), 3, 65536, 4);
+            result = crypto.arrayBufferToHex(result);
+            break;
+        }
+
+        displayResult('hash-result', 'Hash/Key Result', result, 'hex');
+      } catch (error) {
+        displayError('hash-result', error.message);
+      }
+    }
+
+    // File Encryption Functions
+    async function encryptFile() {
+      const fileInput = document.getElementById('file-input');
+      const password = document.getElementById('file-password').value;
+
+      if (!fileInput.files[0] || !password) {
+        alert('Please select a file and enter a password');
+        return;
+      }
+
+      try {
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        const encrypted = await crypto.encryptAESGCM(arrayBuffer, password);
+        
+        // Create download link
+        const blob = new Blob([encrypted], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name + '.encrypted';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        displayResult('file-result', 'File Encrypted', 
+          `File "${file.name}" has been encrypted and downloaded as "${file.name}.encrypted"`, 'text');
+      } catch (error) {
+        displayError('file-result', error.message);
+      }
+    }
+
+    async function decryptFile() {
+      const fileInput = document.getElementById('file-input');
+      const password = document.getElementById('file-password').value;
+
+      if (!fileInput.files[0] || !password) {
+        alert('Please select an encrypted file and enter the password');
+        return;
+      }
+
+      try {
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        const decrypted = await crypto.decryptAESGCM(arrayBuffer, password);
+        
+        // Create download link
+        const blob = new Blob([decrypted], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name.replace('.encrypted', '.decrypted');
+        a.click();
+        URL.revokeObjectURL(url);
+
+        displayResult('file-result', 'File Decrypted', 
+          `File "${file.name}" has been decrypted and downloaded`, 'text');
+      } catch (error) {
+        displayError('file-result', error.message);
+      }
+    }
+
+    // Validation Functions
+    async function runValidationTests() {
+      const resultDiv = document.getElementById('validation-result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Running comprehensive encryption validation tests...</p>
+          <p>This may take a few moments...</p>
+        </div>
+      `;
+
+      try {
+        const report = await validator.runAllTests();
+        resultDiv.innerHTML = report;
+      } catch (error) {
+        displayError('validation-result', error.message);
+      }
+    }
+
+    function clearValidationResults() {
+      document.getElementById('validation-result').style.display = 'none';
+    }
+
+    // Utility Functions
+    function displayResult(elementId, title, data, format) {
+      const element = document.getElementById(elementId);
+      element.style.display = 'block';
+      
+      let displayData = data;
+      if (format === 'hex' && typeof data === 'string') {
+        displayData = data;
+      } else if (format === 'bytes' && typeof data === 'string') {
+        // Convert to bytes display
+        const bytes = new TextEncoder().encode(data);
+        displayData = Array.from(bytes).join(', ');
+      }
+
+      element.innerHTML = `
+        <h3>${title}</h3>
+        <pre>${displayData}</pre>
+      `;
+    }
+
+    function displayError(elementId, error) {
+      const element = document.getElementById(elementId);
+      element.style.display = 'block';
+      element.innerHTML = `
+        <h3>❌ Error</h3>
+        <pre style="color: #ff4444;">${error}</pre>
+      `;
+    }
+  </script>
+</body>
+</html> 

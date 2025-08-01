@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy - A.Insiders</title>
+    <meta name="description" content="A.Insiders Cookie Policy - Learn how we use cookies and similar technologies on our website.">
+    <meta name="keywords" content="cookie policy, cookies, tracking, GDPR, CCPA, A.Insiders">
+    
+    <!-- Cache Control Headers for Cloudflare -->
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+    <meta http-equiv="Expires" content="31536000">
+    
+    <!-- DNS Prefetch and Preconnect for External Resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="brain-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="sidebar-menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="brain-script.js" as="script">
+    <link rel="preload" href="shared-loader.js" as="script">
+    <link rel="preload" href="mobile-nav.js" as="script">
+    <link rel="preload" href="sphere-loader.js" as="script">
+    <link rel="preload" href="ainsiders-logo.png" as="image">
+    
+    <!-- Fonts with Display Swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS with Fallback -->
+    <noscript>
+        <link rel="stylesheet" href="brain-styles.css">
+        <link rel="stylesheet" href="sidebar-menu.css">
+    </noscript>
+    
+    <!-- Font Awesome with CDN and Fallback -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Tawk.to Widget Styles -->
+    <style>
+        /* Make Tawk.to widget half the size */
+        #tawkto-container,
+        .tawkto-container,
+        .tawkto-widget,
+        .tawkto-minimized,
+        .tawkto-maximized,
+        .tawkto-iframe,
+        .tawkto-button,
+        .tawkto-bubble,
+        .tawkto-chat,
+        .tawkto-widget-container,
+        .tawkto-widget-container *,
+        iframe[src*="tawk.to"],
+        div[data-tawk-to],
+        .tawkto,
+        .tawkto * {
+            transform: scale(0.5) !important;
+            transform-origin: bottom right !important;
+        }
+    </style>
+    
+    <style>
+        /* Cookie Policy Page Specific Styles */
+        body.cookie-policy-page {
+            background: var(--bg-primary);
+        }
+        
+        body.cookie-policy-page * {
+            color: var(--text-primary);
+        }
+        
+        body.cookie-policy-page #aiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+        
+        .cookie-policy-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cookie-policy-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .cookie-policy-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cookie-policy-hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cookie-policy-section {
+            padding: 4rem 0;
+        }
+        
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .policy-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+            margin-bottom: 2rem;
+        }
+        
+        .policy-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .policy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .policy-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .policy-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .policy-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .policy-content h2 {
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .policy-content h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+        
+        .policy-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .policy-content ul, .policy-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .policy-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .policy-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .policy-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+        
+        .policy-content a:hover {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+        }
+        
+        .last-updated {
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .cookie-policy-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .policy-card {
+                padding: 1.5rem;
+            }
+            
+            .policy-content h2 {
+                font-size: 1.25rem;
+            }
+            
+            .policy-content h3 {
+                font-size: 1.125rem;
+            }
+        }
+    </style>
+</head>
+<body class="cookie-policy-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <canvas></canvas>
+        <div class="spark-text">It All Starts With A Spark</div>
+        <div class="continue-text">Click Anywhere To Continue</div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+
+                    <li><a href="apps.html" class="nav-link">Apps</a></li>
+                    <li><a href="tools.html" class="nav-link">Tools</a></li>
+                    <li class="nav-dropdown">
+                        <div class="nav-link-container">
+                            <a href="about.html" class="nav-link">About</a>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+                            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- AI Canvas for Background Effects -->
+        <canvas id="aiCanvas"></canvas>
+
+        <!-- Hero Section -->
+        <header class="cookie-policy-hero">
+            <div class="container">
+                <h1>🍪 Cookie Policy</h1>
+                <p>Learn how we use cookies and similar technologies to enhance your experience on our website.</p>
+            </div>
+        </header>
+
+        <!-- Cookie Policy Content -->
+        <section class="cookie-policy-section">
+            <div class="container">
+                <div class="policy-container">
+                    <div class="policy-card">
+                        <div class="policy-header">
+                            <div class="policy-icon">
+                                <i class="fas fa-cookie-bite"></i>
+                            </div>
+                            <h3 class="policy-title">Cookie Policy</h3>
+                        </div>
+                        
+                        <div class="policy-content">
+                            <p><strong>Last Updated:</strong> December 2024</p>
+                            
+                            <h2>1. What Are Cookies?</h2>
+                            <p>Cookies are small text files that are placed on your device (computer, tablet, or mobile phone) when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.</p>
+                            
+                            <p>Cookies can be "persistent" or "session" cookies. Persistent cookies remain on your device when you go offline, while session cookies are deleted as soon as you close your web browser.</p>
+                            
+                            <h2>2. How We Use Cookies</h2>
+                            <p>A.Insiders uses cookies and similar tracking technologies to:</p>
+                            <ul>
+                                <li>Provide and maintain our website functionality</li>
+                                <li>Remember your preferences and settings</li>
+                                <li>Analyze how our website is used</li>
+                                <li>Improve our services and user experience</li>
+                                <li>Provide personalized content and features</li>
+                                <li>Ensure security and prevent fraud</li>
+                            </ul>
+                            
+                            <h2>3. Types of Cookies We Use</h2>
+                            
+                            <h3>3.1 Essential Cookies</h3>
+                            <p>These cookies are necessary for the website to function properly. They enable basic functions like page navigation, access to secure areas, and form submissions. The website cannot function properly without these cookies.</p>
+                            <ul>
+                                <li><strong>Purpose:</strong> Website functionality and security</li>
+                                <li><strong>Duration:</strong> Session or up to 1 year</li>
+                                <li><strong>Examples:</strong> Authentication, session management, security tokens</li>
+                            </ul>
+                            
+                            <h3>3.2 Analytics Cookies</h3>
+                            <p>These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.</p>
+                            <ul>
+                                <li><strong>Purpose:</strong> Website analytics and performance monitoring</li>
+                                <li><strong>Duration:</strong> Up to 2 years</li>
+                                <li><strong>Examples:</strong> Google Analytics, page view tracking, user behavior analysis</li>
+                            </ul>
+                            
+                            <h3>3.3 Functional Cookies</h3>
+                            <p>These cookies enable enhanced functionality and personalization, such as remembering your preferences and settings.</p>
+                            <ul>
+                                <li><strong>Purpose:</strong> Enhanced functionality and user preferences</li>
+                                <li><strong>Duration:</strong> Up to 1 year</li>
+                                <li><strong>Examples:</strong> Language preferences, theme settings, tool configurations</li>
+                            </ul>
+                            
+                            <h3>3.4 Marketing Cookies</h3>
+                            <p>These cookies are used to track visitors across websites to display relevant and engaging advertisements.</p>
+                            <ul>
+                                <li><strong>Purpose:</strong> Advertising and marketing (if applicable)</li>
+                                <li><strong>Duration:</strong> Up to 2 years</li>
+                                <li><strong>Examples:</strong> Social media pixels, advertising networks, remarketing</li>
+                            </ul>
+                            
+                            <h2>4. Third-Party Cookies</h2>
+                            <p>We may use third-party services that place cookies on your device:</p>
+                            
+                            <h3>4.1 Google Analytics</h3>
+                            <p>We use Google Analytics to understand how visitors use our website. Google Analytics uses cookies to collect information such as:</p>
+                            <ul>
+                                <li>Pages visited and time spent on each page</li>
+                                <li>Referring websites and search terms</li>
+                                <li>Browser type and device information</li>
+                                <li>Geographic location (city/country level)</li>
+                            </ul>
+                            <p>Google Analytics data is processed in accordance with Google's <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+                            
+                            <h3>4.2 Social Media</h3>
+                            <p>We may use social media plugins that place cookies to enable social sharing and integration features.</p>
+                            
+                            <h3>4.3 External Services</h3>
+                            <p>We may use external services for specific functionality, such as:</p>
+                            <ul>
+                                <li>Form submission services (FormSubmit)</li>
+                                <li>Font providers (Google Fonts)</li>
+                                <li>Icon libraries (Font Awesome)</li>
+                                <li>Chat widgets (Tawk.to)</li>
+                            </ul>
+                            
+                            <h2>5. Cookie Management</h2>
+                            
+                            <h3>5.1 Browser Settings</h3>
+                            <p>You can control and manage cookies through your browser settings. Most browsers allow you to:</p>
+                            <ul>
+                                <li>View and delete existing cookies</li>
+                                <li>Block cookies from specific websites</li>
+                                <li>Block all cookies</li>
+                                <li>Set preferences for different types of cookies</li>
+                            </ul>
+                            
+                            <h3>5.2 Browser-Specific Instructions</h3>
+                            <p>To manage cookies in your browser:</p>
+                            <ul>
+                                <li><strong>Chrome:</strong> Settings > Privacy and security > Cookies and other site data</li>
+                                <li><strong>Firefox:</strong> Options > Privacy & Security > Cookies and Site Data</li>
+                                <li><strong>Safari:</strong> Preferences > Privacy > Manage Website Data</li>
+                                <li><strong>Edge:</strong> Settings > Cookies and site permissions > Cookies and site data</li>
+                            </ul>
+                            
+                            <h3>5.3 Opt-Out Tools</h3>
+                            <p>You can also opt out of certain types of cookies:</p>
+                            <ul>
+                                <li><strong>Google Analytics:</strong> <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a></li>
+                                <li><strong>Advertising:</strong> <a href="http://optout.networkadvertising.org/" target="_blank" rel="noopener">Network Advertising Initiative</a></li>
+                                <li><strong>Digital Advertising Alliance:</strong> <a href="http://optout.aboutads.info/" target="_blank" rel="noopener">AboutAds.info</a></li>
+                            </ul>
+                            
+                            <h2>6. Impact of Disabling Cookies</h2>
+                            <p>If you choose to disable cookies, some features of our website may not function properly:</p>
+                            <ul>
+                                <li>You may need to re-enter information repeatedly</li>
+                                <li>Some personalized features may not work</li>
+                                <li>Website performance may be affected</li>
+                                <li>Security features may be limited</li>
+                            </ul>
+                            
+                            <h2>7. Cookie Consent</h2>
+                            <p>When you first visit our website, you will see a cookie consent banner that allows you to:</p>
+                            <ul>
+                                <li>Accept all cookies</li>
+                                <li>Reject non-essential cookies</li>
+                                <li>Customize your cookie preferences</li>
+                                <li>Learn more about our cookie policy</li>
+                            </ul>
+                            
+                            <p>You can change your cookie preferences at any time by clicking the "Cookie Settings" link in our footer.</p>
+                            
+                            <h2>8. Legal Basis for Cookie Use</h2>
+                            <p>Our use of cookies is based on the following legal grounds:</p>
+                            
+                            <h3>8.1 Consent (GDPR)</h3>
+                            <p>For non-essential cookies, we rely on your consent as the legal basis for processing. You can withdraw your consent at any time.</p>
+                            
+                            <h3>8.2 Legitimate Interest</h3>
+                            <p>For essential cookies and analytics cookies, we rely on our legitimate interest in providing and improving our services.</p>
+                            
+                            <h3>8.3 Legal Obligation</h3>
+                            <p>Some cookies may be necessary to comply with legal obligations, such as security requirements.</p>
+                            
+                            <h2>9. Data Retention</h2>
+                            <p>Cookie data is retained for different periods depending on the type of cookie:</p>
+                            <ul>
+                                <li><strong>Session cookies:</strong> Deleted when you close your browser</li>
+                                <li><strong>Persistent cookies:</strong> Retained for the duration specified in the cookie</li>
+                                <li><strong>Analytics data:</strong> Typically retained for 26 months (Google Analytics)</li>
+                            </ul>
+                            
+                            <h2>10. International Transfers</h2>
+                            <p>Some of our third-party cookie providers may transfer data outside your country of residence. We ensure appropriate safeguards are in place to protect your data in accordance with applicable data protection laws.</p>
+                            
+                            <h2>11. Updates to This Policy</h2>
+                            <p>We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by:</p>
+                            <ul>
+                                <li>Posting the updated policy on our website</li>
+                                <li>Updating the "Last Updated" date</li>
+                                <li>Displaying a notice on our website</li>
+                            </ul>
+                            
+                            <h2>12. Contact Information</h2>
+                            <p>If you have any questions about our use of cookies or this Cookie Policy, please contact us:</p>
+                            <ul>
+                                <li><strong>Email:</strong> <a href="mailto:privacy@ainsiders.com">privacy@ainsiders.com</a></li>
+                                <li><strong>Contact Form:</strong> <a href="contact.html">Contact Us</a></li>
+                                <li><strong>Address:</strong> A.Insiders, [Your Business Address]</li>
+                            </ul>
+                            
+                            <h2>13. Additional Resources</h2>
+                            <p>For more information about cookies and online privacy:</p>
+                            <ul>
+                                <li><a href="https://www.allaboutcookies.org/" target="_blank" rel="noopener">All About Cookies</a></li>
+                                <li><a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener">Your Online Choices</a></li>
+                                <li><a href="https://www.aboutcookies.org/" target="_blank" rel="noopener">About Cookies</a></li>
+                            </ul>
+                            
+                            <div class="last-updated">
+                                <i class="fas fa-calendar-alt"></i>
+                                Last Updated: December 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="30" height="30">
+                            <span class="logo-text">A.I</span>
+                            <span class="logo-accent">NSIDERS</span>
+                        </div>
+                        <p>Leading source for AI and cybersecurity intelligence. Empowering organizations with knowledge to secure the digital future.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="apps.html">Apps</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Research Papers</a></li>
+                            <li><a href="#">White Papers</a></li>
+                            <li><a href="#">Case Studies</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+                            <li><a href="#">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Newsletter</h4>
+                        <p>Subscribe to our newsletter for the latest updates and insights.</p>
+                        <form class="newsletter-form" id="newsletter-form">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Connect With Us</h4>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-of-service.html">Terms of Service</a>
+                        <a href="cookie-policy.html">Cookie Policy</a>
+                    </div>
+                    <p>&copy; 2024 A.Insiders. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts with Performance Optimization -->
+    <script src="brain-script.js" defer></script>
+    <script src="shared-loader.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="sphere-loader.js" defer></script>
+    <script src="cache-optimizer.js" defer></script>
+    <script src="security-enhancement.js"></script>
+    
+    <!-- Service Worker Registration for Caching -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+</body>
+</html> 

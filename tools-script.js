@@ -60,6 +60,23 @@ class ToolsManager {
                     this.showToolDetails(card);
                 }
             });
+            
+            // Setup banner image loading
+            const bannerImg = card.querySelector('.tool-banner img');
+            if (bannerImg) {
+                bannerImg.addEventListener('load', () => {
+                    bannerImg.classList.add('loaded');
+                });
+                
+                bannerImg.addEventListener('error', () => {
+                    // Fallback for failed banner images
+                    bannerImg.style.display = 'none';
+                    const banner = card.querySelector('.tool-banner');
+                    if (banner) {
+                        banner.style.background = 'linear-gradient(135deg, rgba(0, 102, 255, 0.3), rgba(77, 148, 255, 0.3))';
+                    }
+                });
+            }
         });
     }
 
@@ -152,6 +169,8 @@ class ToolsManager {
         const toolCard = btn.closest('.tool-card');
         const toolTitle = toolCard.querySelector('.tool-title').textContent;
         const action = btn.textContent.trim();
+        
+        console.log('Tool action detected:', action, 'for tool:', toolTitle);
 
         // Handle different tool actions
         switch (action) {
@@ -173,15 +192,21 @@ class ToolsManager {
             case 'Calculate Entropy':
                 window.location.href = 'entropy-calculator.html';
                 break;
+            case 'Launch Checker':
+                window.location.href = 'advanced-entropy-simulator.html';
+                break;
+            case 'Encrypt Now':
+                window.location.href = 'encryption-tool.html';
+                break;
             case 'Launch Tool':
             case 'Try Beta':
-            case 'Encrypt Now':
             case 'Create Chart':
-            case 'Calculate':
             case 'Format Code':
             case 'Test API':
-            case 'Manage Tasks':
-            case 'Start Tracking':
+                this.launchTool(toolTitle);
+                break;
+            case 'Calculate':
+                // Handle generic calculate actions
                 this.launchTool(toolTitle);
                 break;
             case 'Learn More':
@@ -320,18 +345,205 @@ class ToolsManager {
     }
 }
 
-// Initialize tools manager when DOM is loaded
+// Tools Page Enhancement Script
 document.addEventListener('DOMContentLoaded', function() {
-    window.toolsManager = new ToolsManager();
+    console.log('Tools page loaded with enhanced performance!');
     
-    // Add search functionality if search input exists
-    const searchInput = document.querySelector('#toolSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            window.toolsManager.searchTools(e.target.value);
+    // Initialize tools page functionality
+    initializeToolsPage();
+    
+    // Preload next likely pages for better UX
+    setTimeout(() => {
+        if (window.browserCacheManager) {
+            window.browserCacheManager.preloadPage('index');
+            window.browserCacheManager.preloadPage('apps');
+        }
+    }, 2000);
+});
+
+function initializeToolsPage() {
+    // Category filtering functionality
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const toolCards = document.querySelectorAll('.tool-card');
+    
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            
+            // Update active button
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter tools with smooth animation
+            toolCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Enhanced tool card interactions
+    toolCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        // Add click tracking for analytics
+        const primaryBtn = card.querySelector('.tool-btn.primary');
+        if (primaryBtn) {
+            primaryBtn.addEventListener('click', function() {
+                const toolName = card.querySelector('.tool-title').textContent;
+                console.log(`Tool accessed: ${toolName}`);
+                // Track tool usage for analytics
+                if (window.gtag) {
+                    window.gtag('event', 'tool_click', {
+                        'tool_name': toolName
+                    });
+                }
+            });
+        }
+    });
+    
+    // Performance optimization: Lazy load images
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+            }
+        });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+    
+    // Smooth fade-in animations for sections
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.fade-section').forEach(section => {
+        sectionObserver.observe(section);
+    });
+    
+    // Enhanced loading states for tool buttons
+    document.querySelectorAll('.tool-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!this.disabled) {
+                const originalText = this.textContent;
+                this.textContent = 'Loading...';
+                this.disabled = true;
+                
+                // Simulate loading state for better UX
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.disabled = false;
+                }, 1000);
+            }
+        });
+    });
+    
+    // Keyboard navigation support
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            // Close any open modals or dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('active');
+            });
+        }
+    });
+    
+    // Touch gesture support for mobile
+    let touchStartY = 0;
+    let touchEndY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        touchStartY = e.changedTouches[0].screenY;
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartY - touchEndY;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe up - could trigger category change
+                console.log('Swipe up detected');
+            } else {
+                // Swipe down - could trigger search or filter
+                console.log('Swipe down detected');
+            }
+        }
+    }
+    
+    // Performance monitoring
+    if ('performance' in window) {
+        window.addEventListener('load', function() {
+            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+            console.log(`Tools page loaded in ${loadTime}ms`);
+            
+            // Report performance metrics
+            if (window.gtag) {
+                window.gtag('event', 'timing_complete', {
+                    'name': 'load',
+                    'value': loadTime
+                });
+            }
         });
     }
-});
+}
+
+// Export for potential use in other scripts
+window.toolsPage = {
+    initialize: initializeToolsPage
+};
 
 // Add keyboard shortcuts
 document.addEventListener('keydown', function(e) {

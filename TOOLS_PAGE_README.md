@@ -17,7 +17,6 @@ The Tools page (`tools.html`) is a comprehensive collection of online tools desi
 
 #### AI & ML Tools
 - **AI Text Analyzer**: Sentiment analysis, keyword extraction, text summarization
-- **Image Recognition**: Object detection, face recognition, OCR capabilities
 
 #### Security Tools
 - **Password Strength Checker**: Comprehensive password analysis and recommendations
@@ -25,10 +24,8 @@ The Tools page (`tools.html`) is a comprehensive collection of online tools desi
 
 #### Data Analysis Tools
 - **Data Visualizer**: Interactive charts and graphs creation
-- **Statistical Calculator**: Advanced statistical analysis and testing
 
 #### Development Tools
-- **Code Formatter**: Multi-language code formatting and beautification
 - **API Tester**: HTTP request testing and debugging
 
 #### Productivity Tools

@@ -1,31 +1,34 @@
 {
-  "name": "ainsiders-news-cache-server",
+  "name": "password-benchmark-updater",
   "version": "1.0.0",
-  "description": "Server-side cache system for A.Insiders news feeds",
-  "main": "server-cache.js",
+  "description": "Automated password cracking benchmark updater with real-world statistics",
+  "main": "update-password-benchmarks.js",
   "scripts": {
-    "start": "node server-cache.js",
-    "dev": "nodemon server-cache.js",
-    "cache-status": "node cache-manager.js status",
-    "cache-clear": "node cache-manager.js clear",
-    "cache-refresh": "node cache-manager.js refresh"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "axios": "^1.6.0",
-    "node-cron": "^3.0.3"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
+    "update": "node update-password-benchmarks.js",
+    "test": "node -e \"console.log('Testing benchmark updater...'); require('./update-password-benchmarks.js');\"",
+    "validate": "node -e \"const fs = require('fs'); const data = JSON.parse(fs.readFileSync('pw-crack-speeds.json', 'utf8')); console.log('✅ JSON is valid'); console.log('Last updated:', data.updated);\""
   },
   "keywords": [
-    "news",
-    "cache",
-    "rss",
-    "feeds",
-    "api"
+    "password",
+    "cracking",
+    "benchmarks",
+    "security",
+    "automation",
+    "updates"
   ],
   "author": "A.Insiders",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/your-repo/issues"
+  },
+  "homepage": "https://github.com/your-username/your-repo#readme"
 } 

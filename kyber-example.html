@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyber Post-Quantum Encryption Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .output {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .key-display {
+            font-size: 12px;
+            color: #666;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Kyber Post-Quantum Encryption Demo</h1>
+        
+        <div class="status info">
+            <strong>Note:</strong> This is a demonstration of the Kyber encryption interface. 
+            The actual Kyber algorithm implementation would require compiling the C code to WebAssembly 
+            or using a server-side implementation.
+        </div>
+
+        <!-- Key Generation Section -->
+        <div class="section">
+            <h2>🔑 Key Generation</h2>
+            <p>Generate a new Kyber key pair for post-quantum encryption:</p>
+            <select id="securityLevel">
+                <option value="kyber512">Kyber-512 (Level 1)</option>
+                <option value="kyber768" selected>Kyber-768 (Level 3)</option>
+                <option value="kyber1024">Kyber-1024 (Level 5)</option>
+            </select>
+            <button onclick="generateKeyPair()">Generate Key Pair</button>
+            <div id="keyPairOutput" class="output" style="display: none;"></div>
+        </div>
+
+        <!-- Key Storage Section -->
+        <div class="section">
+            <h2>💾 Key Storage</h2>
+            <p>Securely store your secret key with a password:</p>
+            <input type="password" id="storagePassword" placeholder="Enter password for key storage">
+            <button onclick="storeSecretKey()" id="storeKeyBtn" disabled>Store Secret Key</button>
+            <button onclick="retrieveSecretKey()" id="retrieveKeyBtn" disabled>Retrieve Secret Key</button>
+            <div id="keyStorageOutput" class="output" style="display: none;"></div>
+        </div>
+
+        <!-- Encryption Section -->
+        <div class="section">
+            <h2>🔒 Encryption</h2>
+            <p>Encrypt a message using hybrid encryption (Kyber + AES):</p>
+            <textarea id="messageToEncrypt" placeholder="Enter message to encrypt"></textarea>
+            <input type="text" id="recipientPublicKey" placeholder="Recipient's public key (base64)" readonly>
+            <button onclick="encryptMessage()" id="encryptBtn" disabled>Encrypt Message</button>
+            <div id="encryptionOutput" class="output" style="display: none;"></div>
+        </div>
+
+        <!-- Decryption Section -->
+        <div class="section">
+            <h2>🔓 Decryption</h2>
+            <p>Decrypt a message using your secret key:</p>
+            <textarea id="encryptedMessage" placeholder="Paste encrypted message data (JSON)"></textarea>
+            <button onclick="decryptMessage()" id="decryptBtn" disabled>Decrypt Message</button>
+            <div id="decryptionOutput" class="output" style="display: none;"></div>
+        </div>
+
+        <!-- Steganography Section -->
+        <div class="section">
+            <h2>🖼️ Steganography</h2>
+            <p>Hide encrypted messages within images using steganography:</p>
+            
+            <div style="margin-bottom: 15px;">
+                <label for="coverImage">Cover Image (PNG/JPG):</label>
+                <input type="file" id="coverImage" accept="image/*" onchange="previewImage()">
+            </div>
+            
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <h4>Original Image:</h4>
+                    <canvas id="originalCanvas" width="200" height="200" style="border: 1px solid #ddd; max-width: 100%;"></canvas>
+                </div>
+                <div style="flex: 1;">
+                    <h4>Stego Image:</h4>
+                    <canvas id="stegoCanvas" width="200" height="200" style="border: 1px solid #ddd; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label for="stegoMessage">Message to Hide:</label>
+                <textarea id="stegoMessage" placeholder="Enter message to hide in the image" rows="3"></textarea>
+            </div>
+            
+            <button onclick="hideMessage()" id="hideBtn" disabled>Hide Message</button>
+            <button onclick="extractMessage()" id="extractBtn" disabled>Extract Message</button>
+            <button onclick="downloadStegoImage()" id="downloadBtn" disabled>Download Stego Image</button>
+            
+            <div id="steganographyOutput" class="output" style="display: none;"></div>
+        </div>
+
+        <!-- Performance Section -->
+        <div class="section">
+            <h2>⚡ Performance Test</h2>
+            <p>Test the performance of key generation and encryption:</p>
+            <button onclick="runPerformanceTest()">Run Performance Test</button>
+            <div id="performanceOutput" class="output" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="kyber-web-wrapper.js"></script>
+    <script>
+        // Global variables to store current keys
+        let currentKeyPair = null;
+        let currentSecretKey = null;
+        let kyber = null;
+        let hybrid = null;
+        let keyManager = null;
+
+        // Initialize Kyber encryption
+        function initializeKyber() {
+            const securityLevel = document.getElementById('securityLevel').value;
+            kyber = new KyberEncryption(securityLevel);
+            hybrid = new HybridEncryption(securityLevel);
+            keyManager = new KeyManager();
+            showStatus('Kyber initialized with ' + securityLevel, 'success');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeKyber();
+            
+            // Update initialization when security level changes
+            document.getElementById('securityLevel').addEventListener('change', initializeKyber);
+        });
+
+        // Generate a new key pair
+        async function generateKeyPair() {
+            try {
+                showStatus('Generating key pair...', 'info');
+                currentKeyPair = await kyber.generateKeyPair();
+                
+                const output = document.getElementById('keyPairOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Key pair generated successfully!
+                
+Public Key (${currentKeyPair.publicKey.length} bytes):
+${kyber.toBase64(currentKeyPair.publicKey)}
+
+Secret Key (${currentKeyPair.secretKey.length} bytes):
+${kyber.toBase64(currentKeyPair.secretKey)}
+
+Public Key (hex):
+${kyber.toHex(currentKeyPair.publicKey)}`;
+                
+                // Enable related buttons
+                document.getElementById('storeKeyBtn').disabled = false;
+                document.getElementById('encryptBtn').disabled = false;
+                document.getElementById('retrieveSecretKeyBtn').disabled = false;
+                
+                // Set recipient public key for encryption demo
+                document.getElementById('recipientPublicKey').value = kyber.toBase64(currentKeyPair.publicKey);
+                
+                showStatus('Key pair generated successfully!', 'success');
+            } catch (error) {
+                showStatus('Error generating key pair: ' + error.message, 'error');
+            }
+        }
+
+        // Store secret key with password
+        async function storeSecretKey() {
+            try {
+                const password = document.getElementById('storagePassword').value;
+                if (!password) {
+                    showStatus('Please enter a password', 'error');
+                    return;
+                }
+                
+                if (!currentKeyPair) {
+                    showStatus('Please generate a key pair first', 'error');
+                    return;
+                }
+                
+                showStatus('Storing secret key...', 'info');
+                await keyManager.storeSecretKey(currentKeyPair.secretKey, password);
+                
+                const output = document.getElementById('keyStorageOutput');
+                output.style.display = 'block';
+                output.textContent = '✅ Secret key stored securely with password!';
+                
+                showStatus('Secret key stored successfully!', 'success');
+            } catch (error) {
+                showStatus('Error storing secret key: ' + error.message, 'error');
+            }
+        }
+
+        // Retrieve secret key with password
+        async function retrieveSecretKey() {
+            try {
+                const password = document.getElementById('storagePassword').value;
+                if (!password) {
+                    showStatus('Please enter a password', 'error');
+                    return;
+                }
+                
+                showStatus('Retrieving secret key...', 'info');
+                currentSecretKey = await keyManager.retrieveSecretKey(password);
+                
+                const output = document.getElementById('keyStorageOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Secret key retrieved successfully!
+                
+Secret Key (${currentSecretKey.length} bytes):
+${kyber.toBase64(currentSecretKey)}`;
+                
+                document.getElementById('decryptBtn').disabled = false;
+                
+                showStatus('Secret key retrieved successfully!', 'success');
+            } catch (error) {
+                showStatus('Error retrieving secret key: ' + error.message, 'error');
+            }
+        }
+
+        // Encrypt a message
+        async function encryptMessage() {
+            try {
+                const message = document.getElementById('messageToEncrypt').value;
+                if (!message) {
+                    showStatus('Please enter a message to encrypt', 'error');
+                    return;
+                }
+                
+                if (!currentKeyPair) {
+                    showStatus('Please generate a key pair first', 'error');
+                    return;
+                }
+                
+                showStatus('Encrypting message...', 'info');
+                const encrypted = await hybrid.encrypt(message, currentKeyPair.publicKey);
+                
+                const output = document.getElementById('encryptionOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Message encrypted successfully!
+                
+Encrypted Data (JSON):
+${JSON.stringify({
+    ephemeralPublicKey: kyber.toBase64(encrypted.ephemeralPublicKey),
+    ciphertext: kyber.toBase64(encrypted.ciphertext),
+    iv: kyber.toBase64(encrypted.iv),
+    encryptedData: kyber.toBase64(encrypted.encryptedData)
+}, null, 2)}`;
+                
+                showStatus('Message encrypted successfully!', 'success');
+            } catch (error) {
+                showStatus('Error encrypting message: ' + error.message, 'error');
+            }
+        }
+
+        // Decrypt a message
+        async function decryptMessage() {
+            try {
+                const encryptedData = document.getElementById('encryptedMessage').value;
+                if (!encryptedData) {
+                    showStatus('Please enter encrypted message data', 'error');
+                    return;
+                }
+                
+                if (!currentSecretKey) {
+                    showStatus('Please retrieve your secret key first', 'error');
+                    return;
+                }
+                
+                showStatus('Decrypting message...', 'info');
+                
+                // Parse the encrypted data
+                const parsed = JSON.parse(encryptedData);
+                const encrypted = {
+                    ephemeralPublicKey: kyber.fromBase64(parsed.ephemeralPublicKey),
+                    ciphertext: kyber.fromBase64(parsed.ciphertext),
+                    iv: kyber.fromBase64(parsed.iv),
+                    encryptedData: kyber.fromBase64(parsed.encryptedData)
+                };
+                
+                const decrypted = await hybrid.decrypt(encrypted, currentSecretKey);
+                const decryptedText = new TextDecoder().decode(decrypted);
+                
+                const output = document.getElementById('decryptionOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Message decrypted successfully!
+                
+Decrypted Message:
+${decryptedText}`;
+                
+                showStatus('Message decrypted successfully!', 'success');
+            } catch (error) {
+                showStatus('Error decrypting message: ' + error.message, 'error');
+            }
+        }
+
+        // Run performance test
+        async function runPerformanceTest() {
+            try {
+                showStatus('Running performance test...', 'info');
+                
+                const iterations = 10;
+                const results = {
+                    keyGeneration: [],
+                    encryption: [],
+                    decryption: []
+                };
+                
+                // Test key generation
+                const keyGenStart = performance.now();
+                for (let i = 0; i < iterations; i++) {
+                    const start = performance.now();
+                    await kyber.generateKeyPair();
+                    results.keyGeneration.push(performance.now() - start);
+                }
+                const keyGenTotal = performance.now() - keyGenStart;
+                
+                // Test encryption/decryption
+                const testKeyPair = await kyber.generateKeyPair();
+                const testMessage = "Hello, Kyber encryption!";
+                
+                for (let i = 0; i < iterations; i++) {
+                    // Test encryption
+                    const encStart = performance.now();
+                    const encrypted = await hybrid.encrypt(testMessage, testKeyPair.publicKey);
+                    results.encryption.push(performance.now() - encStart);
+                    
+                    // Test decryption
+                    const decStart = performance.now();
+                    await hybrid.decrypt(encrypted, testKeyPair.secretKey);
+                    results.decryption.push(performance.now() - decStart);
+                }
+                
+                const output = document.getElementById('performanceOutput');
+                output.style.display = 'block';
+                output.textContent = `⚡ Performance Test Results (${iterations} iterations):
+                
+Key Generation:
+  Average: ${(results.keyGeneration.reduce((a, b) => a + b, 0) / iterations).toFixed(2)}ms
+  Total: ${keyGenTotal.toFixed(2)}ms
+
+Encryption:
+  Average: ${(results.encryption.reduce((a, b) => a + b, 0) / iterations).toFixed(2)}ms
+
+Decryption:
+  Average: ${(results.decryption.reduce((a, b) => a + b, 0) / iterations).toFixed(2)}ms
+
+Note: These are placeholder timings. Real Kyber implementation would show actual performance.`;
+                
+                showStatus('Performance test completed!', 'success');
+            } catch (error) {
+                showStatus('Error running performance test: ' + error.message, 'error');
+            }
+        }
+
+        // Helper function to show status messages
+        function showStatus(message, type) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(statusDiv, container.firstChild);
+            
+            // Remove status message after 5 seconds
+            setTimeout(() => {
+                statusDiv.remove();
+            }, 5000);
+        }
+
+        // Steganography variables
+        let originalImageData = null;
+        let stegoImageData = null;
+
+        // Preview uploaded image
+        function previewImage() {
+            const file = document.getElementById('coverImage').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('originalCanvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Calculate aspect ratio to fit in canvas
+                    const maxWidth = 200;
+                    const maxHeight = 200;
+                    let { width, height } = img;
+                    
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = (width * maxHeight) / height;
+                            height = maxHeight;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Store original image data
+                    originalImageData = ctx.getImageData(0, 0, width, height);
+                    
+                    // Enable hide button
+                    document.getElementById('hideBtn').disabled = false;
+                    document.getElementById('extractBtn').disabled = false;
+                    
+                    showStatus('Image loaded successfully!', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Hide message in image using LSB steganography
+        async function hideMessage() {
+            try {
+                const message = document.getElementById('stegoMessage').value;
+                if (!message) {
+                    showStatus('Please enter a message to hide', 'error');
+                    return;
+                }
+                
+                if (!originalImageData) {
+                    showStatus('Please load an image first', 'error');
+                    return;
+                }
+
+                showStatus('Hiding message in image...', 'info');
+
+                // First encrypt the message using Kyber
+                const encrypted = await hybrid.encrypt(message, currentKeyPair.publicKey);
+                const encryptedData = JSON.stringify({
+                    ephemeralPublicKey: kyber.toBase64(encrypted.ephemeralPublicKey),
+                    ciphertext: kyber.toBase64(encrypted.ciphertext),
+                    iv: kyber.toBase64(encrypted.iv),
+                    encryptedData: kyber.toBase64(encrypted.encryptedData)
+                });
+
+                // Convert encrypted data to binary
+                const binaryData = encryptedData.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+                const dataLength = binaryData.length.toString(2).padStart(32, '0');
+                const fullBinary = dataLength + binaryData;
+
+                if (fullBinary.length > originalImageData.data.length * 3) {
+                    showStatus('Message too large for this image. Try a smaller image or shorter message.', 'error');
+                    return;
+                }
+
+                // Create copy of original image data
+                stegoImageData = new ImageData(
+                    new Uint8ClampedArray(originalImageData.data),
+                    originalImageData.width,
+                    originalImageData.height
+                );
+
+                // Hide data in LSB of RGB channels
+                let bitIndex = 0;
+                for (let i = 0; i < stegoImageData.data.length && bitIndex < fullBinary.length; i += 4) {
+                    if (bitIndex < fullBinary.length) {
+                        // Red channel
+                        stegoImageData.data[i] = (stegoImageData.data[i] & 0xFE) | parseInt(fullBinary[bitIndex++]);
+                    }
+                    if (bitIndex < fullBinary.length) {
+                        // Green channel
+                        stegoImageData.data[i + 1] = (stegoImageData.data[i + 1] & 0xFE) | parseInt(fullBinary[bitIndex++]);
+                    }
+                    if (bitIndex < fullBinary.length) {
+                        // Blue channel
+                        stegoImageData.data[i + 2] = (stegoImageData.data[i + 2] & 0xFE) | parseInt(fullBinary[bitIndex++]);
+                    }
+                    // Alpha channel left unchanged
+                }
+
+                // Display stego image
+                const canvas = document.getElementById('stegoCanvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = stegoImageData.width;
+                canvas.height = stegoImageData.height;
+                ctx.putImageData(stegoImageData, 0, 0);
+
+                // Enable download button
+                document.getElementById('downloadBtn').disabled = false;
+
+                const output = document.getElementById('steganographyOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Message hidden successfully!
+                
+Hidden Data Size: ${fullBinary.length} bits (${Math.ceil(fullBinary.length / 8)} bytes)
+Image Capacity: ${Math.floor(originalImageData.data.length * 3 / 8)} bytes
+Utilization: ${((fullBinary.length / (originalImageData.data.length * 3)) * 100).toFixed(2)}%`;
+
+                showStatus('Message hidden successfully!', 'success');
+            } catch (error) {
+                showStatus('Error hiding message: ' + error.message, 'error');
+            }
+        }
+
+        // Extract message from stego image
+        async function extractMessage() {
+            try {
+                if (!stegoImageData) {
+                    showStatus('No stego image available. Please hide a message first.', 'error');
+                    return;
+                }
+
+                showStatus('Extracting message from image...', 'info');
+
+                // Extract binary data from LSB
+                let binaryData = '';
+                for (let i = 0; i < stegoImageData.data.length; i += 4) {
+                    // Extract from RGB channels
+                    binaryData += (stegoImageData.data[i] & 1).toString();
+                    binaryData += (stegoImageData.data[i + 1] & 1).toString();
+                    binaryData += (stegoImageData.data[i + 2] & 1).toString();
+                }
+
+                // Extract length (first 32 bits)
+                const lengthBinary = binaryData.substring(0, 32);
+                const dataLength = parseInt(lengthBinary, 2);
+
+                if (dataLength === 0 || dataLength > binaryData.length - 32) {
+                    showStatus('No valid hidden data found in image', 'error');
+                    return;
+                }
+
+                // Extract actual data
+                const dataBinary = binaryData.substring(32, 32 + dataLength);
+                
+                // Convert binary to string
+                let extractedData = '';
+                for (let i = 0; i < dataBinary.length; i += 8) {
+                    const byte = dataBinary.substring(i, i + 8);
+                    if (byte.length === 8) {
+                        extractedData += String.fromCharCode(parseInt(byte, 2));
+                    }
+                }
+
+                // Parse and decrypt the data
+                const parsed = JSON.parse(extractedData);
+                const encrypted = {
+                    ephemeralPublicKey: kyber.fromBase64(parsed.ephemeralPublicKey),
+                    ciphertext: kyber.fromBase64(parsed.ciphertext),
+                    iv: kyber.fromBase64(parsed.iv),
+                    encryptedData: kyber.fromBase64(parsed.encryptedData)
+                };
+
+                const decrypted = await hybrid.decrypt(encrypted, currentSecretKey);
+                const decryptedText = new TextDecoder().decode(decrypted);
+
+                const output = document.getElementById('steganographyOutput');
+                output.style.display = 'block';
+                output.textContent = `✅ Message extracted successfully!
+                
+Extracted Message:
+${decryptedText}
+
+Data Size: ${dataLength} bits (${Math.ceil(dataLength / 8)} bytes)`;
+
+                showStatus('Message extracted successfully!', 'success');
+            } catch (error) {
+                showStatus('Error extracting message: ' + error.message, 'error');
+            }
+        }
+
+        // Download stego image
+        function downloadStegoImage() {
+            if (!stegoImageData) {
+                showStatus('No stego image available', 'error');
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = stegoImageData.width;
+            canvas.height = stegoImageData.height;
+            const ctx = canvas.getContext('2d');
+            ctx.putImageData(stegoImageData, 0, 0);
+
+            const link = document.createElement('a');
+            link.download = 'stego-image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+
+            showStatus('Stego image downloaded!', 'success');
+        }
+    </script>
+</body>
+</html> 

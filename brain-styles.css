@@ -98,6 +98,43 @@ body::before {
 }
 
 /* Disable pointer events on mobile to prevent interference */
+
+/* Tools page specific canvas behavior */
+body.tools-page #aiCanvas {
+  pointer-events: none !important;
+  cursor: auto !important;
+  touch-action: auto !important;
+  -webkit-touch-callout: auto !important;
+  -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
+
+/* Ensure tools page has normal cursor behavior */
+body.tools-page {
+  cursor: auto !important;
+}
+
+body.tools-page * {
+  cursor: auto !important;
+}
+
+/* Show pointer cursor for interactive elements on tools page */
+body.tools-page a,
+body.tools-page button,
+body.tools-page input,
+body.tools-page textarea,
+body.tools-page select,
+body.tools-page .nav-toggle,
+body.tools-page .nav-menu,
+body.tools-page .dropdown-menu,
+body.tools-page .tool-card,
+body.tools-page .tool-btn,
+body.tools-page .category-btn {
+  cursor: pointer !important;
+}
 @media (max-width: 768px) {
   .loader canvas {
     pointer-events: none;
@@ -1224,10 +1261,13 @@ body.home-page .loader {
   position: relative;
 }
 
+/* Remove hover area to prevent orb tracking interference */
+
   .nav-dropdown:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto; /* Re-enable pointer events when visible */
   }
   
   /* Disable hover effects on mobile to prevent mini menus */
@@ -1241,7 +1281,7 @@ body.home-page .loader {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px);
   left: 0;
   background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(20px);
@@ -1252,15 +1292,16 @@ body.home-page .loader {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  pointer-events: none; /* Don't interfere with orb tracking when hidden */
 }
 
 .dropdown-menu::before {
   content: '';
   position: absolute;
-  top: -5px;
+  top: -15px;
   left: 20px;
   width: 0;
   height: 0;
@@ -2716,7 +2757,10 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   
   .nav-dropdown {
     width: 100%;
+    position: relative;
   }
+
+  /* Remove hover area to prevent orb tracking interference */
   
   .nav-link-container {
     position: relative;
@@ -2768,7 +2812,7 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
     min-width: auto;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     backdrop-filter: blur(10px);
     width: 100%;
     display: none;

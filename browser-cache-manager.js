@@ -30,7 +30,7 @@ class BrowserCacheManager {
                 'sphere-loader.js',
                 'matrix-loader.js',
                 'matrix-rain.js',
-                'news-feeds-enhanced.js',
+
                 'chatbot.js',
                 'simple-chatbot.js'
             ],
@@ -459,7 +459,7 @@ class BrowserCacheManager {
     getPageAssets(pageName) {
         const pageAssets = {
             'index': ['sphere-loader.js'],
-            'news': ['news-feeds-enhanced.js', 'news-script.js'],
+
             'about': ['mobile-nav.js'],
             'contact': ['mobile-nav.js'],
             'apps': ['mobile-nav.js'],

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting A.Insiders News Cache Server..."
+echo "Starting A.Insiders Cache Server..."
 echo
 
 # Check if Node.js is installed

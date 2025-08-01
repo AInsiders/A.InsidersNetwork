@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Tools - A.Insiders</title>
+    <meta name="description" content="Discover our collection of powerful online tools for AI, cybersecurity, data analysis, and more. Free tools to enhance your workflow.">
+    <meta name="keywords" content="online tools, AI tools, cybersecurity tools, data analysis, web tools, free tools">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="brain-styles.css">
+    <link rel="stylesheet" href="sidebar-menu.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tawk.to Widget Styles -->
+    <style>
+        /* Make Tawk.to widget half the size */
+        #tawkto-container,
+        .tawkto-container,
+        .tawkto-widget,
+        .tawkto-minimized,
+        .tawkto-maximized,
+        .tawkto-iframe,
+        .tawkto-button,
+        .tawkto-bubble,
+        .tawkto-chat,
+        .tawkto-widget-container,
+        .tawkto-widget-container *,
+        iframe[src*="tawk.to"],
+        div[data-tawk-to],
+        .tawkto,
+        .tawkto * {
+            transform: scale(0.5) !important;
+            transform-origin: bottom right !important;
+        }
+    </style>
+    
+    <style>
+        /* Tools Page Specific Styles */
+        body.tools-page {
+            background: var(--bg-primary);
+        }
+        
+        body.tools-page * {
+            color: var(--text-primary);
+        }
+        
+        body.tools-page #aiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+        
+        .tools-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tools-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .tools-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tools-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tools-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .tools-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .tool-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .tool-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .tool-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .tool-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .tool-status.live {
+            background: rgba(0, 170, 0, 0.2);
+            color: #00aa00;
+            border: 1px solid rgba(0, 170, 0, 0.3);
+        }
+        
+        .tool-status.beta {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+        
+        .tool-status.coming-soon {
+            background: rgba(102, 102, 102, 0.2);
+            color: #666666;
+            border: 1px solid rgba(102, 102, 102, 0.3);
+        }
+        
+        .tool-content {
+            padding: 1.5rem;
+        }
+        
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tool-features li {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tool-features li::before {
+            content: '✓';
+            color: var(--accent-primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .tool-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .tool-btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .tool-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tool-btn.primary {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+        
+        .tool-btn.primary:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+        }
+        
+        .tool-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .tool-btn:disabled:hover {
+            background: transparent;
+            border-color: var(--border-color);
+            color: var(--text-primary);
+            transform: none;
+        }
+        
+        .tools-section {
+            padding: 4rem 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .coming-soon-section {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .coming-soon-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+        
+        .coming-soon-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+        
+        .coming-soon-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(102, 102, 102, 0.3), rgba(102, 102, 102, 0.1));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+            color: var(--text-muted);
+        }
+        
+        .coming-soon-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .coming-soon-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tools-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .tools-categories {
+                gap: 0.5rem;
+            }
+            
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .tool-actions {
+                flex-direction: column;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tools-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .tools-hero p {
+                font-size: 1rem;
+            }
+            
+            .tool-card {
+                margin: 0 1rem;
+            }
+            
+            .coming-soon-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="tools-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <canvas></canvas>
+        <div class="spark-text">It All Starts With A Spark</div>
+        <div class="continue-text">Click Anywhere To Continue</div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-dropdown">
+                        <div class="nav-link-container">
+                            <a href="news-enhanced.html" class="nav-link">News</a>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="news-enhanced.html?category=AI" class="dropdown-link">AI</a></li>
+                            <li><a href="news-enhanced.html?category=Cybersecurity" class="dropdown-link">Cybersecurity</a></li>
+                            <li><a href="news-enhanced.html?category=Space" class="dropdown-link">Space</a></li>
+                            <li><a href="news-enhanced.html?category=Robotics" class="dropdown-link">Robotics</a></li>
+                            <li><a href="news-enhanced.html?category=Bioengineering" class="dropdown-link">Bioengineering</a></li>
+                            <li><a href="news-enhanced.html?category=Transportation" class="dropdown-link">Transportation</a></li>
+                            <li><a href="news-enhanced.html?category=Marketing" class="dropdown-link">Marketing</a></li>
+                            <li><a href="news-enhanced.html?category=Matrix" class="dropdown-link">Matrix</a></li>
+                            <li><a href="news-enhanced.html?category=NEW TECH" class="dropdown-link">New Tech</a></li>
+                            <li><a href="news-enhanced.html?category=Open AI" class="dropdown-link">Open AI</a></li>
+                            <li><a href="news-enhanced.html?category=Phones" class="dropdown-link">Phones</a></li>
+                            <li><a href="news-enhanced.html?category=Tech Reviews" class="dropdown-link">Tech Reviews</a></li>
+                            <li><a href="news-enhanced.html?category=Hydrogen" class="dropdown-link">Hydrogen</a></li>
+                            <li><a href="news-enhanced.html?category=Video Games" class="dropdown-link">Video Games</a></li>
+                            <li><a href="news-enhanced.html?category=Crypto" class="dropdown-link">Crypto</a></li>
+                            <li><a href="news-enhanced.html?category=CRM Tools" class="dropdown-link">CRM Tools</a></li>
+                            <li><a href="news-enhanced.html?category=Flipper" class="dropdown-link">Flipper</a></li>
+                            <li><a href="news-enhanced.html?category=Matrix FUTURE" class="dropdown-link">Matrix Future</a></li>
+                            <li><a href="news-enhanced.html?category=Trends" class="dropdown-link">Trends</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="apps.html" class="nav-link">Apps</a></li>
+                    <li><a href="tools.html" class="nav-link active">Tools</a></li>
+                    <li class="nav-dropdown">
+                        <div class="nav-link-container">
+                            <a href="about.html" class="nav-link">About</a>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+                            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="tools-hero">
+            <canvas id="aiCanvas"></canvas>
+            <div class="container">
+                <h1>Online Tools</h1>
+                <p>Discover our collection of powerful tools designed to enhance your workflow, from AI-powered utilities to cybersecurity essentials.</p>
+                
+                <div class="tools-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Available Tools</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Categories</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Free Access</div>
+                    </div>
+                </div>
+                
+                <div class="tools-categories">
+                    <button class="category-btn active" data-category="all">All Tools</button>
+                    <button class="category-btn" data-category="ai">AI & ML</button>
+                    <button class="category-btn" data-category="security">Security</button>
+                    <button class="category-btn" data-category="data">Data Analysis</button>
+                    <button class="category-btn" data-category="development">Development</button>
+                    <button class="category-btn" data-category="productivity">Productivity</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tools Section -->
+        <section class="tools-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Available Tools</h2>
+                    <p class="section-subtitle">Professional-grade tools to boost your productivity and enhance your capabilities</p>
+                </div>
+                
+                <div class="tools-grid" id="toolsGrid">
+                    <!-- AI & ML Tools -->
+                    <div class="tool-card" data-category="ai">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="tool-title">AI Text Analyzer</h3>
+                            <p class="tool-description">Advanced text analysis using AI to extract insights, sentiment, and key information from any text content.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Sentiment analysis</li>
+                                <li>Keyword extraction</li>
+                                <li>Text summarization</li>
+                                <li>Language detection</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Launch Tool</a>
+                                <a href="#" class="tool-btn">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="ai">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <h3 class="tool-title">Image Recognition</h3>
+                            <p class="tool-description">Upload images and get instant AI-powered analysis including object detection and image classification.</p>
+                            <span class="tool-status beta">Beta</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Object detection</li>
+                                <li>Face recognition</li>
+                                <li>Image classification</li>
+                                <li>OCR text extraction</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Try Beta</a>
+                                <a href="#" class="tool-btn">Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Tools -->
+                    <div class="tool-card" data-category="security">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="tool-title">Password Strength Checker</h3>
+                            <p class="tool-description">Comprehensive password analysis tool that evaluates strength and provides security recommendations.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Strength evaluation</li>
+                                <li>Security recommendations</li>
+                                <li>Breach checking</li>
+                                <li>Password generation</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Check Password</a>
+                                <a href="#" class="tool-btn">Security Tips</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="security">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3 class="tool-title">Encryption Tool</h3>
+                            <p class="tool-description">Secure text and file encryption using AES-256 encryption with easy-to-use interface.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>AES-256 encryption</li>
+                                <li>Text & file support</li>
+                                <li>Secure key generation</li>
+                                <li>Decryption capability</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Encrypt Now</a>
+                                <a href="#" class="tool-btn">How It Works</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Analysis Tools -->
+                    <div class="tool-card" data-category="data">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h3 class="tool-title">Data Visualizer</h3>
+                            <p class="tool-description">Create beautiful charts and graphs from your data with our interactive visualization tool.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Multiple chart types</li>
+                                <li>Interactive graphs</li>
+                                <li>Data import/export</li>
+                                <li>Real-time updates</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Create Chart</a>
+                                <a href="#" class="tool-btn">Templates</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="data">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h3 class="tool-title">Statistical Calculator</h3>
+                            <p class="tool-description">Advanced statistical analysis tool with support for various statistical tests and calculations.</p>
+                            <span class="tool-status beta">Beta</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Descriptive statistics</li>
+                                <li>Hypothesis testing</li>
+                                <li>Regression analysis</li>
+                                <li>Data validation</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Calculate</a>
+                                <a href="#" class="tool-btn">Examples</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Development Tools -->
+                    <div class="tool-card" data-category="development">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3 class="tool-title">Code Formatter</h3>
+                            <p class="tool-description">Format and beautify your code with support for multiple programming languages.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Multiple languages</li>
+                                <li>Custom formatting</li>
+                                <li>Syntax highlighting</li>
+                                <li>Error detection</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Format Code</a>
+                                <a href="#" class="tool-btn">Supported Languages</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="development">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <h3 class="tool-title">API Tester</h3>
+                            <p class="tool-description">Test and debug your APIs with our comprehensive testing tool featuring request/response analysis.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>HTTP methods support</li>
+                                <li>Request/response logging</li>
+                                <li>Authentication testing</li>
+                                <li>Performance metrics</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Test API</a>
+                                <a href="#" class="tool-btn">Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productivity Tools -->
+                    <div class="tool-card" data-category="productivity">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h3 class="tool-title">Task Manager</h3>
+                            <p class="tool-description">Organize and track your tasks with our intuitive project management tool.</p>
+                            <span class="tool-status live">Live</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Task organization</li>
+                                <li>Priority levels</li>
+                                <li>Progress tracking</li>
+                                <li>Team collaboration</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Manage Tasks</a>
+                                <a href="#" class="tool-btn">Templates</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-category="productivity">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="tool-title">Time Tracker</h3>
+                            <p class="tool-description">Track your time and productivity with detailed analytics and reporting features.</p>
+                            <span class="tool-status beta">Beta</span>
+                        </div>
+                        <div class="tool-content">
+                            <ul class="tool-features">
+                                <li>Time tracking</li>
+                                <li>Productivity analytics</li>
+                                <li>Project categorization</li>
+                                <li>Export reports</li>
+                            </ul>
+                            <div class="tool-actions">
+                                <a href="#" class="tool-btn primary">Start Tracking</a>
+                                <a href="#" class="tool-btn">Analytics</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coming Soon Section -->
+        <section class="coming-soon-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Coming Soon</h2>
+                    <p class="section-subtitle">Exciting new tools we're developing to expand our collection</p>
+                </div>
+                
+                <div class="coming-soon-grid">
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="coming-soon-title">AI Chat Assistant</h3>
+                        <p class="coming-soon-description">Advanced conversational AI assistant for customer support and general inquiries.</p>
+                    </div>
+                    
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-file-video"></i>
+                        </div>
+                        <h3 class="coming-soon-title">Video Editor</h3>
+                        <p class="coming-soon-description">Web-based video editing tool with AI-powered features and effects.</p>
+                    </div>
+                    
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="coming-soon-title">Database Designer</h3>
+                        <p class="coming-soon-description">Visual database design tool with schema generation and optimization.</p>
+                    </div>
+                    
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="coming-soon-title">Network Scanner</h3>
+                        <p class="coming-soon-description">Network security scanner for vulnerability assessment and monitoring.</p>
+                    </div>
+                    
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="coming-soon-title">Mobile App Builder</h3>
+                        <p class="coming-soon-description">No-code mobile app development platform with drag-and-drop interface.</p>
+                    </div>
+                    
+                    <div class="coming-soon-card">
+                        <div class="coming-soon-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="coming-soon-title">Trading Analytics</h3>
+                        <p class="coming-soon-description">Advanced trading analysis tool with market data and prediction models.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="30" height="30">
+                            <span class="logo-text">A.I</span>
+                            <span class="logo-accent">NSIDERS</span>
+                        </div>
+                        <p>Leading source for AI and cybersecurity intelligence. Empowering organizations with knowledge to secure the digital future.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="apps.html">Apps</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+                            <li><a href="news-enhanced.html">News</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Research Papers</a></li>
+                            <li><a href="#">White Papers</a></li>
+                            <li><a href="#">Case Studies</a></li>
+                            <li><a href="tools.html">Tools</a></li>
+                            <li><a href="#">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Newsletter</h4>
+                        <p>Subscribe to our newsletter for the latest updates and insights.</p>
+                        <form class="newsletter-form" id="newsletter-form">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Connect With Us</h4>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
+                    <p>&copy; 2024 A.Insiders. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="brain-script.js"></script>
+    <script src="shared-loader.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="sphere-loader.js"></script>
+    <script src="tools-script.js"></script>
+    
+
+</body>
+</html> 

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced IP & URL Analysis Tools - A.Insiders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0066ff;
+            --secondary-color: #00d4ff;
+            --background-dark: #000000;
+            --surface-dark: #111111;
+            --surface-light: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-green: #00ff88;
+            --accent-red: #ff4444;
+            --accent-yellow: #ffaa00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: var(--surface-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .tool-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--surface-light);
+            border-radius: 6px;
+        }
+
+        .option-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #0052cc;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.loading {
+            opacity: 0.8;
+        }
+
+        .results-section {
+            grid-column: 1 / -1;
+            background: var(--surface-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .results-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--surface-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .risk-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .risk-low {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        .risk-medium {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        .risk-high {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            background: var(--surface-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .providers-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .provider-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-search"></i> Enhanced IP & URL Analysis Tools</h1>
+            <p>Comprehensive geolocation, security analysis, and threat intelligence for IP addresses and URLs</p>
+        </div>
+
+        <div class="tools-grid">
+            <!-- IP Analysis Tool -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h2>IP Geolocation & Analysis</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="ipInput">IP Address</label>
+                    <input type="text" id="ipInput" placeholder="Enter IP address (e.g., 8.8.8.8)">
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-item">
+                        <input type="checkbox" id="includeBasic" checked>
+                        <label for="includeBasic">Basic Info</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="includeDetailed" checked>
+                        <label for="includeDetailed">Detailed Info</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="includeThreatIntel" checked>
+                        <label for="includeThreatIntel">Threat Intel</label>
+                    </div>
+                </div>
+
+                <button class="btn" id="analyzeIPBtn">
+                    <i class="fas fa-search"></i>
+                    Analyze IP
+                </button>
+            </div>
+
+            <!-- URL Analysis Tool -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <i class="fas fa-link"></i>
+                    <h2>URL Analysis & Security</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="urlInput">URL</label>
+                    <input type="text" id="urlInput" placeholder="Enter URL (e.g., https://example.com)">
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-item">
+                        <input type="checkbox" id="includeSecurity" checked>
+                        <label for="includeSecurity">Security Check</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="includeMetadata" checked>
+                        <label for="includeMetadata">Metadata</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="includeCertificates" checked>
+                        <label for="includeCertificates">SSL Analysis</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="includePerformance" checked>
+                        <label for="includePerformance">Performance</label>
+                    </div>
+                </div>
+
+                <button class="btn" id="analyzeURLBtn">
+                    <i class="fas fa-search"></i>
+                    Analyze URL
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h3 id="resultsTitle">Analysis Results</h3>
+                <div class="results-tabs">
+                    <button class="tab-btn active" data-tab="overview">Overview</button>
+                    <button class="tab-btn" data-tab="detailed">Detailed</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="raw">Raw Data</button>
+                </div>
+            </div>
+
+            <div class="tab-content active" id="overview-tab">
+                <div class="info-grid" id="overviewGrid">
+                    <!-- Overview content will be inserted here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="detailed-tab">
+                <div class="info-grid" id="detailedGrid">
+                    <!-- Detailed content will be inserted here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="security-tab">
+                <div class="info-grid" id="securityGrid">
+                    <!-- Security content will be inserted here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="raw-tab">
+                <pre id="rawData" style="background: var(--surface-light); padding: 1rem; border-radius: 8px; overflow-x: auto; color: var(--text-secondary); font-size: 0.875rem;"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load enhanced services -->
+    <script src="enhanced-ip-geolocation.js"></script>
+    <script src="enhanced-url-analyzer.js"></script>
+    
+    <script>
+        class EnhancedToolsInterface {
+            constructor() {
+                this.ipGeolocation = new EnhancedIPGeolocation();
+                this.urlAnalyzer = new EnhancedURLAnalyzer();
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.setupTabs();
+            }
+
+            setupEventListeners() {
+                document.getElementById('analyzeIPBtn').addEventListener('click', () => this.analyzeIP());
+                document.getElementById('analyzeURLBtn').addEventListener('click', () => this.analyzeURL());
+                
+                // Enter key support
+                document.getElementById('ipInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.analyzeIP();
+                });
+                
+                document.getElementById('urlInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.analyzeURL();
+                });
+            }
+
+            setupTabs() {
+                const tabBtns = document.querySelectorAll('.tab-btn');
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const tabName = btn.dataset.tab;
+                        this.switchTab(tabName);
+                    });
+                });
+            }
+
+            switchTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tab === tabName);
+                });
+
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.toggle('active', content.id === `${tabName}-tab`);
+                });
+            }
+
+            async analyzeIP() {
+                const ipInput = document.getElementById('ipInput');
+                const analyzeBtn = document.getElementById('analyzeIPBtn');
+                const ip = ipInput.value.trim();
+
+                if (!ip) {
+                    alert('Please enter an IP address');
+                    return;
+                }
+
+                this.setLoading(analyzeBtn, true);
+                
+                try {
+                    const options = {
+                        includeBasic: document.getElementById('includeBasic').checked,
+                        includeDetailed: document.getElementById('includeDetailed').checked,
+                        includeThreatIntel: document.getElementById('includeThreatIntel').checked
+                    };
+
+                    const results = await this.ipGeolocation.getComprehensiveIPInfo(ip, options);
+                    this.displayResults('IP Analysis Results', results, 'ip');
+                } catch (error) {
+                    console.error('IP analysis error:', error);
+                    alert('Failed to analyze IP: ' + error.message);
+                } finally {
+                    this.setLoading(analyzeBtn, false);
+                }
+            }
+
+            async analyzeURL() {
+                const urlInput = document.getElementById('urlInput');
+                const analyzeBtn = document.getElementById('analyzeURLBtn');
+                const url = urlInput.value.trim();
+
+                if (!url) {
+                    alert('Please enter a URL');
+                    return;
+                }
+
+                this.setLoading(analyzeBtn, true);
+                
+                try {
+                    const options = {
+                        includeSecurity: document.getElementById('includeSecurity').checked,
+                        includeMetadata: document.getElementById('includeMetadata').checked,
+                        includeCertificates: document.getElementById('includeCertificates').checked,
+                        includePerformance: document.getElementById('includePerformance').checked,
+                        includeWhois: true
+                    };
+
+                    const results = await this.urlAnalyzer.analyzeURL(url, options);
+                    this.displayResults('URL Analysis Results', results, 'url');
+                } catch (error) {
+                    console.error('URL analysis error:', error);
+                    alert('Failed to analyze URL: ' + error.message);
+                } finally {
+                    this.setLoading(analyzeBtn, false);
+                }
+            }
+
+            setLoading(button, isLoading) {
+                if (isLoading) {
+                    button.disabled = true;
+                    button.classList.add('loading');
+                    const icon = button.querySelector('i');
+                    icon.className = 'fas fa-spinner fa-spin';
+                } else {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                    const icon = button.querySelector('i');
+                    icon.className = 'fas fa-search';
+                }
+            }
+
+            displayResults(title, results, type) {
+                document.getElementById('resultsTitle').textContent = title;
+                document.getElementById('resultsSection').style.display = 'block';
+
+                // Display overview
+                this.displayOverview(results, type);
+                
+                // Display detailed info
+                this.displayDetailed(results, type);
+                
+                // Display security info
+                this.displaySecurity(results, type);
+                
+                // Display raw data
+                document.getElementById('rawData').textContent = JSON.stringify(results, null, 2);
+
+                // Switch to overview tab
+                this.switchTab('overview');
+            }
+
+            displayOverview(results, type) {
+                const grid = document.getElementById('overviewGrid');
+                grid.innerHTML = '';
+
+                if (type === 'ip') {
+                    this.displayIPOverview(results, grid);
+                } else if (type === 'url') {
+                    this.displayURLOverview(results, grid);
+                }
+            }
+
+            displayIPOverview(results, grid) {
+                const location = results.aggregated?.location || {};
+                const network = results.aggregated?.network || {};
+                const confidence = results.confidence || {};
+
+                // Location Info
+                grid.appendChild(this.createInfoCard('Location Information', {
+                    'IP Address': results.ip,
+                    'Country': location.country || 'Unknown',
+                    'Region': location.region || 'Unknown',
+                    'City': location.city || 'Unknown',
+                    'Coordinates': location.latitude && location.longitude ? 
+                        `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}` : 'Unknown',
+                    'Timezone': location.timezone || 'Unknown'
+                }));
+
+                // Network Info
+                grid.appendChild(this.createInfoCard('Network Information', {
+                    'ISP': network.isp || 'Unknown',
+                    'Organization': network.org || 'Unknown',
+                    'ASN': network.asn || 'Unknown',
+                    'Data Sources': Object.keys(results.providers || {}).length,
+                    'Confidence': `${Math.round((confidence.overall || 0) * 100)}%`
+                }));
+
+                // Security Assessment
+                const threats = results.threats || [];
+                const threatLevel = threats.length > 0 ? this.calculateThreatLevel(threats) : 'Low';
+                
+                grid.appendChild(this.createInfoCard('Security Assessment', {
+                    'Threat Level': this.createRiskIndicator(threatLevel),
+                    'Threats Detected': threats.length,
+                    'Services Detected': (results.services || []).length,
+                    'Analysis Time': new Date(results.timestamp).toLocaleString()
+                }));
+            }
+
+            displayURLOverview(results, grid) {
+                const domain = results.domain || {};
+                const performance = results.performance || {};
+                const certificates = results.certificates || {};
+                const riskAssessment = results.riskAssessment || {};
+
+                // URL Info
+                grid.appendChild(this.createInfoCard('URL Information', {
+                    'Original URL': results.originalUrl,
+                    'Final URL': results.finalUrl || results.originalUrl,
+                    'Total Redirects': results.totalRedirects || 0,
+                    'Domain': domain.name || 'Unknown',
+                    'Top Level Domain': domain.tld || 'Unknown'
+                }));
+
+                // Security Info
+                grid.appendChild(this.createInfoCard('Security Information', {
+                    'Risk Level': this.createRiskIndicator(riskAssessment.level || 'unknown'),
+                    'Risk Score': riskAssessment.score || 0,
+                    'SSL Certificate': certificates.hasSSL ? '✅ Valid' : '❌ None',
+                    'Security Issues': (results.securityIssues || []).length
+                }));
+
+                // Performance Info
+                grid.appendChild(this.createInfoCard('Performance Information', {
+                    'Response Time': performance.responseTime ? `${performance.responseTime}ms` : 'Unknown',
+                    'Status Code': performance.statusCode || 'Unknown',
+                    'Content Length': performance.contentLength ? this.formatBytes(performance.contentLength) : 'Unknown',
+                    'Analysis Time': new Date(results.analysisTime || results.timestamp).toLocaleString()
+                }));
+            }
+
+            displayDetailed(results, type) {
+                const grid = document.getElementById('detailedGrid');
+                grid.innerHTML = '';
+
+                if (type === 'ip') {
+                    // Display provider-specific data
+                    Object.entries(results.providers || {}).forEach(([provider, data]) => {
+                        grid.appendChild(this.createInfoCard(`${provider.toUpperCase()} Data`, this.flattenObject(data)));
+                    });
+                } else if (type === 'url') {
+                    // Display metadata, certificates, etc.
+                    if (results._enhanced?.metadata) {
+                        grid.appendChild(this.createInfoCard('Page Metadata', this.flattenObject(results._enhanced.metadata)));
+                    }
+                    
+                    if (results._enhanced?.certificates) {
+                        grid.appendChild(this.createInfoCard('SSL Certificate', this.flattenObject(results._enhanced.certificates)));
+                    }
+                }
+            }
+
+            displaySecurity(results, type) {
+                const grid = document.getElementById('securityGrid');
+                grid.innerHTML = '';
+
+                if (type === 'ip') {
+                    // Display threats
+                    const threats = results.threats || [];
+                    if (threats.length > 0) {
+                        const threatData = {};
+                        threats.forEach((threat, index) => {
+                            threatData[`Threat ${index + 1}`] = `${threat.description} (${threat.severity})`;
+                        });
+                        grid.appendChild(this.createInfoCard('Detected Threats', threatData));
+                    }
+
+                    // Display services
+                    const services = results.services || [];
+                    if (services.length > 0) {
+                        const serviceData = {};
+                        services.forEach((service, index) => {
+                            serviceData[`Port ${service.port}`] = `${service.service} (${service.protocol})`;
+                        });
+                        grid.appendChild(this.createInfoCard('Detected Services', serviceData));
+                    }
+                } else if (type === 'url') {
+                    // Display security analysis
+                    if (results._enhanced?.security) {
+                        grid.appendChild(this.createInfoCard('Security Analysis', this.flattenObject(results._enhanced.security)));
+                    }
+
+                    // Display risk factors
+                    if (results._enhanced?.riskAssessment?.factors) {
+                        const factorData = {};
+                        results._enhanced.riskAssessment.factors.forEach((factor, index) => {
+                            factorData[`Factor ${index + 1}`] = factor;
+                        });
+                        grid.appendChild(this.createInfoCard('Risk Factors', factorData));
+                    }
+                }
+            }
+
+            createInfoCard(title, data) {
+                const card = document.createElement('div');
+                card.className = 'info-card';
+                
+                const header = document.createElement('h4');
+                header.textContent = title;
+                card.appendChild(header);
+
+                Object.entries(data).forEach(([key, value]) => {
+                    const item = document.createElement('div');
+                    item.className = 'info-item';
+                    
+                    const label = document.createElement('span');
+                    label.className = 'info-label';
+                    label.textContent = key;
+                    
+                    const valueEl = document.createElement('span');
+                    valueEl.className = 'info-value';
+                    
+                    if (typeof value === 'object' && value.outerHTML) {
+                        valueEl.appendChild(value);
+                    } else {
+                        valueEl.textContent = value || 'Unknown';
+                    }
+                    
+                    item.appendChild(label);
+                    item.appendChild(valueEl);
+                    card.appendChild(item);
+                });
+
+                return card;
+            }
+
+            createRiskIndicator(level) {
+                const indicator = document.createElement('span');
+                indicator.className = `risk-indicator risk-${level.toLowerCase()}`;
+                
+                const icon = document.createElement('i');
+                switch (level.toLowerCase()) {
+                    case 'high':
+                        icon.className = 'fas fa-exclamation-triangle';
+                        break;
+                    case 'medium':
+                        icon.className = 'fas fa-exclamation';
+                        break;
+                    default:
+                        icon.className = 'fas fa-check';
+                }
+                
+                indicator.appendChild(icon);
+                indicator.appendChild(document.createTextNode(level));
+                
+                return indicator;
+            }
+
+            calculateThreatLevel(threats) {
+                let score = 0;
+                threats.forEach(threat => {
+                    switch (threat.severity) {
+                        case 'high': score += 3; break;
+                        case 'medium': score += 2; break;
+                        case 'low': score += 1; break;
+                    }
+                });
+                
+                if (score >= 6) return 'High';
+                if (score >= 3) return 'Medium';
+                return 'Low';
+            }
+
+            flattenObject(obj, prefix = '') {
+                const flattened = {};
+                for (const key in obj) {
+                    if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                        Object.assign(flattened, this.flattenObject(obj[key], prefix + key + '.'));
+                    } else {
+                        flattened[prefix + key] = Array.isArray(obj[key]) ? obj[key].join(', ') : obj[key];
+                    }
+                }
+                return flattened;
+            }
+
+            formatBytes(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+
+        // Initialize the interface when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new EnhancedToolsInterface();
+        });
+    </script>
+</body>
+</html>

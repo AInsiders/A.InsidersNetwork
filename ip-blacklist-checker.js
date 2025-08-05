@@ -297,7 +297,54 @@ class IPBanTester {
 
     async getIPInfo(ip) {
         try {
-            console.log(`Getting IP info for ${ip} via server...`);
+            console.log(`Getting enhanced IP info for ${ip}...`);
+            
+            // Use enhanced geolocation service if available
+            if (window.EnhancedIPGeolocation) {
+                const enhancedGeo = new EnhancedIPGeolocation();
+                const enhanced = await enhancedGeo.getComprehensiveIPInfo(ip, {
+                    includeBasic: true,
+                    includeDetailed: true,
+                    includeThreatIntel: true
+                });
+                
+                // Extract comprehensive information
+                const aggregated = enhanced.aggregated;
+                const confidence = enhanced.confidence;
+                const threats = enhanced.threats;
+                const services = enhanced.services;
+                
+                const ipInfo = {
+                    'IP Address': ip,
+                    'Country': aggregated.location.country || 'Unknown',
+                    'Region': aggregated.location.region || 'Unknown',
+                    'City': aggregated.location.city || 'Unknown',
+                    'ISP': aggregated.network.isp || 'Unknown',
+                    'Organization': aggregated.network.org || 'Unknown',
+                    'ASN': aggregated.network.asn || 'Unknown',
+                    'Timezone': aggregated.location.timezone || 'Unknown',
+                    'Latitude': aggregated.location.latitude ? `${aggregated.location.latitude.toFixed(4)}°` : 'Unknown',
+                    'Longitude': aggregated.location.longitude ? `${aggregated.location.longitude.toFixed(4)}°` : 'Unknown',
+                    'Coordinates': `${aggregated.location.latitude || 0},${aggregated.location.longitude || 0}`,
+                    'Confidence Score': `${Math.round(confidence.overall * 100)}%`,
+                    'Data Sources': Object.keys(enhanced.providers).join(', '),
+                    'Threat Level': threats.length > 0 ? this.calculateThreatLevel(threats) : 'Low',
+                    'Open Ports': services.length > 0 ? `${services.length} detected` : 'None detected',
+                    'Security Flags': threats.map(t => t.type).join(', ') || 'None'
+                };
+                
+                // Store enhanced data for detailed display
+                ipInfo._enhanced = {
+                    threats: threats,
+                    services: services,
+                    providers: enhanced.providers,
+                    confidence: confidence
+                };
+                
+                return ipInfo;
+            }
+            
+            // Fallback to original method
             const data = await this.ipClient.getIPInfo(ip);
             
             const ipInfo = {
@@ -331,6 +378,24 @@ class IPBanTester {
     }
 
 
+
+    calculateThreatLevel(threats) {
+        if (!threats || threats.length === 0) return 'Low';
+        
+        let score = 0;
+        threats.forEach(threat => {
+            switch (threat.severity) {
+                case 'high': score += 3; break;
+                case 'medium': score += 2; break;
+                case 'low': score += 1; break;
+                default: score += 1;
+            }
+        });
+        
+        if (score >= 6) return 'High';
+        if (score >= 3) return 'Medium';
+        return 'Low';
+    }
 
     generateRecommendations(results) {
         const recommendations = [];

@@ -32,13 +32,13 @@
         honeypotFieldClass: 'honeypot-field'
     };
     
-    // Security state
+    // Security state with sliding window rate limiting
     let securityState = {
-        requestCount: 0,
-        lastRequestTime: 0,
-        formSubmissionCount: 0,
-        lastFormSubmissionTime: 0,
-        securityEnabled: true
+        requestTimestamps: [], // Sliding window for requests
+        formSubmissionTimestamps: [], // Sliding window for form submissions
+        securityEnabled: true,
+        // Persistent storage key for rate limiting (survives page refresh)
+        storageKey: 'ainsiders_security_state'
     };
     
     // Initialize enhanced security features
@@ -46,6 +46,7 @@
         console.log('🔒 Initializing A.Insiders Enhanced Security System...');
         
         // Initialize all security modules
+        initRateLimiting();
         initFormSecurity();
         initSecurityMonitoring();
         initContentSecurityPolicy();
@@ -96,8 +97,8 @@
             return false;
         }
         
-        // Check rate limiting
-        if (!checkRateLimit()) {
+        // Check rate limiting for form submissions
+        if (!checkRateLimit(true)) {
             event.preventDefault();
             showSecurityAlert('Too many form submissions. Please wait before trying again.');
             return false;
@@ -119,9 +120,8 @@
             return false;
         }
         
-        // Increment submission count
-        securityState.formSubmissionCount++;
-        securityState.lastFormSubmissionTime = Date.now();
+        // Note: Form submission counting is now handled in checkRateLimit()
+        // This ensures accurate tracking and prevents double counting
         
         console.log('✅ Form submission validated and allowed');
     }
@@ -189,33 +189,81 @@
         input.parentNode.appendChild(errorDiv);
     }
     
-    // ===== RATE LIMITING =====
-    function checkRateLimit() {
+    // ===== SECURE RATE LIMITING WITH SLIDING WINDOW =====
+    function initRateLimiting() {
+        // Load persistent rate limiting state from localStorage
+        try {
+            const stored = localStorage.getItem(securityState.storageKey);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                securityState.requestTimestamps = parsed.requestTimestamps || [];
+                securityState.formSubmissionTimestamps = parsed.formSubmissionTimestamps || [];
+                
+                // Clean old timestamps on load
+                cleanOldTimestamps();
+            }
+        } catch (error) {
+            console.warn('Failed to load rate limiting state:', error);
+            // Reset to safe defaults
+            securityState.requestTimestamps = [];
+            securityState.formSubmissionTimestamps = [];
+        }
+    }
+    
+    function cleanOldTimestamps() {
         const now = Date.now();
         const oneMinute = 60 * 1000;
         const oneHour = 60 * 60 * 1000;
         
-        // Reset counters if time has passed
-        if (now - securityState.lastRequestTime > oneMinute) {
-            securityState.requestCount = 0;
+        // Remove timestamps older than the window
+        securityState.requestTimestamps = securityState.requestTimestamps
+            .filter(timestamp => now - timestamp < oneMinute);
+            
+        securityState.formSubmissionTimestamps = securityState.formSubmissionTimestamps
+            .filter(timestamp => now - timestamp < oneHour);
+    }
+    
+    function saveRateLimitingState() {
+        try {
+            const stateToSave = {
+                requestTimestamps: securityState.requestTimestamps,
+                formSubmissionTimestamps: securityState.formSubmissionTimestamps,
+                lastUpdated: Date.now()
+            };
+            localStorage.setItem(securityState.storageKey, JSON.stringify(stateToSave));
+        } catch (error) {
+            console.warn('Failed to save rate limiting state:', error);
         }
+    }
+    
+    function checkRateLimit(isFormSubmission = false) {
+        cleanOldTimestamps();
         
-        if (now - securityState.lastFormSubmissionTime > oneHour) {
-            securityState.formSubmissionCount = 0;
-        }
+        const now = Date.now();
         
-        // Check limits
-        if (securityState.requestCount >= SECURITY_CONFIG.maxRequestsPerMinute) {
+        // Check general request rate limit
+        if (securityState.requestTimestamps.length >= SECURITY_CONFIG.maxRequestsPerMinute) {
+            console.warn('Rate limit exceeded: too many requests per minute');
             return false;
         }
         
-        if (securityState.formSubmissionCount >= SECURITY_CONFIG.maxFormSubmissionsPerHour) {
+        // Additional check for form submissions
+        if (isFormSubmission && 
+            securityState.formSubmissionTimestamps.length >= SECURITY_CONFIG.maxFormSubmissionsPerHour) {
+            console.warn('Rate limit exceeded: too many form submissions per hour');
             return false;
         }
         
-        // Increment request count
-        securityState.requestCount++;
-        securityState.lastRequestTime = now;
+        // Record the request
+        securityState.requestTimestamps.push(now);
+        
+        // Record form submission separately
+        if (isFormSubmission) {
+            securityState.formSubmissionTimestamps.push(now);
+        }
+        
+        // Persist state
+        saveRateLimitingState();
         
         return true;
     }

@@ -12,8 +12,10 @@ class CacheServer {
         this.cacheExpiry = 30 * 60 * 1000; // 30 minutes
         this.updateInterval = 10 * 60 * 1000; // 10 minutes
         
-        // IP detection API tokens
-        this.ipinfoToken = 'be04d3770d74df';
+        // IP detection API tokens - SECURITY: These should be in environment variables
+        this.ipinfoToken = process.env.IPINFO_TOKEN || 'be04d3770d74df';
+        this.ipgeolocationToken = process.env.IPGEOLOCATION_TOKEN || null;
+        this.shodanToken = process.env.SHODAN_TOKEN || null;
         
         this.setupMiddleware();
         this.setupRoutes();

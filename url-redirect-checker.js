@@ -85,6 +85,52 @@ class URLRedirectChecker {
     }
 
     async analyzeURL(originalUrl) {
+        // Use enhanced analyzer if available
+        if (window.EnhancedURLAnalyzer) {
+            try {
+                console.log('Using Enhanced URL Analyzer...');
+                const enhancedAnalyzer = new EnhancedURLAnalyzer();
+                const enhanced = await enhancedAnalyzer.analyzeURL(originalUrl, {
+                    includeSecurity: true,
+                    includeMetadata: true,
+                    includeCertificates: true,
+                    includePerformance: true,
+                    includeWhois: true
+                });
+
+                // Convert enhanced results to legacy format for display compatibility
+                const results = {
+                    originalUrl: enhanced.originalUrl,
+                    redirectChain: enhanced.redirectChain,
+                    finalUrl: enhanced.finalUrl,
+                    totalRedirects: enhanced.totalRedirects,
+                    domainInfo: {
+                        domain: enhanced.domain.name,
+                        tld: enhanced.domain.tld,
+                        subdomain: enhanced.domain.subdomain,
+                        isIPAddress: enhanced.domain.isIPAddress,
+                        whois: enhanced.domain.whois
+                    },
+                    securityIssues: enhanced.riskAssessment.factors || [],
+                    analysisTime: enhanced.timestamp,
+                    // Enhanced data
+                    _enhanced: {
+                        domain: enhanced.domain,
+                        security: enhanced.security,
+                        metadata: enhanced.metadata,
+                        certificates: enhanced.certificates,
+                        performance: enhanced.performance,
+                        riskAssessment: enhanced.riskAssessment
+                    }
+                };
+
+                return results;
+            } catch (error) {
+                console.error('Enhanced analyzer failed, falling back to basic analysis:', error);
+            }
+        }
+
+        // Fallback to original analysis
         const results = {
             originalUrl,
             redirectChain: [],

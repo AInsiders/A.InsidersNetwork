@@ -5,11 +5,37 @@ console.log('Simple chatbot script loaded');
 function createSimpleChatbot() {
     console.log('Creating simple chatbot...');
     
-    // API Configuration
-    const API_KEY = 'nu-bVI8A2TPpxfwfxPP4oKrkvq5mlgwj8efUcQHstcoE8Knvs4M';
+    // API Configuration - SECURITY FIX: Removed hardcoded API key
+    // API key should be stored securely on the server and accessed via authenticated endpoints
     const API_URL = 'https://api.nurmo.app/v1/chat/completions';
     const CHARACTER_ID = '43413d25-073c-4f3d-8cf1-f1c98cfa00b3';
     let apiStatus = 'unknown'; // 'working', 'failed', 'unknown'
+    let API_KEY = null; // Will be fetched securely
+    
+    // Secure API key retrieval function
+    async function getSecureApiKey() {
+        try {
+            // SECURITY: This should fetch the API key from a secure server endpoint
+            // that requires authentication and doesn't expose the key to client-side code
+            const response = await fetch('/api/secure/chatbot-token', {
+                method: 'GET',
+                credentials: 'include', // Include session cookies for authentication
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to get secure API key');
+            }
+            
+            const data = await response.json();
+            return data.token;
+        } catch (error) {
+            console.error('Failed to get secure API key:', error);
+            return null;
+        }
+    }
     
     // Create button
     const button = document.createElement('div');
@@ -144,6 +170,16 @@ function createSimpleChatbot() {
         try {
             console.log('Sending message to NurmoAI:', message);
             
+            // Get API key securely if we don't have one
+            if (!API_KEY) {
+                API_KEY = await getSecureApiKey();
+                if (!API_KEY) {
+                    messagesDiv.removeChild(typingDiv);
+                    addMessage('Sorry, I cannot connect to the AI service. Authentication failed. Please try again later.', false);
+                    return;
+                }
+            }
+
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {

@@ -28,6 +28,31 @@ class EnhancedNewsFeedAggregator {
         this.init();
     }
 
+    // Security function to escape HTML and prevent XSS attacks
+    escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') {
+            return String(unsafe);
+        }
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Sanitize URL to prevent javascript: and data: protocols
+    sanitizeUrl(url) {
+        if (!url || typeof url !== 'string') return '#';
+        const trimmedUrl = url.trim().toLowerCase();
+        if (trimmedUrl.startsWith('javascript:') || 
+            trimmedUrl.startsWith('data:') || 
+            trimmedUrl.startsWith('vbscript:')) {
+            return '#';
+        }
+        return url;
+    }
+
     async initializeFeeds() {
         try {
             // Load feeds from JSON files
@@ -2060,58 +2085,75 @@ class EnhancedNewsFeedAggregator {
         const hasImage = article.image && article.image !== null && article.image !== '';
 
         if (article.type === 'video') {
+            // Safely escape all user-provided content to prevent XSS
+            const safeImage = this.sanitizeUrl(article.image);
+            const safeTitle = this.escapeHtml(article.title);
+            const safeCategory = this.escapeHtml(article.category);
+            const safeDescription = this.escapeHtml(article.description.substring(0, 150));
+            const safeFeedName = this.escapeHtml(article.feedName);
+            const safeVideoId = this.escapeHtml(article.videoId);
+            const safeCleanLink = this.sanitizeUrl(cleanLink);
+            
             articleDiv.innerHTML = `
                 <div class="news-image">
-                    <img src="${article.image}" alt="${article.title}" loading="lazy">
-                    <div class="news-category">${article.category}</div>
+                    <img src="${safeImage}" alt="${safeTitle}" loading="lazy">
+                    <div class="news-category">${safeCategory}</div>
                     <div class="video-overlay">
                         <i class="fas fa-play"></i>
                     </div>
                 </div>
                 <div class="news-content">
-                    <h3>${article.title}</h3>
-                    <p>${article.description.substring(0, 150)}...</p>
+                    <h3>${safeTitle}</h3>
+                    <p>${safeDescription}...</p>
                     <div class="news-meta">
                         <span class="news-date">${date}</span>
                         <span class="news-time">${time}</span>
-                        <span class="news-source">${article.feedName}</span>
+                        <span class="news-source">${safeFeedName}</span>
                         <span class="news-time-ago">${timeAgo}</span>
                     </div>
                     <div class="news-actions">
-                        <button class="btn btn-primary watch-video" data-video-id="${article.videoId}">
+                        <button class="btn btn-primary watch-video" data-video-id="${safeVideoId}">
                             <i class="fas fa-play"></i> Watch Video
                         </button>
-                        <a href="${encodeURI(cleanLink)}" target="_blank" class="btn btn-secondary" onclick="console.log('Opening video source:', '${cleanLink}')" ${!cleanLink ? 'style="display: none;"' : ''}>
+                        <a href="${encodeURI(safeCleanLink)}" target="_blank" class="btn btn-secondary" ${!cleanLink ? 'style="display: none;"' : ''}>
                             <i class="fas fa-external-link-alt"></i> View Source
                         </a>
-                        <button class="btn btn-secondary btn-share" onclick="shareArticle('${encodeURIComponent(article.title)}', '${encodeURIComponent(article.link)}')">
+                        <button class="btn btn-secondary btn-share" data-title="${this.escapeHtml(article.title)}" data-link="${this.sanitizeUrl(article.link)}">
                             <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                 </div>
             `;
         } else {
+            // Safely escape all user-provided content to prevent XSS
+            const safeImage = this.sanitizeUrl(article.image);
+            const safeTitle = this.escapeHtml(article.title);
+            const safeCategory = this.escapeHtml(article.category);
+            const safeDescription = this.escapeHtml(article.description.substring(0, 200));
+            const safeFeedName = this.escapeHtml(article.feedName);
+            const safeCleanLink = this.sanitizeUrl(cleanLink);
+            
             articleDiv.innerHTML = `
                 ${hasImage ? `
                     <div class="news-image">
-                        <img src="${article.image}" alt="${article.title}" loading="lazy">
-                        <div class="news-category">${article.category}</div>
+                        <img src="${safeImage}" alt="${safeTitle}" loading="lazy">
+                        <div class="news-category">${safeCategory}</div>
                     </div>
                 ` : ''}
                 <div class="news-content ${!hasImage ? 'no-image' : ''}">
-                    <h3>${article.title}</h3>
-                    <p>${article.description.substring(0, 200)}...</p>
+                    <h3>${safeTitle}</h3>
+                    <p>${safeDescription}...</p>
                     <div class="news-meta">
                         <span class="news-date">${date}</span>
                         <span class="news-time">${time}</span>
-                        <span class="news-source">${article.feedName}</span>
+                        <span class="news-source">${safeFeedName}</span>
                         <span class="news-time-ago">${timeAgo}</span>
                     </div>
                     <div class="news-actions">
-                        <a href="${encodeURI(cleanLink)}" target="_blank" class="btn btn-primary" onclick="console.log('Opening article link:', '${cleanLink}')" ${!cleanLink ? 'style="display: none;"' : ''}>
+                        <a href="${encodeURI(safeCleanLink)}" target="_blank" class="btn btn-primary" ${!cleanLink ? 'style="display: none;"' : ''}>
                             <i class="fas fa-external-link-alt"></i> Read More
                         </a>
-                        <button class="btn btn-secondary btn-share" onclick="shareArticle('${encodeURIComponent(article.title)}', '${encodeURIComponent(article.link)}')">
+                        <button class="btn btn-secondary btn-share" data-title="${this.escapeHtml(article.title)}" data-link="${this.sanitizeUrl(article.link)}">
                             <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
@@ -2133,10 +2175,12 @@ class EnhancedNewsFeedAggregator {
     openVideoModal(videoId, title) {
         const modal = document.createElement('div');
         modal.className = 'video-modal';
+        const safeTitle = this.escapeHtml(title);
+        const safeVideoId = this.escapeHtml(videoId);
         modal.innerHTML = `
             <div class="video-modal-content">
                 <div class="video-modal-header">
-                    <h3>${title}</h3>
+                    <h3>${safeTitle}</h3>
                     <button class="close-modal">&times;</button>
                 </div>
                 <div class="video-container">
@@ -2510,5 +2554,4 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Available elements with "news" in ID:', 
             Array.from(document.querySelectorAll('[id*="news"]')).map(el => el.id));
     }
-}); 
 }); 

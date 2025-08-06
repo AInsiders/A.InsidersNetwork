@@ -411,188 +411,19 @@
 
 // Initialize glowing orb animation
 function initSphereLoader() {
-    console.log('Initializing Glowing Orb Loader...');
+    console.log('Loader disabled - showing website content immediately');
     
-    // Check if user has already visited this session
-    const hasVisitedThisSession = sessionStorage.getItem('hasVisitedHomeThisSession');
-    const isHomePage = window.location.pathname.endsWith('index.html') ||
-                      window.location.pathname.endsWith('/') ||
-                      window.location.pathname === '';
-    
-         // If returning user on home page, hide loader immediately
-     if (hasVisitedThisSession && isHomePage) {
-         console.log('Returning user detected - hiding loader immediately');
-         const loader = document.getElementById('loader');
-         const websiteContent = document.getElementById('website-content');
-         
-         // Hide text elements immediately for returning users
-         const sparkText = document.querySelector('.spark-text');
-         const continueText = document.querySelector('.continue-text');
-         if (sparkText) {
-             sparkText.style.opacity = '0';
-             sparkText.style.visibility = 'hidden';
-             sparkText.style.display = 'none';
-         }
-         if (continueText) {
-             continueText.style.opacity = '0';
-             continueText.style.visibility = 'hidden';
-             continueText.style.display = 'none';
-         }
-         
-         if (loader) {
-             loader.style.display = 'none';
-             loader.style.visibility = 'hidden';
-             loader.style.opacity = '0';
-             loader.style.pointerEvents = 'none';
-             loader.style.zIndex = '-1';
-             loader.classList.add('hidden');
-             
-             // Restore default cursor for returning users
-             loader.style.cursor = '';
-             document.body.style.cursor = '';
-         }
-         
-         if (websiteContent) {
-             websiteContent.style.display = 'block';
-             websiteContent.style.opacity = '1';
-             websiteContent.style.visibility = 'visible';
-             websiteContent.classList.add('revealed');
-         }
-         
-         return; // Don't initialize the loader at all
-     }
-    
-             // Initialize glowing orb animation
-    D.Init();
-    
-
-    
-    // Hide default cursor on startup screen
-    const loader = document.getElementById('loader');
-    if (loader) {
-        loader.style.cursor = 'none';
+    // Show website content immediately
+    const websiteContent = document.getElementById('website-content');
+    if (websiteContent) {
+        websiteContent.style.display = 'block';
+        websiteContent.style.opacity = '1';
+        websiteContent.style.visibility = 'visible';
+        websiteContent.classList.add('revealed');
     }
-    document.body.style.cursor = 'none';
     
-    // Set up click handler and timer
-    let hasProceeded = false;
-    
-    // Add visible class to continue text after it fades in
-    setTimeout(() => {
-        const continueText = document.querySelector('.continue-text');
-        if (continueText) {
-            continueText.classList.add('visible');
-        }
-    }, 5000); // 3s fade in + 2s delay
-    
-                                                                                                                                                                    function proceedToHome() {
-             if (hasProceeded) return;
-             hasProceeded = true;
-             
-             console.log('Proceeding to home page');
-             
-             // Start orb growth effect
-             D.isGrowing = true;
-             D.growthTime = 0;
-             
-             // Create sparks from orb position (not mouse position)
-             D.CreateSparks(D.mouseX, D.mouseY);
-             
-             // Hide text elements immediately
-             const sparkText = document.querySelector('.spark-text');
-             const continueText = document.querySelector('.continue-text');
-             if (sparkText) {
-                 sparkText.style.opacity = '0';
-                 sparkText.style.visibility = 'hidden';
-             }
-             if (continueText) {
-                 continueText.style.opacity = '0';
-                 continueText.style.visibility = 'hidden';
-             }
-             
-                          // Add bright pulse effect
-              loader.classList.add('pulse');
-              
-              // Mark session as visited
-              sessionStorage.setItem('hasVisitedHomeThisSession', 'true');
-             
-             // Hide orb immediately and start transition
-             setTimeout(() => {
-                 // Stop the glowing orb animation immediately
-                 D.Cleanup();
-                 
-                 // Start spark-only animation
-                 D.DrawSparksOnly();
-                 
-                 console.log('Orb hidden, sparks continuing');
-             }, 100); // Hide orb very early in the transition
-             
-             // Show home page after white flash starts (at 600ms - during white phase)
-             setTimeout(() => {
-                 // Hide loader and show home page while flash is still white
-                 loader.style.display = 'none';
-                 loader.style.visibility = 'hidden';
-                 loader.style.opacity = '0';
-                 loader.style.pointerEvents = 'none';
-                 loader.style.zIndex = '-1';
-                 loader.classList.add('hidden');
-                 
-                 // Restore default cursor when startup screen is hidden
-                 loader.style.cursor = '';
-                 document.body.style.cursor = '';
-                 
-                 // Show website content
-                 const websiteContent = document.getElementById('website-content');
-                 if (websiteContent) {
-                     websiteContent.style.display = 'block';
-                     websiteContent.style.opacity = '1';
-                     websiteContent.style.visibility = 'visible';
-                     websiteContent.classList.add('revealed');
-                 }
-                 
-                 console.log('Home page revealed during white flash');
-             }, 600); // Show home page during white phase (2.0s total - 600ms = 1400ms white flash continues on home page)
-        }
-    
-                   // Click handler for both mouse and touch
-      function handleInteraction(e) {
-          if (D.hasInteracted) return; // Prevent multiple triggers
-          D.hasInteracted = true;
-          
-          // Create immediate spark effect at interaction point
-          const rect = D.canvas.getBoundingClientRect();
-          let x, y;
-          
-          if (e.type === 'touchstart' || e.type === 'touchend') {
-              const touch = e.touches[0] || e.changedTouches[0];
-              x = touch.clientX - rect.left;
-              y = touch.clientY - rect.top;
-          } else {
-              x = e.clientX - rect.left;
-              y = e.clientY - rect.top;
-          }
-          
-          // Create sparks at interaction point
-          D.CreateSparks(x, y);
-          
-          // Proceed to home
-          proceedToHome();
-      }
-      
-      // Add event listeners for both click and touch
-      loader.addEventListener('click', handleInteraction);
-      loader.addEventListener('touchstart', handleInteraction, { passive: false });
-      loader.addEventListener('touchend', handleInteraction, { passive: false });
-     
-     // 20-second timer
-     setTimeout(function() {
-         if (!D.hasInteracted) {
-             console.log('Timeout reached - proceeding to home');
-             proceedToHome();
-         }
-     }, 20000);
-    
-         console.log('Glowing orb loader initialized - click/tap or wait 20 seconds to proceed');
+    // Ensure body has normal cursor
+    document.body.style.cursor = '';
 }
 
 // Initialize when DOM is ready

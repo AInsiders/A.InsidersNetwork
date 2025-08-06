@@ -9,7 +9,7 @@ const DYNAMIC_CACHE = 'ainsiders-dynamic-v1.0.0';
 const STATIC_ASSETS = [
     '/',
     '/index.html',
-    '/tools.html',
+    
     '/about.html',
     '/contact.html',
     '/apps.html',
@@ -259,7 +259,7 @@ self.addEventListener('notificationclick', event => {
     
     if (event.action === 'explore') {
         event.waitUntil(
-            clients.openWindow('/tools.html')
+            clients.openWindow('/software.html')
         );
     }
 });

@@ -22,8 +22,8 @@
         },
         
         // Security monitoring
-        enableF12Detection: true,
-        enableRightClickProtection: true,
+        enableF12Detection: false,
+        enableRightClickProtection: false,
         enableCopyProtection: true,
         enableViewSourceProtection: true,
         
@@ -329,12 +329,12 @@
             cspMeta.httpEquiv = 'Content-Security-Policy';
             cspMeta.content = [
                 "default-src 'self'",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://formsubmit.co https://cdnjs.cloudflare.com https://kit.fontawesome.com",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://formsubmit.co https://cdnjs.cloudflare.com https://kit.fontawesome.com https://embed.tawk.to",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
                 "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
                 "img-src 'self' data: https:",
-                "connect-src 'self' https://formsubmit.co https://api.github.com",
-                "frame-src 'none'",
+                "connect-src 'self' https://formsubmit.co https://api.github.com https://embed.tawk.to",
+                "frame-src https://embed.tawk.to",
                 "object-src 'none'",
                 "base-uri 'self'",
                 "form-action 'self' https://formsubmit.co"

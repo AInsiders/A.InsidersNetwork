@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Software - A.Insiders</title>
+  
+  <!-- Favicon Setup -->
+  <link rel="icon" type="image/png" href="ainsiders-logo.png" id="main-favicon">
+  <link rel="apple-touch-icon" href="ainsiders-logo.png">
+  <meta name="description" content="Discover our comprehensive collection of online tools and Android applications designed to enhance your digital experience with security, productivity, and cutting-edge technology.">
+  <meta name="keywords" content="software, AI software, tools, applications, AI tools">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  
+  <!-- Cache Control Headers for Cloudflare -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+  <meta http-equiv="Expires" content="31536000">
+  
+  <!-- Optimized Asset Caching System -->
+  <link rel="stylesheet" href="brain-styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="brain-script.js" as="script">
+  <link rel="preload" href="shared-loader.js" as="script">
+  <link rel="preload" href="mobile-nav.js" as="script">
+  <link rel="preload" href="sphere-loader.js" as="script">
+  <link rel="preload" href="ainsiders-logo.png" as="image">
+  <link rel="preload" href="logo.svg" as="image">
+  
+  <!-- Cache Manager and Asset Preloader -->
+  <script src="browser-cache-manager.js"></script>
+  <script src="asset-preloader.js"></script>
+  
+  <!-- Optimized Background System -->
+  <script src="brain-script.js"></script>
+  
+  <!-- Font Awesome with CDN and Fallback -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  
+  <!-- Favicon Animation Script -->
+  <script src="favicon-animation.js"></script>
+    
+      <!-- Tawk.to Widget Styles -->
+  <style>
+    /* Make Tawk.to widget half the size */
+    #tawkto-container,
+    .tawkto-container,
+    .tawkto-widget,
+    .tawkto-minimized,
+    .tawkto-maximized,
+    .tawkto-iframe,
+    .tawkto-button,
+    .tawkto-bubble,
+    .tawkto-chat,
+    .tawkto-widget-container,
+    .tawkto-widget-container *,
+    iframe[src*="tawk.to"],
+    div[data-tawk-to],
+    .tawkto,
+    .tawkto * {
+      transform: scale(0.5) !important;
+      transform-origin: bottom right !important;
+    }
+  </style>
+    
+    <style>
+        /* Software Page Specific Styles */
+        .software-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9));
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .software-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 148, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .software-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .software-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .software-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Tab System Styles */
+        .tab-container {
+            margin: 2rem 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: var(--font-primary);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab-button:hover::before {
+            left: 100%;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .software-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .software-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .software-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+        
+        .software-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+        
+        .software-card:hover .software-image img {
+            transform: scale(1.05);
+        }
+        
+        .software-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .software-content {
+            padding: 1.5rem;
+        }
+        
+        .software-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .software-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .software-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .software-feature {
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .software-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .software-actions .btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .software-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .software-version {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .software-version i {
+            color: var(--accent-primary);
+        }
+        
+        .software-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.beta {
+            background: #ffaa00;
+        }
+        
+        .status-indicator.development {
+            background: #ff6b6b;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Tools Grid Styles */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .tool-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            position: relative;
+            box-shadow: var(--shadow-dark);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .tool-banner {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(77, 148, 255, 0.1));
+        }
+
+        .tool-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .tool-card:hover .tool-banner img {
+            transform: scale(1.05);
+        }
+
+        .tool-header {
+            padding: 1.5rem 1.5rem 0;
+            position: relative;
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tool-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tool-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tool-status.live {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .tool-status.beta {
+            background: #ffaa00;
+            color: #000;
+        }
+
+        .tool-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .tool-btn {
+            flex: 1;
+            padding: 0.75rem;
+            text-decoration: none;
+            text-align: center;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-btn.primary {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .tool-btn.primary:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .tool-btn:not(.primary) {
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .tool-btn:not(.primary):hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--accent-primary);
+        }
+        
+        .software-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .category-filter {
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.875rem;
+            font-family: var(--font-primary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .category-filter:hover,
+        .category-filter.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .coming-soon {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .coming-soon h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .coming-soon p {
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .software-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .software-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .software-grid,
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .software-actions,
+            .tool-actions {
+                flex-direction: column;
+            }
+            
+            .software-categories,
+            .tab-buttons {
+                justify-content: center;
+            }
+
+            .tab-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+    <script src="shared-loader.js"></script>
+</head>
+<body class="software-page">
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <canvas></canvas>
+        <div class="spark-text">It All Starts With A Spark</div>
+        <div class="continue-text">Click Anywhere To Continue</div>
+    </div>
+
+    <!-- Website Content -->
+    <div id="website-content" class="website-content">
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+                              <a href="index.html" class="nav-logo">
+                    <img src="ainsiders-logo.png" alt="A.Insiders Logo" class="logo-image" width="40" height="40">
+                    <span class="logo-text">A.I</span>
+                    <span class="logo-accent">NSIDERS</span>
+                </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+
+                                                        <li><a href="software.html" class="nav-link active">Software</a></li>
+                            <li class="nav-dropdown">
+          <div class="nav-link-container">
+            <a href="about.html" class="nav-link">About</a>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="about.html" class="dropdown-link">About Company</a></li>
+            <li><a href="blake-zimmerman.html" class="dropdown-link">Blake Zimmerman</a></li>
+            <li><a href="babu-narayana.html" class="dropdown-link">Babu Narayana</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+    <!-- AI Canvas for Background Effects -->
+    <canvas id="aiCanvas"></canvas>
+
+    <!-- Software Hero Section -->
+    <section class="software-hero">
+        <div class="container">
+            <h1>Our Software</h1>
+            <p>Discover our comprehensive collection of online tools and Android applications designed to enhance your digital experience with security, productivity, and cutting-edge technology.</p>
+            
+            <div class="software-stats">
+                <div class="stat-item">
+                    <div class="stat-number">8+</div>
+                    <div class="stat-label">Tools</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Apps</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">13+</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab System -->
+    <section class="tab-container">
+        <div class="container">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="tools">Tools</button>
+                <button class="tab-button" data-tab="apps">Apps</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Tab Content -->
+    <section class="tab-content active" id="tools-tab">
+        <div class="container">
+            <!-- Tools Categories -->
+            <div class="software-categories">
+                <button class="category-filter active" data-category="all">All Tools</button>
+                <button class="category-filter" data-category="security">Security</button>
+                <button class="category-filter" data-category="ai">AI Tools</button>
+                <button class="category-filter" data-category="data">Data Analysis</button>
+                <button class="category-filter" data-category="development">Developer Tools</button>
+            </div>
+
+            <!-- Tools Grid -->
+            <div class="tools-grid" id="tools-container">
+                <!-- Security Tools -->
+                <div class="tool-card" data-category="security">
+                    <div class="tool-banner">
+                        <img src="tool-banners/password-checker-banner.svg" alt="Password Checker Tool Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="tool-title">Password Checker</h3>
+                        <p class="tool-description">Advanced password strength analyzer with quantum computer simulation. Test passwords against various attack scenarios including quantum computers, supercomputers, and more.</p>
+                        <span class="tool-status live">Live</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>Quantum computer simulation</li>
+                            <li>Multiple attack scenarios</li>
+                            <li>Entropy calculation</li>
+                            <li>Time projection analysis</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="password-checker.html" class="tool-btn primary">Check Password</a>
+                            <a href="#" class="tool-btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="security">
+                    <div class="tool-banner">
+                        <img src="tool-banners/encryption-tool-banner.svg" alt="Encryption Tool Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="tool-title">Encryption Tool</h3>
+                        <p class="tool-description">Secure text and file encryption using AES-256 encryption with easy-to-use interface.</p>
+                        <span class="tool-status development">Development</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>AES-256 encryption</li>
+                            <li>Text & file support</li>
+                            <li>Secure key generation</li>
+                            <li>Decryption capability</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="#" class="tool-btn primary">Coming Soon</a>
+                            <a href="#" class="tool-btn">How It Works</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="security">
+                    <div class="tool-banner">
+                        <img src="tool-banners/ip-checker-banner.svg" alt="IP Location Checker Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="tool-title">IP Location Checker</h3>
+                        <p class="tool-description">Comprehensive IP address analysis with location mapping and detailed network information.</p>
+                        <span class="tool-status development">Development</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>Real-time IP geolocation</li>
+                            <li>Interactive world map</li>
+                            <li>Detailed network info</li>
+                            <li>ISP & organization data</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="#" class="tool-btn primary">Coming Soon</a>
+                            <a href="#" class="tool-btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="security">
+                    <div class="tool-banner">
+                        <img src="tool-banners/url-redirect-checker-banner.svg" alt="URL Redirect Checker Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3 class="tool-title">URL Redirect Checker</h3>
+                        <p class="tool-description">Comprehensive URL redirect analysis with detailed "who is" information for domains and IPs.</p>
+                        <span class="tool-status live">Live</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>Redirect chain analysis</li>
+                            <li>Domain & IP "who is" lookup</li>
+                            <li>Security status indicators</li>
+                            <li>Detailed connection reports</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="url-redirect-checker.html" class="tool-btn primary">Check URL</a>
+                            <a href="#" class="tool-btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="security">
+                    <div class="tool-banner">
+                        <img src="tool-banners/ip-blacklist-checker-banner.svg" alt="IP Ban Tester Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <h3 class="tool-title">IP Ban Tester</h3>
+                        <p class="tool-description">Test IP addresses against multiple ban lists and blocklists. Check if an IP is banned across gaming platforms and security databases.</p>
+                        <span class="tool-status live">Live</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>Gaming platform ban checks</li>
+                            <li>Security database scanning</li>
+                            <li>Proxy/VPN detection</li>
+                            <li>Ban status recommendations</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="ip-blacklist-checker.html" class="tool-btn primary">Test for Bans</a>
+                            <a href="#" class="tool-btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="ai">
+                    <div class="tool-banner">
+                        <img src="tool-banners/ai-text-detection-banner.svg" alt="AI Text Detection Banner" loading="lazy">
+                    </div>
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="tool-title">AI Text Detection</h3>
+                        <p class="tool-description">Advanced AI-powered tool to detect AI-generated text using pattern analysis and linguistic markers.</p>
+                        <span class="tool-status live">Live</span>
+                    </div>
+                    <div class="tool-content">
+                        <ul class="tool-features">
+                            <li>BERT-based text analysis</li>
+                            <li>Pattern recognition</li>
+                            <li>Confidence scoring</li>
+                            <li>Detailed analysis report</li>
+                        </ul>
+                        <div class="tool-actions">
+                            <a href="ai-text-detection.html" class="tool-btn primary">Analyze Text</a>
+                            <a href="#" class="tool-btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Apps Tab Content -->
+    <section class="tab-content" id="apps-tab">
+        <div class="container">
+            <!-- Apps Categories -->
+            <div class="software-categories">
+                <button class="category-filter active" data-category="all">All Apps</button>
+                <button class="category-filter" data-category="ai">News & AI</button>
+                <button class="category-filter" data-category="productivity">Productivity</button>
+                <button class="category-filter" data-category="security">Security</button>
+                <button class="category-filter" data-category="development">Developer Tools</button>
+            </div>
+
+            <!-- Apps Grid -->
+            <div class="software-grid" id="apps-container">
+                <!-- A.insiders News -->
+                <div class="software-card" data-category="ai">
+                    <div class="software-image">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=200&fit=crop" alt="A.insiders News">
+                        <div class="software-badge">Coming Soon</div>
+                    </div>
+                    <div class="software-content">
+                        <div class="software-meta">
+                            <div class="software-version">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v1.0.0</span>
+                            </div>
+                            <div class="software-status">
+                                <div class="status-indicator development"></div>
+                                <span>Development</span>
+                            </div>
+                        </div>
+                        <h3>A.insiders News</h3>
+                        <p>Our comprehensive news source software featuring curated AI, technology, and innovation news. Stay informed with the latest developments in the tech world.</p>
+                        <div class="software-features">
+                            <span class="software-feature">Curated News</span>
+                            <span class="software-feature">AI Technology</span>
+                            <span class="software-feature">Real-time Updates</span>
+                            <span class="software-feature">Offline Reading</span>
+                        </div>
+                        <div class="software-actions">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-bell"></i> Notify Me
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-info-circle"></i> Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mocking Bird -->
+                <div class="software-card" data-category="productivity">
+                    <div class="software-image">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop" alt="Mocking Bird">
+                        <div class="software-badge">Live</div>
+                    </div>
+                    <div class="software-content">
+                        <div class="software-meta">
+                            <div class="software-version">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v2.1.0</span>
+                            </div>
+                            <div class="software-status">
+                                <div class="status-indicator"></div>
+                                <span>Production</span>
+                            </div>
+                        </div>
+                        <h3>Mocking Bird</h3>
+                        <p>Advanced Android GPS mocking software for developers and testers. Simulate location data for software testing and development purposes.</p>
+                        <div class="software-features">
+                            <span class="software-feature">GPS Mocking</span>
+                            <span class="software-feature">Location Simulation</span>
+                            <span class="software-feature">Developer Tools</span>
+                            <span class="software-feature">Route Planning</span>
+                        </div>
+                        <div class="software-actions">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-book"></i> Documentation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automatic Bluetooth Disabler -->
+                <div class="software-card" data-category="productivity">
+                    <div class="software-image">
+                        <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&h=200&fit=crop" alt="Automatic Bluetooth Disabler">
+                        <div class="software-badge">Coming Soon</div>
+                    </div>
+                    <div class="software-content">
+                        <div class="software-meta">
+                            <div class="software-version">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v1.0.0</span>
+                            </div>
+                            <div class="software-status">
+                                <div class="status-indicator development"></div>
+                                <span>Development</span>
+                            </div>
+                        </div>
+                        <h3>Automatic Bluetooth Disabler</h3>
+                        <p>Smart Bluetooth management software that automatically disables Bluetooth when not in use to save battery and enhance security.</p>
+                        <div class="software-features">
+                            <span class="software-feature">Auto Management</span>
+                            <span class="software-feature">Battery Saving</span>
+                            <span class="software-feature">Security</span>
+                            <span class="software-feature">Smart Scheduling</span>
+                        </div>
+                        <div class="software-actions">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-bell"></i> Notify Me
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-info-circle"></i> Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A.Safe -->
+                <div class="software-card" data-category="security">
+                    <div class="software-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&h=200&fit=crop" alt="A.Safe">
+                        <div class="software-badge">Coming Soon</div>
+                    </div>
+                    <div class="software-content">
+                        <div class="software-meta">
+                            <div class="software-version">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v1.0.0</span>
+                            </div>
+                            <div class="software-status">
+                                <div class="status-indicator development"></div>
+                                <span>Development</span>
+                            </div>
+                        </div>
+                        <h3>A.Safe</h3>
+                        <p>Offline password manager software with advanced encryption. Store and manage your passwords securely without internet dependency.</p>
+                        <div class="software-features">
+                            <span class="software-feature">Offline Storage</span>
+                            <span class="software-feature">AES-256 Encryption</span>
+                            <span class="software-feature">Password Generator</span>
+                            <span class="software-feature">Secure Backup</span>
+                        </div>
+                        <div class="software-actions">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-bell"></i> Notify Me
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-shield-alt"></i> Security Info
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Coming Soon -->
+                <div class="software-card" data-category="all">
+                    <div class="software-image">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=200&fit=crop" alt="More Software Coming Soon">
+                        <div class="software-badge">Future</div>
+                    </div>
+                    <div class="software-content">
+                        <div class="software-meta">
+                            <div class="software-version">
+                                <i class="fas fa-rocket"></i>
+                                <span>In Pipeline</span>
+                            </div>
+                            <div class="software-status">
+                                <div class="status-indicator beta"></div>
+                                <span>Planning</span>
+                            </div>
+                        </div>
+                        <h3>More Software Coming Soon</h3>
+                        <p>We're constantly developing new innovative software to enhance your digital experience. Stay tuned for exciting new tools and utilities.</p>
+                        <div class="software-features">
+                            <span class="software-feature">AI Tools</span>
+                            <span class="software-feature">Productivity</span>
+                            <span class="software-feature">Security</span>
+                            <span class="software-feature">Innovation</span>
+                        </div>
+                        <div class="software-actions">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-bell"></i> Stay Updated
+                            </a>
+                            <a href="#" class="btn btn-secondary">
+                                <i class="fas fa-lightbulb"></i> Suggest Ideas
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon Section -->
+    <section class="coming-soon">
+        <div class="container">
+            <h3>More Software Coming Soon</h3>
+            <p>We're constantly developing new innovative Android software to enhance your digital experience. From security tools to productivity software, stay tuned for exciting new releases!</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="software.html">Software</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/blake-zimmerman-a59575342/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/AInsiders" class="social-link" title="GitHub" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.youtube.com/@A.Insiders01" class="social-link" title="YouTube" target="_blank" rel="noopener">
+                            <i class="fab fa-youtube"></i>
+                            <span>YouTube</span>
+                        </a>
+                        <a href="https://discord.gg/Y4kCtaBZFM" class="social-link" title="Discord" target="_blank" rel="noopener">
+                            <i class="fab fa-discord"></i>
+                            <span>Discord</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 A.Insiders Network. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
+                    <a href="cookie-policy.html">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    </div> <!-- End of website-content -->
+
+  <!-- Tawk.to Widget -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/65f7c0c91ec1082f04e7c0c1/default';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+
+    <!-- Enhanced script loading with caching -->
+    <script>
+        // Initialize asset preloading for this page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.assetPreloader) {
+                window.assetPreloader.preloadPage('software');
+            }
+            
+            // Preload next likely pages
+            setTimeout(() => {
+                if (window.browserCacheManager) {
+                    window.browserCacheManager.preloadPage('tools');
+                    window.browserCacheManager.preloadPage('contact');
+                }
+            }, 2000);
+            
+            // Software page specific functionality
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // Update active tab button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${targetTab}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Category filtering for both tabs
+            const categoryFilters = document.querySelectorAll('.category-filter');
+            
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    const parentTab = this.closest('.tab-content');
+                    const cards = parentTab.querySelectorAll('.software-card, .tool-card');
+                    const filters = parentTab.querySelectorAll('.category-filter');
+                    
+                    // Update active filter in current tab
+                    filters.forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cards in current tab
+                    cards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.5s ease-out';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Newsletter form
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    // Add newsletter subscription logic here
+                    alert('Thank you for subscribing to our newsletter!');
+                    this.reset();
+                });
+            }
+        });
+    </script>
+    
+    <script src="sphere-loader.js"></script>
+    <script src="mobile-nav.js"></script>
+    <script src="security-enhancement.js"></script>
+    
+    <!-- Tawk.to Chat Button -->
+    <style>
+      .tawk-chat-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        text-decoration: none;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .tawk-chat-button:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      }
+      
+      .tawk-chat-button:active {
+        transform: translateY(-1px) scale(1.05);
+      }
+      
+      .tawk-chat-button::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(135deg, #667eea, #764ba2, #667eea);
+        border-radius: 50%;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .tawk-chat-button:hover::before {
+        opacity: 1;
+      }
+      
+      .tawk-chat-button .pulse {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(102, 126, 234, 0.3);
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+      
+      .tawk-chat-button .tooltip {
+        position: absolute;
+        right: 70px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .tawk-chat-button .tooltip::after {
+        content: '';
+        position: absolute;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-left-color: rgba(0, 0, 0, 0.8);
+      }
+      
+      .tawk-chat-button:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    </style>
+    
+    <a href="https://tawk.to/chat/688b284b9abe48192a749848/1j1fpapuu" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="tawk-chat-button" 
+       title="Chat with us instantly!">
+      <div class="pulse"></div>
+      💬
+      <span class="tooltip">Chat with us instantly!</span>
+    </a>
+</body>
+</html>

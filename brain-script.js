@@ -18,10 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const nodes = [];
         const connections = [];
         
-        // Mobile detection function
+        // Enhanced mobile detection function
         function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                   (window.innerWidth <= 768 && 'ontouchstart' in window);
+            // Check for touch capability and screen size
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isSmallScreen = window.innerWidth <= 768;
+            const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            // Return true if it's a mobile device or small touch screen
+            return isMobileUserAgent || (hasTouch && isSmallScreen);
         }
         
         // Responsive orb system based on screen ratio
@@ -129,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Function to check if we should show the orb
         function shouldShowOrb() {
             const currentPath = window.location.pathname;
-            const isToolsPage = currentPath.includes('tools.html');
+            const isToolsPage = currentPath.includes('software.html');
             const isIpCheckerPage = currentPath.includes('ip-checker.html');
             const isUrlCheckerPage = currentPath.includes('url-redirect-checker.html');
             const isIpBlacklistPage = currentPath.includes('ip-blacklist-checker.html');
@@ -506,15 +511,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Mouse interaction for cursor orb and neural connections
         function handleMouseMove(e) {
+            // Skip mouse interaction on mobile devices
+            if (isMobileDevice()) {
+                mouse.x = -100;
+                mouse.y = -100;
+                return;
+            }
+            
             const rect = canvas.getBoundingClientRect();
             
-            // Get mouse coordinates relative to canvas using pure user input (no DPR scaling)
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            // Calculate the scale factor between canvas display size and actual canvas size
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
             
-            // Apply coordinate correction for consistency
-            const correctedX = Math.round(mouseX);
-            const correctedY = Math.round(mouseY);
+            // Get precise mouse coordinates relative to canvas with proper scaling
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
             
             // Check if mouse is actually over navbar or footer elements
             const navbar = document.querySelector('.navbar');
@@ -540,11 +552,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Only handle mouse movement for interactive pages (home page and starting screen)
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds (using display dimensions)
-                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
-                    
-                    // Mouse trail tracking removed for 120fps performance
+                    // Properly scaled mouse position mapping for precision
+                    mouse.x = Math.max(0, Math.min(canvas.width, mouseX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, mouseY));
                 } else {
                     // Hide cursor orb when directly over navbar or footer
                     mouse.x = -100;
@@ -666,21 +676,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Touch event handlers for cursor orb and neural interactions
         function handleTouchStart(e) {
+            // Completely disable touch interaction with background on mobile
+            if (isMobileDevice()) {
+                // Don't prevent default to allow normal touch scrolling
+                mouse.x = -100;
+                mouse.y = -100;
+                return;
+            }
+            
             if (!shouldShowOrb()) return;
             e.preventDefault();
             
             // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
             
-            // Get touch coordinates relative to canvas and scale by device pixel ratio
-            const touchX = (touch.clientX - rect.left) * dpr;
-            const touchY = (touch.clientY - rect.top) * dpr;
+            // Calculate the scale factor between canvas display size and actual canvas size
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
             
-            // Apply additional mobile-specific corrections
-            const correctedX = Math.round(touchX);
-            const correctedY = Math.round(touchY);
+            // Get touch coordinates relative to canvas with proper scaling
+            const touchX = (touch.clientX - rect.left) * scaleX;
+            const touchY = (touch.clientY - rect.top) * scaleY;
             
             // Check if touch is actually over navbar or footer elements
             const navbar = document.querySelector('.navbar');
@@ -703,21 +720,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 touch.clientY >= footerRect.top && 
                 touch.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            // Only handle touch for interactive pages (home page and starting screen)
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds (using rect dimensions)
-                    mouse.x = Math.max(0, Math.min(rect.width, correctedX));
-                    mouse.y = Math.max(0, Math.min(rect.height, correctedY));
+                    // Direct touch position mapping for precision
+                    mouse.x = Math.max(0, Math.min(canvas.width, touchX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, touchY));
                 } else {
                     // Hide cursor orb when directly over navbar or footer
                     mouse.x = -100;
                     mouse.y = -100;
                 }
             } else {
-                // On other pages, always show the cursor orb
-                mouse.x = Math.max(0, Math.min(rect.width, correctedX));
-                mouse.y = Math.max(0, Math.min(rect.height, correctedY));
+                // On other pages, don't track touch for orb
+                mouse.x = -100;
+                mouse.y = -100;
             }
             
             mouse.isMoving = true;
@@ -725,21 +742,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function handleTouchMove(e) {
+            // Completely disable touch interaction with background on mobile
+            if (isMobileDevice()) {
+                // Don't prevent default to allow normal touch scrolling
+                mouse.x = -100;
+                mouse.y = -100;
+                return;
+            }
+            
             if (!shouldShowOrb()) return;
             e.preventDefault();
             
             // Get the first touch point
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
             
-            // Get touch coordinates relative to canvas and scale by device pixel ratio
-            const touchX = (touch.clientX - rect.left) * dpr;
-            const touchY = (touch.clientY - rect.top) * dpr;
+            // Calculate the scale factor between canvas display size and actual canvas size
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
             
-            // Apply additional mobile-specific corrections
-            const correctedX = Math.round(touchX);
-            const correctedY = Math.round(touchY);
+            // Get touch coordinates relative to canvas with proper scaling
+            const touchX = (touch.clientX - rect.left) * scaleX;
+            const touchY = (touch.clientY - rect.top) * scaleY;
             
             // Check if touch is actually over navbar or footer elements
             const navbar = document.querySelector('.navbar');
@@ -762,21 +786,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 touch.clientY >= footerRect.top && 
                 touch.clientY <= footerRect.bottom;
             
-            // Only hide cursor orb when directly over navbar or footer on home page and starting screen
+            // Only handle touch for interactive pages (home page and starting screen)
             if (isHomePage || isStartingScreen) {
                 if (!isOverNavbar && !isOverFooter) {
-                    // Ensure mouse position is within canvas bounds (using display dimensions)
-                    mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                    mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                    // Direct touch position mapping for precision
+                    mouse.x = Math.max(0, Math.min(canvas.width, touchX));
+                    mouse.y = Math.max(0, Math.min(canvas.height, touchY));
                 } else {
                     // Hide cursor orb when directly over navbar or footer
                     mouse.x = -100;
                     mouse.y = -100;
                 }
             } else {
-                // On other pages, always show the cursor orb
-                mouse.x = Math.max(0, Math.min(canvas.width, correctedX));
-                mouse.y = Math.max(0, Math.min(canvas.height, correctedY));
+                // On other pages, don't track touch for orb
+                mouse.x = -100;
+                mouse.y = -100;
             }
             
             mouse.isMoving = true;
@@ -787,6 +811,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function handleTouchEnd(e) {
+            // Completely disable touch interaction with background on mobile
+            if (isMobileDevice()) {
+                // Don't prevent default to allow normal touch scrolling
+                mouse.isMoving = false;
+                return;
+            }
+            
             if (!isHomePage && !isStartingScreen) return;
             e.preventDefault();
             mouse.isMoving = false;

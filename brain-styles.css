@@ -1166,12 +1166,16 @@ body.home-page .loader {
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
-  transition: var(--transition-smooth);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: auto;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .nav-container {
@@ -1283,18 +1287,21 @@ body.home-page .loader {
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   padding: 1rem 0;
   min-width: 200px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.15s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   pointer-events: none; /* Don't interfere with orb tracking when hidden */
 }
 
@@ -1456,6 +1463,105 @@ body:not(.home-page):not(:has(.loader:not(.hidden))) {
 
 body:not(.home-page):not(:has(.loader:not(.hidden))) * {
   cursor: auto;
+}
+
+/* SOFTWARE PAGE - Ensure mouse cursor shows everywhere */
+body.software-page {
+  cursor: auto !important;
+}
+
+body.software-page * {
+  cursor: auto !important;
+}
+
+body.software-page #aiCanvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1 !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+  cursor: auto !important;
+  touch-action: auto !important;
+  -webkit-touch-callout: auto !important;
+  -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
+
+/* Show pointer cursor for ALL interactive elements on software page */
+body.software-page a,
+body.software-page button,
+body.software-page input,
+body.software-page textarea,
+body.software-page select,
+body.software-page .nav-toggle,
+body.software-page .nav-menu,
+body.software-page .dropdown-menu,
+body.software-page .tab-button,
+body.software-page .category-filter,
+body.software-page .btn,
+body.software-page .tool-btn,
+body.software-page .nav-link,
+body.software-page .dropdown-link,
+body.software-page .social-link,
+body.software-page .footer-links a,
+body.software-page .newsletter-form button,
+body.software-page .software-actions .btn,
+body.software-page .tool-actions .tool-btn,
+body.software-page .software-card,
+body.software-page .tool-card,
+body.software-page .team-link,
+body.software-page .cta-button,
+body.software-page .submit-btn,
+body.software-page .pagination-btn,
+body.software-page .filter-btn,
+body.software-page .load-more,
+body.software-page .newsletter-btn,
+body.software-page .schedule-link,
+body.software-page .contact-link,
+body.software-page .faq-item,
+body.software-page .retry-failed-btn,
+body.software-page .tawk-chat-button {
+  cursor: pointer !important;
+}
+
+/* Ensure all content sections have proper backgrounds and positioning */
+body.software-page .navbar {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+body.software-page .software-hero {
+  position: relative !important;
+  z-index: 1 !important;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9)) !important;
+}
+
+body.software-page .tab-container,
+body.software-page .tab-content,
+body.software-page .coming-soon,
+body.software-page .footer {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+
+body.software-page .container,
+body.software-page .section,
+body.software-page .page-hero {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Ensure no element can interfere with mouse */
+body.software-page *:not(a):not(button):not(input):not(textarea):not(select):not(.nav-toggle):not(.nav-menu):not(.dropdown-menu):not(.tab-button):not(.category-filter):not(.btn):not(.tool-btn):not(.nav-link):not(.dropdown-link):not(.social-link):not(.footer-links a):not(.newsletter-form button):not(.software-actions .btn):not(.tool-actions .tool-btn):not(.software-card):not(.tool-card):not(.team-link):not(.cta-button):not(.submit-btn):not(.pagination-btn):not(.filter-btn):not(.load-more):not(.newsletter-btn):not(.schedule-link):not(.contact-link):not(.faq-item):not(.retry-failed-btn):not(.tawk-chat-button) {
+  pointer-events: auto !important;
+  cursor: auto !important;
 }
 
 /* Show pointer cursor for interactive elements on all pages */
@@ -1698,19 +1804,25 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
 .cta-button {
   display: inline-block;
   padding: 1rem 2.5rem;
-  background: transparent;
-  border: 2px solid var(--accent-primary);
+  background: rgba(0, 102, 255, 0.1);
+  border: 1px solid rgba(0, 102, 255, 0.3);
   color: var(--accent-primary);
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: var(--transition-smooth);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   animation: fadeIn 1s ease 1.5s forwards;
   opacity: 0;
   pointer-events: auto;
+  border-radius: 12px;
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  box-shadow: 
+    0 8px 32px rgba(0, 102, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .cta-button::before {
@@ -1720,18 +1832,27 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: var(--accent-primary);
-  transition: var(--transition-smooth);
-  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 102, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
 }
 
 .cta-button:hover::before {
-  left: 0;
+  left: 100%;
 }
 
 .cta-button:hover {
-  color: var(--bg-primary);
-  box-shadow: var(--shadow-glow);
+  background: rgba(0, 102, 255, 0.2);
+  border-color: rgba(0, 102, 255, 0.5);
+  color: var(--text-primary);
+  box-shadow: 
+    0 12px 40px rgba(0, 102, 255, 0.2),
+    0 0 20px rgba(0, 102, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translate3d(0, -2px, 0);
 }
 
@@ -2237,22 +2358,53 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
 .btn {
   display: inline-block;
   padding: 1rem 2rem;
-  background: var(--accent-primary);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn:hover {
-  background: var(--accent-secondary);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(0, 102, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-lg {
@@ -2332,20 +2484,30 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   position: relative;
   width: 100%;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
+  background: rgba(0, 102, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(0, 102, 255, 0.3);
+  border-radius: 12px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  box-shadow: 
+    0 8px 32px rgba(0, 102, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .submit-btn:hover {
+  background: rgba(0, 102, 255, 0.2);
+  border-color: rgba(0, 102, 255, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 102, 255, 0.2),
+    0 0 20px rgba(0, 102, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .submit-btn:disabled {
@@ -2413,6 +2575,39 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   color: var(--accent-primary);
   margin-bottom: 1rem;
   font-size: 1.1rem;
+  text-align: center;
+}
+
+.footer-section {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 102, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.footer-section:hover::before {
+  left: 100%;
+}
+
+.footer-section:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .footer-section ul {
@@ -2427,10 +2622,37 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   color: var(--text-secondary);
   text-decoration: none;
   transition: var(--transition-fast);
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-section ul li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
+  transition: left 0.3s;
+}
+
+.footer-section ul li a:hover::before {
+  left: 100%;
 }
 
 .footer-section ul li a:hover {
   color: var(--accent-primary);
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--accent-primary);
+  transform: translateX(3px);
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.2);
 }
 
 .social-links {
@@ -2445,61 +2667,143 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   gap: 0.75rem;
   color: var(--text-secondary);
   text-decoration: none;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   border-radius: var(--border-radius);
   transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 102, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 0 rgba(0, 102, 255, 0);
+}
+
+.social-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
+  transition: left 0.3s;
+  z-index: 1;
+}
+
+.social-link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.social-link:hover::before {
+  left: 100%;
+}
+
+.social-link:hover::after {
+  width: 300px;
+  height: 300px;
 }
 
 .social-link:hover {
   color: var(--accent-primary);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   border-color: var(--accent-primary);
   transform: translateX(5px);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.6), 0 0 40px rgba(0, 102, 255, 0.3);
 }
 
 .social-link i {
   font-size: 1.1rem;
   width: 20px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .social-link span {
   font-size: 0.9rem;
   font-weight: 500;
+  position: relative;
+  z-index: 2;
 }
 
 /* Platform-specific hover colors */
 .social-link[title*="LinkedIn"]:hover {
   color: #0077b5;
   border-color: #0077b5;
+  box-shadow: 0 0 20px rgba(0, 119, 181, 0.6), 0 0 40px rgba(0, 119, 181, 0.3);
+}
+
+.social-link[title*="LinkedIn"]:hover i,
+.social-link[title*="LinkedIn"]:hover span {
+  color: #0077b5;
 }
 
 .social-link[title*="Twitter"]:hover,
 .social-link[title*="X"]:hover {
   color: #1da1f2;
   border-color: #1da1f2;
+  box-shadow: 0 0 20px rgba(29, 161, 242, 0.6), 0 0 40px rgba(29, 161, 242, 0.3);
+}
+
+.social-link[title*="Twitter"]:hover i,
+.social-link[title*="Twitter"]:hover span,
+.social-link[title*="X"]:hover i,
+.social-link[title*="X"]:hover span {
+  color: #1da1f2;
 }
 
 .social-link[title*="GitHub"]:hover {
   color: #333;
   border-color: #333;
+  box-shadow: 0 0 20px rgba(51, 51, 51, 0.6), 0 0 40px rgba(51, 51, 51, 0.3);
+}
+
+.social-link[title*="GitHub"]:hover i,
+.social-link[title*="GitHub"]:hover span {
+  color: #333;
 }
 
 .social-link[title*="YouTube"]:hover {
   color: #ff0000;
   border-color: #ff0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.3);
+}
+
+.social-link[title*="YouTube"]:hover i,
+.social-link[title*="YouTube"]:hover span {
+  color: #ff0000;
 }
 
 .social-link[title*="Discord"]:hover {
   color: #7289da;
   border-color: #7289da;
+  box-shadow: 0 0 20px rgba(114, 137, 218, 0.6), 0 0 40px rgba(114, 137, 218, 0.3);
+}
+
+.social-link[title*="Discord"]:hover i,
+.social-link[title*="Discord"]:hover span {
+  color: #7289da;
 }
 
 .social-link[title*="Portfolio"]:hover {
   color: var(--accent-primary);
   border-color: var(--accent-primary);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.6), 0 0 40px rgba(0, 102, 255, 0.3);
+}
+
+.social-link[title*="Portfolio"]:hover i,
+.social-link[title*="Portfolio"]:hover span {
+  color: var(--accent-primary);
 }
 
 .footer-bottom {
@@ -2561,20 +2865,30 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
 
 .newsletter-form button {
   padding: 0.75rem 1rem;
-  background: var(--accent-primary);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
+  background: rgba(0, 102, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(0, 102, 255, 0.3);
+  border-radius: 12px;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  box-shadow: 
+    0 8px 32px rgba(0, 102, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .newsletter-form button:hover {
-  background: var(--accent-secondary);
+  background: rgba(0, 102, 255, 0.2);
+  border-color: rgba(0, 102, 255, 0.5);
   transform: translateY(-1px);
+  box-shadow: 
+    0 12px 40px rgba(0, 102, 255, 0.2),
+    0 0 20px rgba(0, 102, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .newsletter-form button i {
@@ -3125,6 +3439,16 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   
   .footer-section {
     margin-bottom: 2rem;
+    padding: 1rem;
+  }
+  .footer-section h4 {
+    font-size: 1rem;
+  }
+  .social-link {
+    padding: 0.5rem 0.75rem;
+  }
+  .footer-section ul li a {
+    padding: 0.4rem 0.6rem;
   }
 }
 

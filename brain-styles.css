@@ -1533,7 +1533,7 @@ body.software-page .tawk-chat-button {
 /* Ensure all content sections have proper backgrounds and positioning */
 body.software-page .navbar {
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 1000 !important;
 }
 
 body.software-page .software-hero {
@@ -2983,6 +2983,33 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   /* Better mobile canvas interaction */
   #aiCanvas {
     touch-action: none;
+    pointer-events: none !important;
+    cursor: auto !important;
+    opacity: 0.3 !important;
+    z-index: -1 !important;
+  }
+  
+  /* Show normal cursor on mobile for all pages */
+  body,
+  body * {
+    cursor: auto !important;
+  }
+  
+  /* Show pointer cursor on interactive elements */
+  body a,
+  body button,
+  body input,
+  body textarea,
+  body select,
+  body .nav-toggle,
+  body .nav-menu,
+  body .dropdown-menu,
+  body .nav-dropdown,
+  body .nav-link-container,
+  body .cta-button,
+  body .btn,
+  body .social-link {
+    cursor: pointer !important;
   }
   
   /* Optimized mobile navigation */
@@ -3532,22 +3559,7 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
     width: 20px;
     height: 20px;
   }
-    min-height: 200px;
-  }
   
-  .hero-title .title-line {
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-    max-width: 100%;
-    padding: 0 1rem;
-    color: var(--text-primary);
-  }
-
   .section-title {
     font-size: 2rem;
   }
@@ -3576,6 +3588,119 @@ body:has(.loader:not(.hidden)) .dropdown-menu {
   .footer-logo .logo-image {
     width: 20px;
     height: 20px;
+  }
+  
+  /* Enhanced mobile centering for smaller screens */
+  .intro-text {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 95%;
+    font-size: 1rem;
+    line-height: 1.6;
+    display: block;
+  }
+  
+  .core-values {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .core-values h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    width: 100%;
+  }
+  
+  .value-item {
+    text-align: center;
+    margin: 0 auto 1rem;
+    max-width: 95%;
+    padding: 1rem;
+    display: block;
+  }
+  
+  .value-item h4 {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .value-item p {
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .about-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .about-text p {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 95%;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: block;
+  }
+  
+  /* Center the entire about section content */
+  .about-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .about-content .about-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  /* Ensure all containers are centered */
+  .about-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .portfolio-about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .portfolio-about .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
   }
 }
 
@@ -6288,6 +6413,276 @@ body.portfolio-page #aiCanvas {
   
   .company-highlights {
     grid-template-columns: 1fr;
+  }
+  
+  /* Center intro text for mobile */
+  .intro-text {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    display: block;
+  }
+  
+  /* Center core values section for mobile */
+  .core-values {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .core-values h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  
+  /* Center value items for mobile */
+  .value-item {
+    text-align: center;
+    margin: 0 auto 1rem;
+    max-width: 90%;
+    display: block;
+  }
+  
+  .value-item h4 {
+    text-align: center;
+  }
+  
+  .value-item p {
+    text-align: center;
+  }
+  
+  /* Center about text content for mobile */
+  .about-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .about-text p {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    display: block;
+  }
+  
+  /* Center the entire about content section */
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Center the about grid container */
+  .about-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Center the portfolio about section */
+  .portfolio-about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .portfolio-about .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Center all section headers */
+  .section-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .section-title {
+    text-align: center;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+  }
+  
+  /* Center all highlights and showcase sections */
+  .highlights-showcase,
+  .company-overview,
+  .skills-matrix,
+  .certifications-grid,
+  .testimonials-showcase,
+  .team-section,
+  .products-section,
+  .values-section,
+  .tech-stack-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Center all grid containers */
+  .highlights-grid,
+  .overview-content,
+  .skills-grid,
+  .certs-grid,
+  .testimonials-carousel,
+  .team-grid,
+  .products-grid,
+  .values-grid,
+  .tech-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Center all individual cards and items */
+  .highlight-card,
+  .highlight-item,
+  .skill-category,
+  .cert-card,
+  .testimonial-card,
+  .team-card,
+  .product-card,
+  .value-card,
+  .tech-category {
+    text-align: center;
+    margin: 0 auto 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  /* Center all card content */
+  .highlight-card h4,
+  .highlight-card p,
+  .highlight-item h4,
+  .highlight-item p,
+  .skill-category h4,
+  .cert-card h4,
+  .cert-card p,
+  .testimonial-card h4,
+  .testimonial-card p,
+  .team-card h4,
+  .team-card p,
+  .product-card h4,
+  .product-card p,
+  .value-card h4,
+  .value-card p,
+  .tech-category h4,
+  .tech-category p {
+    text-align: center;
+  }
+  
+  /* Center all icons and images */
+  .highlight-icon,
+  .category-icon,
+  .cert-icon,
+  .product-icon,
+  .value-icon,
+  .tech-icon {
+    margin: 0 auto;
+    display: block;
+  }
+  
+  /* Center all metrics and stats */
+  .highlight-metrics,
+  .company-stats,
+  .skill-items,
+  .tech-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .metric,
+  .stat-item,
+  .skill-item,
+  .tech-item {
+    text-align: center;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Center all tags and labels */
+  .expertise-tags,
+  .testimonial-tags,
+  .team-skills,
+  .product-features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .expertise-tag,
+  .tag,
+  .skill-tag,
+  .feature {
+    text-align: center;
+    margin: 0 auto 0.5rem;
+  }
+  
+  /* Center all contact and info sections */
+  .contact-card,
+  .contact-info,
+  .contact-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Center all buttons and links */
+  .contact-btn,
+  .team-link,
+  .cta-button {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
   }
 }
 

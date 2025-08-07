@@ -95,7 +95,7 @@
         </div>
       </h1>
       <p class="hero-subtitle">We empower businesses and individuals</p>
-      <a href="software.html" class="cta-button">Explore Software</a>
+      <a href="about.html" class="cta-button">About Us</a>
     </div>
     <div class="scroll-indicator">
       <div class="scroll-text">Scroll to discover</div>
@@ -176,119 +176,70 @@
     <script src="mobile-nav.js"></script>
     <script src="security-enhancement.js"></script>
     
-    <!-- Tawk.to Chat Button -->
+    <!-- Mobile Interaction Fixes for Home Page -->
     <style>
-      .tawk-chat-button {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        text-decoration: none;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
-        z-index: 1000;
-        border: none;
-        cursor: pointer;
-      }
-      
-      .tawk-chat-button:hover {
-        transform: translateY(-3px) scale(1.1);
-        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-      }
-      
-      .tawk-chat-button:active {
-        transform: translateY(-1px) scale(1.05);
-      }
-      
-      .tawk-chat-button::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(135deg, #667eea, #764ba2, #667eea);
-        border-radius: 50%;
-        z-index: -1;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-      
-      .tawk-chat-button:hover::before {
-        opacity: 1;
-      }
-      
-      .tawk-chat-button .pulse {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: rgba(102, 126, 234, 0.3);
-        animation: pulse 2s infinite;
-      }
-      
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-          opacity: 1;
+      /* Mobile interaction fixes - similar to contact page */
+      @media (max-width: 768px) {
+        /* Ensure proper touch scrolling */
+        body.home-page {
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
         }
-        100% {
-          transform: scale(1.5);
-          opacity: 0;
+        
+        /* Block background interactions on mobile */
+        body.home-page #aiCanvas {
+          pointer-events: none !important;
+        }
+        
+        /* Ensure content is scrollable */
+        body.home-page .website-content {
+          position: relative;
+          z-index: 2;
+        }
+        
+        /* Allow touch interactions on interactive elements */
+        body.home-page .nav-link,
+        body.home-page .dropdown-link,
+        body.home-page .cta-button,
+        body.home-page .btn,
+        body.home-page .nav-toggle {
+          pointer-events: auto !important;
+        }
+        
+        /* Ensure navbar stays interactive */
+        body.home-page .navbar {
+          pointer-events: auto !important;
+          z-index: 9999 !important;
+        }
+        
+        /* Block background canvas interactions */
+        body.home-page #aiCanvas {
+          z-index: -1 !important;
         }
       }
       
-      .tawk-chat-button .tooltip {
-        position: absolute;
-        right: 70px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 14px;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        pointer-events: none;
+      /* Enhanced touch targets for mobile */
+      @media (max-width: 768px) {
+        body.home-page .nav-link,
+        body.home-page .dropdown-link,
+        body.home-page .cta-button {
+          min-height: 44px;
+          min-width: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* Ensure smooth scrolling */
+        body.home-page {
+          scroll-behavior: smooth;
+        }
       }
       
-      .tawk-chat-button .tooltip::after {
-        content: '';
-        position: absolute;
-        right: -5px;
-        top: 50%;
-        transform: translateY(-50%);
-        border: 5px solid transparent;
-        border-left-color: rgba(0, 0, 0, 0.8);
-      }
-      
-      .tawk-chat-button:hover .tooltip {
-        opacity: 1;
-        visibility: visible;
-      }
+
     </style>
     
-    <a href="https://tawk.to/chat/688b284b9abe48192a749848/1j1fpapuu" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="tawk-chat-button" 
-       title="Chat with us instantly!">
-      <div class="pulse"></div>
-      💬
-      <span class="tooltip">Chat with us instantly!</span>
-    </a>
+
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">

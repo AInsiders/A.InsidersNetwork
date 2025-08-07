@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawk Widget Test - A.Insiders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+        }
+        
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+        
+        .status.info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+        
+        .console-output {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Tawk Widget Test Page</h1>
+        
+        <div class="test-section">
+            <h2>📋 Test Instructions</h2>
+            <div class="instructions">
+                <ol>
+                    <li>Open the browser's Developer Tools (F12)</li>
+                    <li>Go to the Console tab</li>
+                    <li>Click the "Run Diagnostic" button below</li>
+                    <li>Check the console output for any issues</li>
+                    <li>Click the "Test Widget" button to test functionality</li>
+                    <li>Look for the chat widget in the bottom-right corner</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🧪 Test Controls</h2>
+            <button class="test-button" onclick="runDiagnostic()">Run Diagnostic</button>
+            <button class="test-button" onclick="testWidget()">Test Widget</button>
+            <button class="test-button" onclick="fixWidget()">Apply Fix</button>
+            <button class="test-button" onclick="clearConsole()">Clear Console</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 Status</h2>
+            <div id="status-container">
+                <div class="status info">Ready to test Tawk widget functionality</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 Console Output</h2>
+            <div id="console-output" class="console-output">
+                <div>Console output will appear here...</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔍 Manual Checks</h2>
+            <div class="instructions">
+                <p><strong>Check these items manually:</strong></p>
+                <ul>
+                    <li>✅ Chat widget appears in bottom-right corner</li>
+                    <li>✅ Widget has a pulsing animation</li>
+                    <li>✅ Clicking widget opens chat interface</li>
+                    <li>✅ No JavaScript errors in console</li>
+                    <li>✅ Widget works on mobile devices</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the diagnostic script -->
+    <script src="tawk-diagnostic.js"></script>
+    
+    <!-- Load the widget fix script -->
+    <script src="tawk-widget-fix.js"></script>
+    
+    <script>
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('console-output');
+        const statusContainer = document.getElementById('status-container');
+        
+        function addToConsole(message, type = 'log') {
+            const div = document.createElement('div');
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            div.style.color = type === 'error' ? '#ef4444' : '#ffffff';
+            consoleOutput.appendChild(div);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToConsole(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToConsole(args.join(' '), 'error');
+        };
+        
+        function updateStatus(message, type = 'info') {
+            statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function runDiagnostic() {
+            updateStatus('Running diagnostic...', 'info');
+            if (window.TawkDiagnostic) {
+                window.TawkDiagnostic.runDiagnostic();
+                updateStatus('Diagnostic completed. Check console for results.', 'success');
+            } else {
+                updateStatus('Diagnostic tool not loaded', 'error');
+            }
+        }
+        
+        function testWidget() {
+            updateStatus('Testing widget functionality...', 'info');
+            if (window.TawkDiagnostic) {
+                window.TawkDiagnostic.testWidget();
+                updateStatus('Widget test completed', 'success');
+            } else {
+                updateStatus('Diagnostic tool not loaded', 'error');
+            }
+        }
+        
+        function fixWidget() {
+            updateStatus('Applying widget fix...', 'info');
+            if (window.injectTawkWidget) {
+                window.injectTawkWidget();
+                updateStatus('Widget fix applied successfully', 'success');
+            } else {
+                updateStatus('Widget fix tool not loaded', 'error');
+            }
+        }
+        
+        function clearConsole() {
+            consoleOutput.innerHTML = '<div>Console cleared...</div>';
+            updateStatus('Console cleared', 'info');
+        }
+        
+        // Auto-run diagnostic after page loads
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                updateStatus('Page loaded. Ready for testing.', 'success');
+                console.log('Tawk Widget Test Page loaded successfully');
+                console.log('Use the test buttons above to diagnose and fix widget issues');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

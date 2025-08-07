@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawk Widget Chooser - A.Insiders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .widget-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .widget-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .widget-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .widget-button {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .widget-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        
+        .widget-button.danger {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        
+        .widget-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+        }
+        
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+        }
+        
+        .status.info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+        
+        .status.warning {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .comparison-table th {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+        
+        .feature-check {
+            color: #22c55e;
+            font-weight: bold;
+        }
+        
+        .feature-x {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Tawk Widget Chooser</h1>
+        
+        <div class="status info">
+            Choose which Tawk widget implementation you want to use
+        </div>
+        
+        <div class="widget-section">
+            <div class="widget-title">🔧 Custom Styled Widget</div>
+            <div class="widget-description">
+                A beautiful, custom-styled chat widget that matches your website's design. 
+                This widget hides the original Tawk widget and shows a custom button with 
+                animations and modern styling.
+            </div>
+            <button class="widget-button" onclick="loadCustomWidget()">Load Custom Widget</button>
+            <button class="widget-button danger" onclick="removeAllWidgets()">Remove All Widgets</button>
+        </div>
+        
+        <div class="widget-section">
+            <div class="widget-title">📱 Original Tawk Widget</div>
+            <div class="widget-description">
+                The standard Tawk.to widget with its original design and functionality. 
+                This keeps the native Tawk widget visible while fixing any loading issues.
+            </div>
+            <button class="widget-button" onclick="loadOriginalWidget()">Load Original Widget</button>
+            <button class="widget-button danger" onclick="removeAllWidgets()">Remove All Widgets</button>
+        </div>
+        
+        <div class="widget-section">
+            <div class="widget-title">📊 Feature Comparison</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Custom Widget</th>
+                        <th>Original Widget</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Custom Styling</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-x">❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Animations</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-x">❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Responsive</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-check">✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Dark Mode Support</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-x">❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Native Tawk Features</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-check">✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Easy Customization</td>
+                        <td class="feature-check">✅ Yes</td>
+                        <td class="feature-x">❌ No</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="widget-section">
+            <div class="widget-title">📋 Instructions</div>
+            <div class="instructions">
+                <ol>
+                    <li><strong>Choose your preferred widget:</strong> Click either "Load Custom Widget" or "Load Original Widget"</li>
+                    <li><strong>Test the functionality:</strong> Look for the chat widget in the bottom-right corner</li>
+                    <li><strong>Check the console:</strong> Open Developer Tools (F12) to see any messages</li>
+                    <li><strong>Try both options:</strong> Use "Remove All Widgets" between tests</li>
+                    <li><strong>Make your decision:</strong> Choose the widget that works best for your needs</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div id="status-container" class="status info">
+            Ready to test widgets. Choose an option above.
+        </div>
+    </div>
+
+    <!-- Load the widget scripts -->
+    <script src="tawk-widget-fix.js"></script>
+    <script src="tawk-original-widget-fix.js"></script>
+    
+    <script>
+        const statusContainer = document.getElementById('status-container');
+        
+        function updateStatus(message, type = 'info') {
+            statusContainer.className = `status ${type}`;
+            statusContainer.textContent = message;
+        }
+        
+        function removeAllWidgets() {
+            console.log('Removing all widgets...');
+            
+            // Remove all Tawk scripts
+            const scripts = document.querySelectorAll('script[src*="tawk.to"]');
+            scripts.forEach(script => script.remove());
+            
+            // Remove all Tawk elements
+            const tawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk"]');
+            tawkElements.forEach(element => element.remove());
+            
+            // Remove custom widgets
+            const customWidgets = document.querySelectorAll('.custom-tawk-widget, .tawk-chat-button');
+            customWidgets.forEach(widget => widget.remove());
+            
+            // Remove Tawk-related CSS
+            const styles = document.querySelectorAll('style');
+            styles.forEach(style => {
+                if (style.textContent.includes('tawk')) {
+                    style.remove();
+                }
+            });
+            
+            updateStatus('All widgets removed successfully', 'success');
+            console.log('All widgets removed');
+        }
+        
+        function loadCustomWidget() {
+            console.log('Loading custom widget...');
+            updateStatus('Loading custom styled widget...', 'info');
+            
+            // Remove any existing widgets first
+            removeAllWidgets();
+            
+            // Load the custom widget
+            setTimeout(() => {
+                if (typeof injectTawkWidget === 'function') {
+                    injectTawkWidget();
+                    updateStatus('Custom widget loaded! Look for the styled chat button in the bottom-right corner.', 'success');
+                } else {
+                    updateStatus('Error: Custom widget script not loaded', 'warning');
+                }
+            }, 500);
+        }
+        
+        function loadOriginalWidget() {
+            console.log('Loading original widget...');
+            updateStatus('Loading original Tawk widget...', 'info');
+            
+            // Remove any existing widgets first
+            removeAllWidgets();
+            
+            // Load the original widget
+            setTimeout(() => {
+                if (typeof injectOriginalTawkWidget === 'function') {
+                    injectOriginalTawkWidget();
+                    updateStatus('Original widget loaded! Look for the standard Tawk chat widget in the bottom-right corner.', 'success');
+                } else {
+                    updateStatus('Error: Original widget script not loaded', 'warning');
+                }
+            }, 500);
+        }
+        
+        // Auto-remove widgets on page load to start fresh
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                removeAllWidgets();
+                updateStatus('Ready to test widgets. Choose an option above.', 'info');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

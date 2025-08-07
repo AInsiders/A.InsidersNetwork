@@ -24,8 +24,8 @@
         // Security monitoring
         enableF12Detection: false,
         enableRightClickProtection: false,
-        enableCopyProtection: true,
-        enableViewSourceProtection: true,
+        enableCopyProtection: false,
+        enableViewSourceProtection: false,
         
         // Honeypot configuration
         honeypotFieldName: 'website_url',

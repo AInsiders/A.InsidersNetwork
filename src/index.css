@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Grid overlay */
+.grid-overlay {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Snap guides */
+.snap-guide {
+  @apply absolute bg-primary/50 pointer-events-none z-10;
+}
+
+.snap-guide.horizontal {
+  @apply h-0.5 w-full;
+}
+
+.snap-guide.vertical {
+  @apply w-0.5 h-full;
+}
+
+/* Discord embed styling */
+.discord-embed {
+  @apply bg-discord-dark border-l-4 border-l-discord-blue rounded-md p-4 max-w-md;
+}
+
+.discord-embed-title {
+  @apply text-white font-semibold text-base mb-1;
+}
+
+.discord-embed-description {
+  @apply text-gray-300 text-sm leading-relaxed;
+}
+
+.discord-embed-author {
+  @apply flex items-center gap-2 text-sm text-gray-400 mb-2;
+}
+
+.discord-embed-author-icon {
+  @apply w-4 h-4 rounded-full;
+}
+
+.discord-embed-fields {
+  @apply space-y-2 mt-3;
+}
+
+.discord-embed-field {
+  @apply text-sm;
+}
+
+.discord-embed-field-name {
+  @apply font-semibold text-white mb-1;
+}
+
+.discord-embed-field-value {
+  @apply text-gray-300;
+}
+
+.discord-embed-footer {
+  @apply flex items-center gap-2 text-xs text-gray-400 mt-3;
+}
+
+.discord-embed-footer-icon {
+  @apply w-4 h-4 rounded-full;
+}
+
+.discord-embed-thumbnail {
+  @apply w-16 h-16 rounded object-cover;
+}
+
+.discord-embed-image {
+  @apply w-full rounded object-cover max-h-80;
+}
+
+/* Drag and drop styles */
+.draggable-block {
+  @apply relative cursor-move select-none;
+}
+
+.draggable-block.dragging {
+  @apply opacity-50 z-50;
+}
+
+.draggable-block.selected {
+  @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.2s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from { 
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}

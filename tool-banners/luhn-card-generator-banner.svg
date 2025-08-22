@@ -1,0 +1,95 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34495e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="200" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative background elements -->
+  <circle cx="50" cy="50" r="30" fill="rgba(52, 152, 219, 0.1)"/>
+  <circle cx="350" cy="150" r="40" fill="rgba(46, 204, 113, 0.1)"/>
+  <circle cx="300" cy="30" r="25" fill="rgba(155, 89, 182, 0.1)"/>
+  
+  <!-- Credit Card -->
+  <rect x="80" y="60" width="240" height="140" rx="12" fill="url(#cardGradient)" filter="url(#glow)"/>
+  
+  <!-- Card Chip -->
+  <rect x="100" y="80" width="30" height="25" rx="4" fill="url(#chipGradient)"/>
+  <rect x="105" y="85" width="20" height="15" rx="2" fill="none" stroke="#fff" stroke-width="1"/>
+  <rect x="108" y="88" width="14" height="9" fill="none" stroke="#fff" stroke-width="0.5"/>
+  
+  <!-- Card Number -->
+  <text x="150" y="95" font-family="monospace" font-size="14" fill="white" font-weight="bold">4242 4242 4242 4242</text>
+  
+  <!-- Card Details -->
+  <text x="150" y="115" font-family="Arial" font-size="10" fill="rgba(255,255,255,0.8)">CARD HOLDER</text>
+  <text x="150" y="130" font-family="Arial" font-size="12" fill="white" font-weight="bold">TEST USER</text>
+  
+  <text x="280" y="115" font-family="Arial" font-size="10" fill="rgba(255,255,255,0.8)">EXPIRES</text>
+  <text x="280" y="130" font-family="Arial" font-size="12" fill="white" font-weight="bold">12/25</text>
+  
+  <!-- Luhn Algorithm Visualization -->
+  <g transform="translate(320, 100)">
+    <!-- Algorithm flow -->
+    <circle cx="0" cy="0" r="3" fill="#2ecc71"/>
+    <circle cx="20" cy="0" r="3" fill="#e74c3c"/>
+    <circle cx="40" cy="0" r="3" fill="#2ecc71"/>
+    <circle cx="60" cy="0" r="3" fill="#e74c3c"/>
+    
+    <!-- Connecting lines -->
+    <line x1="3" y1="0" x2="17" y2="0" stroke="#3498db" stroke-width="2"/>
+    <line x1="23" y1="0" x2="37" y2="0" stroke="#3498db" stroke-width="2"/>
+    <line x1="43" y1="0" x2="57" y2="0" stroke="#3498db" stroke-width="2"/>
+    
+    <!-- Algorithm text -->
+    <text x="30" y="20" font-family="Arial" font-size="8" fill="white" text-anchor="middle">LUHN</text>
+    <text x="30" y="30" font-family="Arial" font-size="8" fill="white" text-anchor="middle">ALGORITHM</text>
+  </g>
+  
+  <!-- Security Shield -->
+  <g transform="translate(50, 120)">
+    <path d="M0,-15 L8,-8 L8,8 L0,15 L-8,8 L-8,-8 Z" fill="rgba(46, 204, 113, 0.8)"/>
+    <path d="M0,-8 L4,-4 L4,4 L0,8 L-4,4 L-4,-4 Z" fill="rgba(46, 204, 113, 0.6)"/>
+    <text x="0" y="2" font-family="Arial" font-size="8" fill="white" text-anchor="middle" font-weight="bold">✓</text>
+  </g>
+  
+  <!-- Test Only Badge -->
+  <rect x="20" y="20" width="80" height="25" rx="12" fill="rgba(231, 76, 60, 0.9)"/>
+  <text x="60" y="35" font-family="Arial" font-size="10" fill="white" text-anchor="middle" font-weight="bold">TEST ONLY</text>
+  
+  <!-- Generate Icon -->
+  <g transform="translate(350, 30)">
+    <circle cx="0" cy="0" r="15" fill="rgba(52, 152, 219, 0.8)"/>
+    <path d="M-6,-6 L6,0 L-6,6 Z" fill="white"/>
+  </g>
+  
+  <!-- Floating Numbers -->
+  <text x="30" y="180" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">4</text>
+  <text x="45" y="175" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">2</text>
+  <text x="60" y="180" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">4</text>
+  <text x="75" y="175" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">2</text>
+  
+  <text x="320" y="180" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">4</text>
+  <text x="335" y="175" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">2</text>
+  <text x="350" y="180" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">4</text>
+  <text x="365" y="175" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.6)">2</text>
+</svg>
